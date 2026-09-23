@@ -108,6 +108,7 @@ td { padding: 13px 14px; border-top: 1px solid var(--line); font-size: 12px; ver
 .dag-node text { fill: var(--text); font-size: 11px; pointer-events: none; }
 .dag-node .node-meta { fill: var(--muted); font-size: 9px; }
 .dag-node .node-operation { font-size: 9px; font-weight: 600; text-transform: uppercase; }
+.episode-header { fill: var(--muted); font-size: 10px; font-weight: 600; text-transform: uppercase; }
 .tree-controls { display: flex; align-items: center; gap: 8px; }
 #progress-tree-dataset { border: 1px solid var(--line); color: var(--text); background: var(--panel-2); border-radius: 7px; padding: 7px 9px; max-width: 300px; }
 .operation-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; }

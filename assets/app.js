@@ -107,9 +107,10 @@ function drawProgressTree(datasetKey) {
     const operation = node.operation || "unknown";
     return `<g class="dag-node ${tone} op-${escapeHtml(operation)}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="158" height="72"></rect><text class="node-operation" x="10" y="19">${escapeHtml(operation)}</text><text x="10" y="39">${escapeHtml(node.label.slice(0,20))}</text><text class="node-meta" x="10" y="58">Episode ${node.episode || "seed"} · G${node.generation}</text></g>`;
   }).join("");
+  const headers = episodes.map((episode, column) => `<text class="episode-header" x="${35 + column * 210}" y="20">${episode ? `Episode ${episode}` : "Seeds"} · ${groups.get(episode).length}</text>`).join("");
   const svg = document.querySelector("#lineage-dag");
   svg.style.height = `${Math.min(960, Math.max(520, height))}px`;
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.innerHTML = edges + marks;
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.innerHTML = headers + edges + marks;
   svg.querySelectorAll("[data-dag-id]").forEach((mark) => mark.addEventListener("click", () => { state.treeNode = mark.dataset.dagId; drawProgressTree(datasetKey); }));
   const operations = [...new Set(nodes.map((node) => node.operation || "unknown"))];
   document.querySelector("#operation-legend").innerHTML = operations.map((operation) => `<span class="operation-key op-${escapeHtml(operation)}"><i></i>${escapeHtml(operation)}</span>`).join("");
