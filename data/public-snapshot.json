@@ -1,6 +1,2788 @@
 {
   "complete": true,
-  "generated_at": "2026-09-23T16:35:31.257481Z",
+  "environment_progress": [
+    {
+      "candidate_id": "candidate-72643e3f2fe1abe3f12fc6aa",
+      "candidate_public_id": "H-72643e3f",
+      "dataset": "hcc",
+      "id": "job-a28f54e1963a0dbaf819358a",
+      "project": "ehr",
+      "public_id": "ENV-a28f54e1",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-14f8d908b1e05c67d8845aca",
+      "candidate_public_id": "H-14f8d908",
+      "dataset": "eicu",
+      "id": "job-de3ed67df8c48089fc2c09aa",
+      "project": "ehr",
+      "public_id": "ENV-de3ed67d",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-24fdba6c6a80465dfe418e21",
+      "candidate_public_id": "H-24fdba6c",
+      "dataset": "mimic",
+      "id": "job-32fc2f1f627c80c2213b3333",
+      "project": "ehr",
+      "public_id": "ENV-32fc2f1f",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-07a4c523f753267416d07413",
+      "candidate_public_id": "H-07a4c523",
+      "dataset": "hcc",
+      "id": "job-f845b89ce6f8866e64c740e5",
+      "project": "ehr",
+      "public_id": "ENV-f845b89c",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-aec1c5d90d60b8171b428462",
+      "candidate_public_id": "H-aec1c5d9",
+      "dataset": "Oxford_path_dependence",
+      "id": "job-06b1cf50c3fe49ae76b516f3",
+      "project": "battery",
+      "public_id": "ENV-06b1cf50",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-a339d32a97b064167b3e9085",
+      "candidate_public_id": "H-a339d32a",
+      "dataset": "Oxford_path_dependence",
+      "id": "job-d134acc54e6a83f5edac8f55",
+      "project": "battery",
+      "public_id": "ENV-d134acc5",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-60aa3cfe9d60c602137e7c03",
+      "candidate_public_id": "H-60aa3cfe",
+      "dataset": "Li2025",
+      "id": "job-44d59d48fc341b9ca9a737fe",
+      "project": "battery",
+      "public_id": "ENV-44d59d48",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-028ebeb127c4eb882ef83f91",
+      "candidate_public_id": "H-028ebeb1",
+      "dataset": "KIT_EIS",
+      "id": "job-50f69d2e62e270672c15ef5c",
+      "project": "battery",
+      "public_id": "ENV-50f69d2e",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-0af81976d82cf439699baabc",
+      "candidate_public_id": "H-0af81976",
+      "dataset": "Zhang2020",
+      "id": "job-340bde3e0f2059e489d5500e",
+      "project": "battery",
+      "public_id": "ENV-340bde3e",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-def553ac6514ff3517e86c93",
+      "candidate_public_id": "H-def553ac",
+      "dataset": "KIT_EIS",
+      "id": "job-b7fb99f4dee242a1771ba2db",
+      "project": "battery",
+      "public_id": "ENV-b7fb99f4",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-7a54b01c097816da4ea8fb8f",
+      "candidate_public_id": "H-7a54b01c",
+      "dataset": "Li2025",
+      "id": "job-09c50dd242dd205a0df6fa11",
+      "project": "battery",
+      "public_id": "ENV-09c50dd2",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-25480c0b6cc56daec1062910",
+      "candidate_public_id": "H-25480c0b",
+      "dataset": "KIT_EIS",
+      "id": "job-c255f064a19b9680cb6ca15d",
+      "project": "battery",
+      "public_id": "ENV-c255f064",
+      "qa_status": "readiness_passed"
+    },
+    {
+      "candidate_id": "candidate-910a21e920a8cc7e597ce564",
+      "candidate_public_id": "H-910a21e9",
+      "dataset": "Oxford_path_dependence",
+      "id": "job-42b08ecd673ac41d81f7ceb1",
+      "project": "battery",
+      "public_id": "ENV-42b08ecd",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-4e5eab09fcfe2621b4f38104",
+      "candidate_public_id": "H-4e5eab09",
+      "dataset": "KIT_EIS",
+      "id": "job-a24edcbddee91abf0a6245cc",
+      "project": "battery",
+      "public_id": "ENV-a24edcbd",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-491ddd2c873afba653c2643f",
+      "candidate_public_id": "H-491ddd2c",
+      "dataset": "Li2025",
+      "id": "job-1e2597d6a489d2cce0fd7c1e",
+      "project": "battery",
+      "public_id": "ENV-1e2597d6",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-936db8f52ead591c4cfafffb",
+      "candidate_public_id": "H-936db8f5",
+      "dataset": "Zhang2020",
+      "id": "job-72f11c82a37795469f5ee9e4",
+      "project": "battery",
+      "public_id": "ENV-72f11c82",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-6070279b2bb647f9a55c9bf3",
+      "candidate_public_id": "H-6070279b",
+      "dataset": "KIT_EIS",
+      "id": "job-ae1d7b64fb53abc541a70db7",
+      "project": "battery",
+      "public_id": "ENV-ae1d7b64",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-58cc6790f8beb48e5ea9a660",
+      "candidate_public_id": "H-58cc6790",
+      "dataset": "Oxford_path_dependence",
+      "id": "job-9cb40862339db32f32756841",
+      "project": "battery",
+      "public_id": "ENV-9cb40862",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-451c35ebb2e375d9b748fa53",
+      "candidate_public_id": "H-451c35eb",
+      "dataset": "Li2025",
+      "id": "job-8d7f8d467625b73c26685cee",
+      "project": "battery",
+      "public_id": "ENV-8d7f8d46",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-53cf6e87158eff83702e055c",
+      "candidate_public_id": "H-53cf6e87",
+      "dataset": "Zhang2020",
+      "id": "job-c21e2ec10f278031ed396158",
+      "project": "battery",
+      "public_id": "ENV-c21e2ec1",
+      "qa_status": "compiled"
+    },
+    {
+      "candidate_id": "candidate-8725a6e1f6df30253e810ad6",
+      "candidate_public_id": "H-8725a6e1",
+      "dataset": "Oxford_path_dependence",
+      "id": "job-5522fdc29c3230064ecaf514",
+      "project": "battery",
+      "public_id": "ENV-5522fdc2",
+      "qa_status": "compiled"
+    }
+  ],
+  "generated_at": "2026-09-23T16:53:01.321508Z",
+  "lineage": [
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-f3846e421b78c85032e8fce7",
+      "label": "H-f3846e42",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-9f084dbcf2e1ba6ad96439e1",
+      "label": "H-9f084dbc",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-ba133fae52f059d2851ebc52",
+      "label": "H-ba133fae",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-5984a9d18e625ced656acea7",
+      "label": "H-5984a9d1",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-15e23070f3f7ff9e730e5078",
+      "label": "H-15e23070",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-2b96b182e6b07721fc85faeb",
+      "label": "H-2b96b182",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-3fed1007f5d6a531ebaea221",
+      "label": "H-3fed1007",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-7ae53060c46cc1f38c058199",
+      "label": "H-7ae53060",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-7424d831752fc845c960717c",
+      "label": "H-7424d831",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 0,
+      "id": "candidate-ad0de962557d1398d208cf4a",
+      "label": "H-ad0de962",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-04131591b134016dfa0de0c4",
+      "label": "H-04131591",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-72c27a8e5534f928491866d2",
+      "label": "H-72c27a8e",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-7acc5a7b20fdce1787da7946",
+      "label": "H-7acc5a7b",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-058e10a6d6635bc73ee51113",
+      "label": "H-058e10a6",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-1cbc8e81fe143a5dfe53185e",
+      "label": "H-1cbc8e81",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-5bf764abf6459004586393eb",
+      "label": "H-5bf764ab",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-9fc25e36e1e5c6cfd7a00477",
+      "label": "H-9fc25e36",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-cace7c5319fd647b2dcf29be",
+      "label": "H-cace7c53",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-e0f56a6c5e6fef5f8b30a926",
+      "label": "H-e0f56a6c",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 0,
+      "id": "candidate-b56a1641f9ca9092586dab39",
+      "label": "H-b56a1641",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-0d934297e53fe1c892a0606e",
+      "label": "H-0d934297",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-6cd1cd8f32702f6e13db40f5",
+      "label": "H-6cd1cd8f",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-0cb7c1c2a983c70d4cbc1be2",
+      "label": "H-0cb7c1c2",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-0eb526ab4b908c9c9e1b60ae",
+      "label": "H-0eb526ab",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-5f51564558d36536eded8f8d",
+      "label": "H-5f515645",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-81cb66cd20f3a8991506a822",
+      "label": "H-81cb66cd",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-232be07ec02f4b57e15d4ee6",
+      "label": "H-232be07e",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-922e8d03ef4e332cabf853a0",
+      "label": "H-922e8d03",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-8d57aa68820247ee4e4a8c93",
+      "label": "H-8d57aa68",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 0,
+      "id": "candidate-9d0409e906cd094e287019f7",
+      "label": "H-9d0409e9",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 1,
+      "id": "candidate-41c16dcaa0c2d70d4103c82e",
+      "label": "H-41c16dca",
+      "parents": [
+        "candidate-ba133fae52f059d2851ebc52"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "hcc",
+      "generation": 0,
+      "id": "candidate-b04bc532de618bd4f039340c",
+      "label": "H-b04bc532",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 2,
+      "id": "candidate-436a48162d3c7f85021662d8",
+      "label": "H-436a4816",
+      "parents": [
+        "candidate-41c16dcaa0c2d70d4103c82e"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-14f8d908b1e05c67d8845aca",
+      "label": "H-14f8d908",
+      "parents": [
+        "candidate-0cb7c1c2a983c70d4cbc1be2"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "hcc",
+      "generation": 0,
+      "id": "candidate-72643e3f2fe1abe3f12fc6aa",
+      "label": "H-72643e3f",
+      "parents": [],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-b621a3a59a6e1bc1d8c72f6a",
+      "label": "H-b621a3a5",
+      "parents": [
+        "candidate-0cb7c1c2a983c70d4cbc1be2"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-e872d299f5d3d9eb706960b1",
+      "label": "H-e872d299",
+      "parents": [
+        "candidate-0cb7c1c2a983c70d4cbc1be2"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "mimic",
+      "generation": 1,
+      "id": "candidate-24fdba6c6a80465dfe418e21",
+      "label": "H-24fdba6c",
+      "parents": [
+        "candidate-04131591b134016dfa0de0c4"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "hcc",
+      "generation": 1,
+      "id": "candidate-07a4c523f753267416d07413",
+      "label": "H-07a4c523",
+      "parents": [
+        "candidate-72643e3f2fe1abe3f12fc6aa"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "hcc",
+      "generation": 1,
+      "id": "candidate-99cc6454e86adeda6fff6911",
+      "label": "H-99cc6454",
+      "parents": [
+        "candidate-72643e3f2fe1abe3f12fc6aa"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-fef4e00bb635c35499d2a862",
+      "label": "H-fef4e00b",
+      "parents": [
+        "candidate-6cd1cd8f32702f6e13db40f5"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-87fa3856ea8d8a3a329f3564",
+      "label": "H-87fa3856",
+      "parents": [
+        "candidate-6cd1cd8f32702f6e13db40f5"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 1,
+      "id": "candidate-59416824251eceba8c7f5f0d",
+      "label": "H-59416824",
+      "parents": [
+        "candidate-6cd1cd8f32702f6e13db40f5"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 3,
+      "id": "candidate-7d770343041912e194d8b7fd",
+      "label": "H-7d770343",
+      "parents": [
+        "candidate-436a48162d3c7f85021662d8"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 2,
+      "id": "candidate-7b96342d8c00aba21ba19b42",
+      "label": "H-7b96342d",
+      "parents": [
+        "candidate-59416824251eceba8c7f5f0d"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 2,
+      "id": "candidate-41116ffe22d00ba3f51e2449",
+      "label": "H-41116ffe",
+      "parents": [
+        "candidate-59416824251eceba8c7f5f0d"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "hcc",
+      "generation": 2,
+      "id": "candidate-9d6825ef2246e8d6a0c3c8dd",
+      "label": "H-9d6825ef",
+      "parents": [
+        "candidate-07a4c523f753267416d07413",
+        "candidate-99cc6454e86adeda6fff6911"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 4,
+      "id": "candidate-85c89759f82c578055d512c7",
+      "label": "H-85c89759",
+      "parents": [
+        "candidate-7d770343041912e194d8b7fd"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "hcc",
+      "generation": 2,
+      "id": "candidate-a2a1f104bdcdd2aec5b3c0c4",
+      "label": "H-a2a1f104",
+      "parents": [
+        "candidate-07a4c523f753267416d07413",
+        "candidate-99cc6454e86adeda6fff6911"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 1,
+      "id": "candidate-21b9e07186c47e5dbc30b18b",
+      "label": "H-21b9e071",
+      "parents": [
+        "candidate-b56a1641f9ca9092586dab39"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 3,
+      "id": "candidate-50f90afdbc21b7e24eedc4e5",
+      "label": "H-50f90afd",
+      "parents": [
+        "candidate-7b96342d8c00aba21ba19b42"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 3,
+      "id": "candidate-8cf0e8f29ad5694b075b65e9",
+      "label": "H-8cf0e8f2",
+      "parents": [
+        "candidate-7b96342d8c00aba21ba19b42"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "eicu",
+      "generation": 3,
+      "id": "candidate-dd33dce0e5319c7a4a62b35f",
+      "label": "H-dd33dce0",
+      "parents": [
+        "candidate-7b96342d8c00aba21ba19b42"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "mimic",
+      "generation": 1,
+      "id": "candidate-4abe5d75e5aff52a84f62151",
+      "label": "H-4abe5d75",
+      "parents": [
+        "candidate-b56a1641f9ca9092586dab39"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "ukb",
+      "generation": 5,
+      "id": "candidate-98003c539beb54eb24102be9",
+      "label": "H-98003c53",
+      "parents": [
+        "candidate-85c89759f82c578055d512c7"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "hcc",
+      "generation": 3,
+      "id": "candidate-606e4062a9517dea8102d8a1",
+      "label": "H-606e4062",
+      "parents": [
+        "candidate-9d6825ef2246e8d6a0c3c8dd"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Oxford_path_dependence",
+      "generation": 0,
+      "id": "candidate-aec1c5d90d60b8171b428462",
+      "label": "H-aec1c5d9",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 0,
+      "id": "candidate-5b0c0506cdd8ca9dc99bb6f9",
+      "label": "H-5b0c0506",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 0,
+      "id": "candidate-8b17439f3dedfc38bc2b2882",
+      "label": "H-8b17439f",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 0,
+      "id": "candidate-d1ffabd4f281583d3fa45e36",
+      "label": "H-d1ffabd4",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Oxford_path_dependence",
+      "generation": 1,
+      "id": "candidate-a339d32a97b064167b3e9085",
+      "label": "H-a339d32a",
+      "parents": [
+        "candidate-aec1c5d90d60b8171b428462"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 0,
+      "id": "candidate-4e1a44ff79957ac0cdac807a",
+      "label": "H-4e1a44ff",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 1,
+      "id": "candidate-21212688fc5171749bccfc43",
+      "label": "H-21212688",
+      "parents": [
+        "candidate-5b0c0506cdd8ca9dc99bb6f9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 0,
+      "id": "candidate-24f03887b8103b8d081ac2f0",
+      "label": "H-24f03887",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 0,
+      "id": "candidate-f8296ce1ee73ab5b157338ec",
+      "label": "H-f8296ce1",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 1,
+      "id": "candidate-2fdd97bbca15ef46a16ce793",
+      "label": "H-2fdd97bb",
+      "parents": [
+        "candidate-aec1c5d90d60b8171b428462"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 0,
+      "id": "candidate-8353821c0c65ab9089beafe6",
+      "label": "H-8353821c",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 0,
+      "id": "candidate-ec23f18b410a0799228f130f",
+      "label": "H-ec23f18b",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 2,
+      "id": "candidate-57b5aa643087061902c772cd",
+      "label": "H-57b5aa64",
+      "parents": [
+        "candidate-21212688fc5171749bccfc43"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 1,
+      "id": "candidate-758889bf01c9bb8844136ad1",
+      "label": "H-758889bf",
+      "parents": [
+        "candidate-ec23f18b410a0799228f130f",
+        "candidate-8353821c0c65ab9089beafe6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 2,
+      "id": "candidate-73aca0d315addb261f57da73",
+      "label": "H-73aca0d3",
+      "parents": [
+        "candidate-21212688fc5171749bccfc43"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 2,
+      "id": "candidate-6e31dbfcc64a22cb82a8fcc1",
+      "label": "H-6e31dbfc",
+      "parents": [
+        "candidate-a339d32a97b064167b3e9085"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 1,
+      "id": "candidate-e1d4962730a77e229a8a4846",
+      "label": "H-e1d49627",
+      "parents": [
+        "candidate-f8296ce1ee73ab5b157338ec"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 2,
+      "id": "candidate-66c3aee768e64f2870040db4",
+      "label": "H-66c3aee7",
+      "parents": [
+        "candidate-a339d32a97b064167b3e9085"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 1,
+      "id": "candidate-4558dce3824a94de29f81f93",
+      "label": "H-4558dce3",
+      "parents": [
+        "candidate-f8296ce1ee73ab5b157338ec"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 3,
+      "id": "candidate-e44947b042ac254d3ed5242f",
+      "label": "H-e44947b0",
+      "parents": [
+        "candidate-73aca0d315addb261f57da73"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 2,
+      "id": "candidate-088876632b2254d13b501f6a",
+      "label": "H-08887663",
+      "parents": [
+        "candidate-758889bf01c9bb8844136ad1"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 2,
+      "id": "candidate-912ef17eeff1a7ada135f31f",
+      "label": "H-912ef17e",
+      "parents": [
+        "candidate-758889bf01c9bb8844136ad1"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 3,
+      "id": "candidate-ad2608081f17ca61ddde94fb",
+      "label": "H-ad260808",
+      "parents": [
+        "candidate-73aca0d315addb261f57da73"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 3,
+      "id": "candidate-6602f5f02e556b14661c3cb9",
+      "label": "H-6602f5f0",
+      "parents": [
+        "candidate-6e31dbfcc64a22cb82a8fcc1"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 4,
+      "id": "candidate-f148de55146cca85b9967e96",
+      "label": "H-f148de55",
+      "parents": [
+        "candidate-6602f5f02e556b14661c3cb9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "KIT_EIS",
+      "generation": 4,
+      "id": "candidate-028ebeb127c4eb882ef83f91",
+      "label": "H-028ebeb1",
+      "parents": [
+        "candidate-ad2608081f17ca61ddde94fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 4,
+      "id": "candidate-33dcc13a3dfdba9209674334",
+      "label": "H-33dcc13a",
+      "parents": [
+        "candidate-6602f5f02e556b14661c3cb9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 4,
+      "id": "candidate-465f11cd51d03000f7e2393b",
+      "label": "H-465f11cd",
+      "parents": [
+        "candidate-ad2608081f17ca61ddde94fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 4,
+      "id": "candidate-5de146908ce7a99625e0b1d9",
+      "label": "H-5de14690",
+      "parents": [
+        "candidate-6602f5f02e556b14661c3cb9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 4,
+      "id": "candidate-46e74ccff84216791372dafe",
+      "label": "H-46e74ccf",
+      "parents": [
+        "candidate-ad2608081f17ca61ddde94fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 4,
+      "id": "candidate-0baf48b5a317e9c227177086",
+      "label": "H-0baf48b5",
+      "parents": [
+        "candidate-ad2608081f17ca61ddde94fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Li2025",
+      "generation": 2,
+      "id": "candidate-60aa3cfe9d60c602137e7c03",
+      "label": "H-60aa3cfe",
+      "parents": [
+        "candidate-e1d4962730a77e229a8a4846"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 3,
+      "id": "candidate-715ac118f1fbf955cf430fb5",
+      "label": "H-715ac118",
+      "parents": [
+        "candidate-912ef17eeff1a7ada135f31f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 2,
+      "id": "candidate-b2a54823332560cc9adc1b55",
+      "label": "H-b2a54823",
+      "parents": [
+        "candidate-e1d4962730a77e229a8a4846"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 3,
+      "id": "candidate-0d3ba2a9507f601d13ae8f9c",
+      "label": "H-0d3ba2a9",
+      "parents": [
+        "candidate-912ef17eeff1a7ada135f31f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 3,
+      "id": "candidate-d06cf058b739976202c10b23",
+      "label": "H-d06cf058",
+      "parents": [
+        "candidate-912ef17eeff1a7ada135f31f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 3,
+      "id": "candidate-2d65c4bf0d85413e6fa447b5",
+      "label": "H-2d65c4bf",
+      "parents": [
+        "candidate-912ef17eeff1a7ada135f31f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 5,
+      "id": "candidate-2ba829f93c935d4f8f7f34a8",
+      "label": "H-2ba829f9",
+      "parents": [
+        "candidate-5de146908ce7a99625e0b1d9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 5,
+      "id": "candidate-23e5882cc99b60708254f64d",
+      "label": "H-23e5882c",
+      "parents": [
+        "candidate-5de146908ce7a99625e0b1d9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 5,
+      "id": "candidate-4bb23748eb62e1e3ee385598",
+      "label": "H-4bb23748",
+      "parents": [
+        "candidate-5de146908ce7a99625e0b1d9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 5,
+      "id": "candidate-3af874d170abd081d042bad9",
+      "label": "H-3af874d1",
+      "parents": [
+        "candidate-5de146908ce7a99625e0b1d9"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Zhang2020",
+      "generation": 4,
+      "id": "candidate-0af81976d82cf439699baabc",
+      "label": "H-0af81976",
+      "parents": [
+        "candidate-0d3ba2a9507f601d13ae8f9c",
+        "candidate-d06cf058b739976202c10b23"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 5,
+      "id": "candidate-f17e141cca0252763f95c406",
+      "label": "H-f17e141c",
+      "parents": [
+        "candidate-028ebeb127c4eb882ef83f91"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "KIT_EIS",
+      "generation": 5,
+      "id": "candidate-def553ac6514ff3517e86c93",
+      "label": "H-def553ac",
+      "parents": [
+        "candidate-028ebeb127c4eb882ef83f91"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "Li2025",
+      "generation": 3,
+      "id": "candidate-7a54b01c097816da4ea8fb8f",
+      "label": "H-7a54b01c",
+      "parents": [
+        "candidate-60aa3cfe9d60c602137e7c03"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 3,
+      "id": "candidate-0a7688ea5ec45dca4decca04",
+      "label": "H-0a7688ea",
+      "parents": [
+        "candidate-60aa3cfe9d60c602137e7c03"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "KIT_EIS",
+      "generation": 6,
+      "id": "candidate-25480c0b6cc56daec1062910",
+      "label": "H-25480c0b",
+      "parents": [
+        "candidate-def553ac6514ff3517e86c93"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": true,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 6,
+      "id": "candidate-9ec2c3c2a740d01a8aaae79b",
+      "label": "H-9ec2c3c2",
+      "parents": [
+        "candidate-def553ac6514ff3517e86c93"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 5,
+      "id": "candidate-661adedaa6c8198e940ba8fb",
+      "label": "H-661adeda",
+      "parents": [
+        "candidate-d06cf058b739976202c10b23",
+        "candidate-0af81976d82cf439699baabc"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 5,
+      "id": "candidate-bbafa6eb40ca34c9e298ed0c",
+      "label": "H-bbafa6eb",
+      "parents": [
+        "candidate-d06cf058b739976202c10b23",
+        "candidate-0af81976d82cf439699baabc"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Oxford_path_dependence",
+      "generation": 0,
+      "id": "candidate-910a21e920a8cc7e597ce564",
+      "label": "H-910a21e9",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 0,
+      "id": "candidate-00dbb0f245d269514a36bca2",
+      "label": "H-00dbb0f2",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 0,
+      "id": "candidate-23eb0b2e22a4a378e96ec89d",
+      "label": "H-23eb0b2e",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 4,
+      "id": "candidate-6e6d64b8cf4925d127ec571c",
+      "label": "H-6e6d64b8",
+      "parents": [
+        "candidate-0a7688ea5ec45dca4decca04"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Li2025",
+      "generation": 4,
+      "id": "candidate-491ddd2c873afba653c2643f",
+      "label": "H-491ddd2c",
+      "parents": [
+        "candidate-0a7688ea5ec45dca4decca04"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "KIT_EIS",
+      "generation": 7,
+      "id": "candidate-4e5eab09fcfe2621b4f38104",
+      "label": "H-4e5eab09",
+      "parents": [
+        "candidate-25480c0b6cc56daec1062910"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "Zhang2020",
+      "generation": 6,
+      "id": "candidate-936db8f52ead591c4cfafffb",
+      "label": "H-936db8f5",
+      "parents": [
+        "candidate-661adedaa6c8198e940ba8fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "Oxford_path_dependence",
+      "generation": 1,
+      "id": "candidate-58cc6790f8beb48e5ea9a660",
+      "label": "H-58cc6790",
+      "parents": [
+        "candidate-23eb0b2e22a4a378e96ec89d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 6,
+      "id": "candidate-6a24198529a5d8702989ddb7",
+      "label": "H-6a241985",
+      "parents": [
+        "candidate-661adedaa6c8198e940ba8fb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "KIT_EIS",
+      "generation": 8,
+      "id": "candidate-6070279b2bb647f9a55c9bf3",
+      "label": "H-6070279b",
+      "parents": [
+        "candidate-4e5eab09fcfe2621b4f38104"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 1,
+      "id": "candidate-b3753895c32e4c53158b2a88",
+      "label": "H-b3753895",
+      "parents": [
+        "candidate-23eb0b2e22a4a378e96ec89d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 8,
+      "id": "candidate-5dc2e3e778176eb9782468d9",
+      "label": "H-5dc2e3e7",
+      "parents": [
+        "candidate-4e5eab09fcfe2621b4f38104"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 8,
+      "id": "candidate-56c73e6b67da4f238c32a560",
+      "label": "H-56c73e6b",
+      "parents": [
+        "candidate-4e5eab09fcfe2621b4f38104"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 1,
+      "id": "candidate-462063e6d4484c43febc84cb",
+      "label": "H-462063e6",
+      "parents": [
+        "candidate-23eb0b2e22a4a378e96ec89d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 5,
+      "id": "candidate-ca7310cdf4db965e1cba41bb",
+      "label": "H-ca7310cd",
+      "parents": [
+        "candidate-491ddd2c873afba653c2643f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 5,
+      "id": "candidate-9c31421bdc22ef870b6d9824",
+      "label": "H-9c31421b",
+      "parents": [
+        "candidate-491ddd2c873afba653c2643f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Li2025",
+      "generation": 5,
+      "id": "candidate-451c35ebb2e375d9b748fa53",
+      "label": "H-451c35eb",
+      "parents": [
+        "candidate-491ddd2c873afba653c2643f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": true,
+      "dataset": "Zhang2020",
+      "generation": 7,
+      "id": "candidate-53cf6e87158eff83702e055c",
+      "label": "H-53cf6e87",
+      "parents": [
+        "candidate-936db8f52ead591c4cfafffb"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 9,
+      "id": "candidate-6250c6dad3d37c6936835730",
+      "label": "H-6250c6da",
+      "parents": [
+        "candidate-6070279b2bb647f9a55c9bf3"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": true,
+      "dataset": "Oxford_path_dependence",
+      "generation": 2,
+      "id": "candidate-8725a6e1f6df30253e810ad6",
+      "label": "H-8725a6e1",
+      "parents": [
+        "candidate-58cc6790f8beb48e5ea9a660"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 9,
+      "id": "candidate-1b53f39ac3a947ebee4533be",
+      "label": "H-1b53f39a",
+      "parents": [
+        "candidate-6070279b2bb647f9a55c9bf3"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 9,
+      "id": "candidate-cd1d5daf6bf1858a87a46042",
+      "label": "H-cd1d5daf",
+      "parents": [
+        "candidate-6070279b2bb647f9a55c9bf3"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 2,
+      "id": "candidate-d3d2d4671fff60994298478b",
+      "label": "H-d3d2d467",
+      "parents": [
+        "candidate-58cc6790f8beb48e5ea9a660"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 6,
+      "id": "candidate-a3b469ea87e65122c025fa30",
+      "label": "H-a3b469ea",
+      "parents": [
+        "candidate-451c35ebb2e375d9b748fa53",
+        "candidate-7a54b01c097816da4ea8fb8f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 6,
+      "id": "candidate-00c26f36a98b728dfa4e6fb1",
+      "label": "H-00c26f36",
+      "parents": [
+        "candidate-451c35ebb2e375d9b748fa53",
+        "candidate-7a54b01c097816da4ea8fb8f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 8,
+      "id": "candidate-f21c6aee0ff1a12e93980ab8",
+      "label": "H-f21c6aee",
+      "parents": [
+        "candidate-53cf6e87158eff83702e055c"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 8,
+      "id": "candidate-13820049dd0643ca713bdd91",
+      "label": "H-13820049",
+      "parents": [
+        "candidate-53cf6e87158eff83702e055c"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 8,
+      "id": "candidate-d779e47c248aef3ab718f4b6",
+      "label": "H-d779e47c",
+      "parents": [
+        "candidate-53cf6e87158eff83702e055c"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 3,
+      "id": "candidate-3f980e773c5f557689789b4e",
+      "label": "H-3f980e77",
+      "parents": [
+        "candidate-8725a6e1f6df30253e810ad6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 6,
+      "id": "candidate-97d2625cf5f49d94b0208685",
+      "label": "H-97d2625c",
+      "parents": [
+        "candidate-451c35ebb2e375d9b748fa53"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 6,
+      "id": "candidate-228af8ce7b9dcb98d29af88e",
+      "label": "H-228af8ce",
+      "parents": [
+        "candidate-451c35ebb2e375d9b748fa53"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 0,
+      "id": "candidate-6670cadd22632ffaf8d7dce3",
+      "label": "H-6670cadd",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 0,
+      "id": "candidate-b2949b02b3a9438bc641f974",
+      "label": "H-b2949b02",
+      "parents": [],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 4,
+      "id": "candidate-d8a4c0ac262c9039a9b06ebc",
+      "label": "H-d8a4c0ac",
+      "parents": [
+        "candidate-3f980e773c5f557689789b4e"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 4,
+      "id": "candidate-6774d57613cfaf744e9f4bf4",
+      "label": "H-6774d576",
+      "parents": [
+        "candidate-3f980e773c5f557689789b4e"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 9,
+      "id": "candidate-be88941712e58bdbddd650e9",
+      "label": "H-be889417",
+      "parents": [
+        "candidate-d779e47c248aef3ab718f4b6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 9,
+      "id": "candidate-39c91687dd19635e8f2c2819",
+      "label": "H-39c91687",
+      "parents": [
+        "candidate-d779e47c248aef3ab718f4b6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 7,
+      "id": "candidate-b71b2099cb1d7f3384b18a89",
+      "label": "H-b71b2099",
+      "parents": [
+        "candidate-97d2625cf5f49d94b0208685"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 9,
+      "id": "candidate-147b6fbdad87bb89b1ee9d21",
+      "label": "H-147b6fbd",
+      "parents": [
+        "candidate-d779e47c248aef3ab718f4b6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 7,
+      "id": "candidate-321d22944358647e269af617",
+      "label": "H-321d2294",
+      "parents": [
+        "candidate-97d2625cf5f49d94b0208685"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 5,
+      "id": "candidate-a2659fcff9a1240ac2eb5189",
+      "label": "H-a2659fcf",
+      "parents": [
+        "candidate-6774d57613cfaf744e9f4bf4"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 1,
+      "id": "candidate-657c49be4f40eaf309b4e31f",
+      "label": "H-657c49be",
+      "parents": [
+        "candidate-b2949b02b3a9438bc641f974"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 1,
+      "id": "candidate-f09fd8b5e911f6d2a64070cd",
+      "label": "H-f09fd8b5",
+      "parents": [
+        "candidate-b2949b02b3a9438bc641f974"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 6,
+      "id": "candidate-ac6512cd6c91927f19f0d56d",
+      "label": "H-ac6512cd",
+      "parents": [
+        "candidate-a2659fcff9a1240ac2eb5189"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 1,
+      "id": "candidate-e23ce36d45e3e4a048a56de3",
+      "label": "H-e23ce36d",
+      "parents": [
+        "candidate-4e1a44ff79957ac0cdac807a"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 9,
+      "id": "candidate-6991447126dfc8dca7a4b1af",
+      "label": "H-69914471",
+      "parents": [
+        "candidate-d779e47c248aef3ab718f4b6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 6,
+      "id": "candidate-373f63e112990cefcad092bb",
+      "label": "H-373f63e1",
+      "parents": [
+        "candidate-a2659fcff9a1240ac2eb5189"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 2,
+      "id": "candidate-2ce35ee8881d40554a646cf4",
+      "label": "H-2ce35ee8",
+      "parents": [
+        "candidate-f09fd8b5e911f6d2a64070cd"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 1,
+      "id": "candidate-928051a0cf9ab109a5c81e8d",
+      "label": "H-928051a0",
+      "parents": [
+        "candidate-4e1a44ff79957ac0cdac807a"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 6,
+      "id": "candidate-2d4a2511b0dd875486122cf9",
+      "label": "H-2d4a2511",
+      "parents": [
+        "candidate-a2659fcff9a1240ac2eb5189"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 9,
+      "id": "candidate-62e7203ef376f91f401e72fe",
+      "label": "H-62e7203e",
+      "parents": [
+        "candidate-d779e47c248aef3ab718f4b6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 2,
+      "id": "candidate-bde5bb84e69d9ebf986c9e81",
+      "label": "H-bde5bb84",
+      "parents": [
+        "candidate-f09fd8b5e911f6d2a64070cd"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 2,
+      "id": "candidate-7a57edba3718b45cbaaf8c35",
+      "label": "H-7a57edba",
+      "parents": [
+        "candidate-f09fd8b5e911f6d2a64070cd"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 10,
+      "id": "candidate-3968cf1bd8d22d5546dd0fda",
+      "label": "H-3968cf1b",
+      "parents": [
+        "candidate-62e7203ef376f91f401e72fe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 7,
+      "id": "candidate-70d8394c0365ed0b2e6b3f98",
+      "label": "H-70d8394c",
+      "parents": [
+        "candidate-ac6512cd6c91927f19f0d56d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 10,
+      "id": "candidate-f8813852f5325b3853f2a32d",
+      "label": "H-f8813852",
+      "parents": [
+        "candidate-62e7203ef376f91f401e72fe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 10,
+      "id": "candidate-fe2b794ebdba23fc56e7f016",
+      "label": "H-fe2b794e",
+      "parents": [
+        "candidate-62e7203ef376f91f401e72fe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 7,
+      "id": "candidate-f096a29fe12a7d1e00983cd7",
+      "label": "H-f096a29f",
+      "parents": [
+        "candidate-97d2625cf5f49d94b0208685"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 10,
+      "id": "candidate-0834e3269c701e25a8e16254",
+      "label": "H-0834e326",
+      "parents": [
+        "candidate-62e7203ef376f91f401e72fe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 7,
+      "id": "candidate-b9a943aec6ce2243cf6af8b1",
+      "label": "H-b9a943ae",
+      "parents": [
+        "candidate-ac6512cd6c91927f19f0d56d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 7,
+      "id": "candidate-3b38803a93df8ef25d29d5e6",
+      "label": "H-3b38803a",
+      "parents": [
+        "candidate-ac6512cd6c91927f19f0d56d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 7,
+      "id": "candidate-12283be85fa9cca2695d6e9d",
+      "label": "H-12283be8",
+      "parents": [
+        "candidate-97d2625cf5f49d94b0208685"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 5,
+      "id": "candidate-d73b0e3c8e1d0f6d668efa36",
+      "label": "H-d73b0e3c",
+      "parents": [
+        "candidate-46e74ccff84216791372dafe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 5,
+      "id": "candidate-30cf5a8239ae10514f6a98f7",
+      "label": "H-30cf5a82",
+      "parents": [
+        "candidate-46e74ccff84216791372dafe"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 11,
+      "id": "candidate-53eaf26f92c13f2f1ab34eb9",
+      "label": "H-53eaf26f",
+      "parents": [
+        "candidate-fe2b794ebdba23fc56e7f016",
+        "candidate-f8813852f5325b3853f2a32d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 11,
+      "id": "candidate-3a67d061f8df9cc1178b23f0",
+      "label": "H-3a67d061",
+      "parents": [
+        "candidate-fe2b794ebdba23fc56e7f016",
+        "candidate-f8813852f5325b3853f2a32d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Li2025",
+      "generation": 7,
+      "id": "candidate-89a2a195e34c0ddfaf7adf30",
+      "label": "H-89a2a195",
+      "parents": [
+        "candidate-97d2625cf5f49d94b0208685"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Zhang2020",
+      "generation": 11,
+      "id": "candidate-aaaf44550c9c620b7d95df6a",
+      "label": "H-aaaf4455",
+      "parents": [
+        "candidate-fe2b794ebdba23fc56e7f016",
+        "candidate-f8813852f5325b3853f2a32d"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 8,
+      "id": "candidate-22cb7b52b238817b4d8464ba",
+      "label": "H-22cb7b52",
+      "parents": [
+        "candidate-b9a943aec6ce2243cf6af8b1"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "Oxford_path_dependence",
+      "generation": 8,
+      "id": "candidate-87bbdd3e6f846af4632c7d2e",
+      "label": "H-87bbdd3e",
+      "parents": [
+        "candidate-b9a943aec6ce2243cf6af8b1"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 3,
+      "id": "candidate-a373b483d64c1e8f1b780562",
+      "label": "H-a373b483",
+      "parents": [
+        "candidate-7a57edba3718b45cbaaf8c35"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "compiled": false,
+      "dataset": "KIT_EIS",
+      "generation": 3,
+      "id": "candidate-be0df24b1030b9748030433e",
+      "label": "H-be0df24b",
+      "parents": [
+        "candidate-7a57edba3718b45cbaaf8c35"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    }
+  ],
   "projects": [
     {
       "id": "ehr",
@@ -41,9 +2823,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "lineage": [],
-  "environment_progress": [],
-  "registry_revision": "84a86d0ae62c71826864c6d86a58b09d627c8d6b",
+  "registry_revision": "1d01586d316db209b315c7f01b42147186840411",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
