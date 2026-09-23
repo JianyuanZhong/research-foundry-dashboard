@@ -6,7 +6,7 @@
   <meta name="description" content="Public progress dashboard for autonomous scientific hypothesis discovery.">
   <title>Research Foundry</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <link rel="stylesheet" href="assets/styles.css?v=20260924-3">
+  <link rel="stylesheet" href="assets/styles.css?v=20260924-4">
 </head>
 <body>
   <div class="app-shell">
@@ -114,9 +114,11 @@
       <button id="environment-dialog-close" aria-label="Close environment details">×</button>
     </div>
     <div class="dialog-meta" id="environment-dialog-meta"></div>
-    <section class="dialog-section"><h3>Task instructions</h3><pre id="environment-instructions"></pre></section>
-    <section class="dialog-section"><h3>Original proposal</h3><pre id="environment-proposal"></pre></section>
+    <div class="dialog-columns">
+      <section class="dialog-section"><h3>Original proposal</h3><p class="dialog-caption">The research hypothesis selected before environment compilation.</p><pre id="environment-proposal"></pre></section>
+      <section class="dialog-section"><h3>Solver instruction</h3><p class="dialog-caption">The actual task instruction presented to the solver agent.</p><pre id="environment-instructions"></pre></section>
+    </div>
   </dialog>
-  <script src="assets/app.js?v=20260924-3" defer></script>
+  <script src="assets/app.js?v=20260924-4" defer></script>
 </body>
 </html>

@@ -127,7 +127,15 @@ function openEnvironment(environmentId) {
   document.querySelector("#environment-dialog-meta").innerHTML = `<span>${environment.dataset}</span><span>${environment.qa_status.replaceAll("_", " ")}</span><span>${environment.candidate_public_id}</span>`;
   document.querySelector("#environment-instructions").textContent = environment.instructions || "Instructions were not available in this compiled package.";
   document.querySelector("#environment-proposal").textContent = environment.proposal || "The originating proposal was not available.";
+  document.querySelector("#environment-instructions").scrollTop = 0;
+  document.querySelector("#environment-proposal").scrollTop = 0;
   document.querySelector("#environment-dialog").showModal();
+}
+
+function synchronizeScroll(source, target) {
+  const available = source.scrollHeight - source.clientHeight;
+  const targetAvailable = target.scrollHeight - target.clientHeight;
+  if (available > 0 && targetAvailable > 0) target.scrollTop = (source.scrollTop / available) * targetAvailable;
 }
 
 function render() {
@@ -146,6 +154,11 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
 document.querySelector("#progress-tree-dataset").addEventListener("change", (event) => { state.treeDataset = event.target.value; state.treeNode = null; drawProgressTree(state.treeDataset); });
 document.querySelector("#environment-dialog-close").addEventListener("click", () => document.querySelector("#environment-dialog").close());
 document.querySelector("#environment-dialog").addEventListener("click", (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
+const proposalPane = document.querySelector("#environment-proposal");
+const instructionPane = document.querySelector("#environment-instructions");
+let syncingEnvironmentScroll = false;
+proposalPane.addEventListener("scroll", () => { if (syncingEnvironmentScroll) return; syncingEnvironmentScroll = true; synchronizeScroll(proposalPane, instructionPane); syncingEnvironmentScroll = false; });
+instructionPane.addEventListener("scroll", () => { if (syncingEnvironmentScroll) return; syncingEnvironmentScroll = true; synchronizeScroll(instructionPane, proposalPane); syncingEnvironmentScroll = false; });
 
 function loadSnapshot() {
   fetch(`data/public-snapshot.json?t=${Date.now()}`, { cache: "no-store" })
