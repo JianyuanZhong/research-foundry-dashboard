@@ -1,0 +1,45 @@
+name: Deploy public dashboard
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate public snapshot
+        run: python3 -m json.tool data/public-snapshot.json >/dev/null
+      - name: Reject private material
+        run: |
+          if grep -RIE '/data_storage/|/Users/|BEGIN .*PRIVATE KEY|API[_-]?KEY|patient_id|subject_id|dataset_bindings|solution/' . --exclude-dir=.git; then
+            echo "Potential private material found in public repository" >&2
+            exit 1
+          fi
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

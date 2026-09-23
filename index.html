@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Public progress dashboard for autonomous scientific hypothesis discovery.">
+  <title>Research Foundry</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./" aria-label="Research Foundry home">
+        <span class="brand-mark">φ</span>
+        <span><strong>Research Foundry</strong><small>Evolutionary science</small></span>
+      </a>
+      <nav aria-label="Dashboard">
+        <button class="nav-item active" data-view="portfolio">Portfolio</button>
+        <button class="nav-item" data-view="lineage">Public hypotheses</button>
+        <button class="nav-item" data-view="environments">Environments</button>
+        <button class="nav-item" data-view="releases">Releases</button>
+      </nav>
+      <div class="privacy-note">
+        <strong>Public projection</strong>
+        <span>No private datasets, patient records, licensed papers, solutions, tests, or raw traces.</span>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Autonomous research programs</p>
+          <h1>Discovery portfolio</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="project-filter" role="group" aria-label="Project filter">
+            <button class="active" data-project="all">All</button>
+            <button data-project="ehr">EHR</button>
+            <button data-project="battery">Battery</button>
+          </div>
+          <span class="freshness" id="freshness">Loading snapshot…</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div id="error" class="error" role="alert" hidden></div>
+
+        <section class="view active" id="portfolio-view">
+          <div class="funnel" id="funnel" aria-label="Research delivery funnel"></div>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div><h2>Programs</h2><p>One shared lifecycle with domain-specific research methods.</p></div>
+              <span class="badge" id="coverage-badge">Verifying snapshot…</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Program</th><th>Status</th><th>Hypotheses</th><th>Selected</th><th>Compiled</th><th>Quality checked</th><th>Published</th></tr></thead>
+                <tbody id="program-rows"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="split-grid">
+            <section class="panel">
+              <div class="panel-header"><div><h2>Research progress</h2><p>Latest approved aggregate snapshot from each private runtime.</p></div></div>
+              <div class="progress-list" id="progress-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header"><div><h2>Publication pipeline</h2><p>Only human-approved records cross the public boundary.</p></div></div>
+              <ol class="publication-steps">
+                <li><strong>Research selection</strong><span>Lead chooses a scientific hypothesis.</span></li>
+                <li><strong>Environment compilation</strong><span>A reproducible task environment is built.</span></li>
+                <li><strong>Quality assessment</strong><span>Readiness and reference checks run independently.</span></li>
+                <li><strong>Publication approval</strong><span>Privacy, licensing, and scientific review are required.</span></li>
+                <li><strong>Versioned release</strong><span>Approved records appear here with immutable provenance.</span></li>
+              </ol>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="lineage-view">
+          <section class="panel">
+            <div class="panel-header"><div><h2>Public hypothesis lineage</h2><p>Parents and revisions are shown only after publication approval.</p></div><span class="badge" id="hypothesis-count">0 public</span></div>
+            <div class="empty-state" id="hypothesis-empty"><strong>No hypotheses have been approved for public release yet.</strong><span>Research continues privately. Aggregate progress remains visible in the portfolio.</span></div>
+            <div class="hypothesis-grid" id="hypothesis-grid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="environments-view">
+          <section class="panel">
+            <div class="panel-header"><div><h2>Approved environments</h2><p>Public manifests and validation summaries; private task internals stay restricted.</p></div><span class="badge" id="environment-count">0 public</span></div>
+            <div class="empty-state" id="environment-empty"><strong>No environments have been approved for public release yet.</strong><span>Compiled environments remain in the private registry until their publication gates pass.</span></div>
+            <div class="environment-list" id="environment-list"></div>
+          </section>
+        </section>
+
+        <section class="view" id="releases-view">
+          <section class="panel">
+            <div class="panel-header"><div><h2>Versioned releases</h2><p>Immutable public releases will be linked to their proposal and environment ancestry.</p></div></div>
+            <div class="empty-state" id="release-empty"><strong>No public releases yet.</strong><span>This page will update automatically after an approved release is merged.</span></div>
+            <div class="release-list" id="release-list"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
