@@ -191,7 +191,7 @@
       "qa_status": "compiled"
     }
   ],
-  "generated_at": "2026-09-23T16:53:01.321508Z",
+  "generated_at": "2026-09-23T16:58:04.820162Z",
   "lineage": [
     {
       "compiled": false,
@@ -2823,7 +2823,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "1d01586d316db209b315c7f01b42147186840411",
+  "registry_revision": "1039c5800b5bf3795f36fec628a03a4050f87b53",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
