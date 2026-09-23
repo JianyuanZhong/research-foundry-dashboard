@@ -81,16 +81,18 @@
 
         <section class="view" id="lineage-view">
           <section class="panel">
-            <div class="panel-header"><div><h2>Public hypothesis lineage</h2><p>Parents and revisions are shown only after publication approval.</p></div><span class="badge" id="hypothesis-count">0 public</span></div>
-            <div class="empty-state" id="hypothesis-empty"><strong>No hypotheses have been approved for public release yet.</strong><span>Research continues privately. Aggregate progress remains visible in the portfolio.</span></div>
-            <div class="hypothesis-grid" id="hypothesis-grid"></div>
+            <div class="panel-header"><div><h2>Hypothesis lineage</h2><p>Choose a selected hypothesis to trace its parents and evolutionary path.</p></div><select id="lineage-target" aria-label="Choose hypothesis lineage"></select></div>
+            <div class="lineage-layout">
+              <div class="dag-wrap"><svg id="lineage-dag" role="img" aria-label="Hypothesis parent graph"></svg></div>
+              <aside class="lineage-detail" id="lineage-detail"></aside>
+            </div>
           </section>
         </section>
 
         <section class="view" id="environments-view">
           <section class="panel">
-            <div class="panel-header"><div><h2>Approved environments</h2><p>Public manifests and validation summaries; private task internals stay restricted.</p></div><span class="badge" id="environment-count">0 public</span></div>
-            <div class="empty-state" id="environment-empty"><strong>No environments have been approved for public release yet.</strong><span>Compiled environments remain in the private registry until their publication gates pass.</span></div>
+            <div class="panel-header"><div><h2>Compiled environments</h2><p>Compilation and QA progress without exposing private package internals.</p></div><span class="badge" id="environment-count">0 compiled</span></div>
+            <div class="environment-summary" id="environment-summary"></div>
             <div class="environment-list" id="environment-list"></div>
           </section>
         </section>

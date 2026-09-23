@@ -41,6 +41,8 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
+  "lineage": [],
+  "environment_progress": [],
   "registry_revision": "84a86d0ae62c71826864c6d86a58b09d627c8d6b",
   "releases": [],
   "schema_version": "research-foundry-public-v1"

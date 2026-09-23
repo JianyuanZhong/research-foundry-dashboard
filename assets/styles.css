@@ -90,11 +90,35 @@ td { padding: 13px 14px; border-top: 1px solid var(--line); font-size: 12px; ver
 .empty-state strong, .empty-state span { display: block; }
 .empty-state strong { font-size: 14px; }
 .empty-state span { max-width: 520px; margin: 8px auto 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-.hypothesis-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 12px; padding: 16px; }
+.lineage-layout { display: grid; grid-template-columns: minmax(0,1fr) 280px; min-height: 530px; }
+.dag-wrap { overflow: auto; padding: 16px; border-right: 1px solid var(--line); }
+#lineage-dag { min-width: 680px; width: 100%; height: 490px; }
+.dag-edge { stroke: var(--line); stroke-width: 2; fill: none; }
+.dag-edge.active { stroke: var(--accent); stroke-width: 3; }
+.dag-node rect { fill: var(--panel-2); stroke: var(--line); stroke-width: 1.5; rx: 8; }
+.dag-node.active rect { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2.5; }
+.dag-node.ready rect { fill: var(--accent-soft); }
+.dag-node.compiled rect { fill: var(--blue-soft); }
+.dag-node text { fill: var(--text); font-size: 11px; pointer-events: none; }
+.dag-node .node-meta { fill: var(--muted); font-size: 9px; }
+.lineage-detail { padding: 18px; }
+.lineage-detail h3 { margin: 0 0 8px; font-size: 15px; }
+.lineage-detail p { color: var(--muted); font-size: 11px; line-height: 1.55; }
+.lineage-detail dl { margin: 16px 0 0; }
+.lineage-detail dt { color: var(--muted); font-size: 10px; margin-top: 10px; }
+.lineage-detail dd { margin: 3px 0 0; font-size: 11px; }
+#lineage-target { border: 1px solid var(--line); color: var(--text); background: var(--panel-2); border-radius: 7px; padding: 7px 9px; max-width: 320px; }
 .hypothesis-card, .environment-card, .release-card { border: 1px solid var(--line); border-radius: 9px; padding: 13px; background: var(--panel-2); }
 .hypothesis-card h3, .environment-card h3, .release-card h3 { margin: 0 0 7px; font-size: 13px; }
 .hypothesis-card p, .environment-card p, .release-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-.environment-list, .release-list { display: grid; gap: 10px; padding: 16px; }
+.environment-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 16px 16px 0; }
+.environment-stat { background: var(--panel-2); border-radius: 8px; padding: 11px; }
+.environment-stat strong, .environment-stat span { display: block; }
+.environment-stat strong { font-size: 20px; }
+.environment-stat span { color: var(--muted); font-size: 10px; margin-top: 4px; }
+.environment-list, .release-list { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 10px; padding: 16px; }
+.environment-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.environment-meta span { background: var(--panel); border-radius: 999px; padding: 4px 7px; font-size: 9px; color: var(--muted); }
 @media (max-width: 850px) {
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { position: static; padding: 14px 16px; }
@@ -106,4 +130,6 @@ td { padding: 13px 14px; border-top: 1px solid var(--line); font-size: 12px; ver
   .content { padding: 14px; }
   .funnel { overflow-x: auto; grid-template-columns: repeat(6,120px); }
   .split-grid { grid-template-columns: 1fr; }
+  .lineage-layout { grid-template-columns: 1fr; }
+  .dag-wrap { border-right: 0; border-bottom: 1px solid var(--line); }
 }

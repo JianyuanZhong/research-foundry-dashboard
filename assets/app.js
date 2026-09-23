@@ -48,17 +48,65 @@ function renderProgress() {
 }
 
 function renderPublished() {
-  const hypotheses = state.snapshot.public_hypotheses.filter((item) => state.project === "all" || item.project === state.project);
-  const environments = state.snapshot.public_environments.filter((item) => state.project === "all" || item.project === state.project);
+  const environments = state.snapshot.environment_progress.filter((item) => state.project === "all" || item.project === state.project);
   const releases = state.snapshot.releases.filter((item) => state.project === "all" || item.project === state.project);
-  document.querySelector("#hypothesis-count").textContent = `${hypotheses.length} public`;
-  document.querySelector("#environment-count").textContent = `${environments.length} public`;
-  document.querySelector("#hypothesis-empty").hidden = hypotheses.length > 0;
-  document.querySelector("#environment-empty").hidden = environments.length > 0;
+  document.querySelector("#environment-count").textContent = `${environments.length} compiled`;
   document.querySelector("#release-empty").hidden = releases.length > 0;
-  document.querySelector("#hypothesis-grid").innerHTML = hypotheses.map((item) => `<article class="hypothesis-card"><h3>${item.title}</h3><p>${item.summary}</p><p>Parents: ${item.parents.join(", ") || "none"}</p></article>`).join("");
-  document.querySelector("#environment-list").innerHTML = environments.map((item) => `<article class="environment-card"><h3>${item.name} · ${item.version}</h3><p>${item.validation_summary}</p></article>`).join("");
+  const ready = environments.filter((item) => item.qa_status === "readiness_passed").length;
+  const reference = environments.filter((item) => item.qa_status === "reference_validated").length;
+  document.querySelector("#environment-summary").innerHTML = [[environments.length,"Compiled"],[ready,"Readiness passed"],[reference,"Reference validated"]].map(([value,label]) => `<div class="environment-stat"><strong>${value}</strong><span>${label}</span></div>`).join("");
+  document.querySelector("#environment-list").innerHTML = environments.map((item) => `<article class="environment-card"><h3>${item.project.toUpperCase()} · ${item.public_id}</h3><p>${item.dataset} environment linked to hypothesis ${item.candidate_public_id}.</p><div class="environment-meta"><span>Compiled</span><span>${item.qa_status.replaceAll("_", " ")}</span></div></article>`).join("");
   document.querySelector("#release-list").innerHTML = releases.map((item) => `<article class="release-card"><h3>${item.name} · ${item.version}</h3><p>${item.released_at}</p></article>`).join("");
+  renderLineage();
+}
+
+function lineageNodes() {
+  return state.snapshot.lineage.filter((item) => state.project === "all" || item.project === state.project);
+}
+
+function ancestors(target, byId, found = new Set()) {
+  if (!target || found.has(target.id)) return found;
+  found.add(target.id);
+  target.parents.forEach((id) => ancestors(byId.get(id), byId, found));
+  return found;
+}
+
+function renderLineage() {
+  const nodes = lineageNodes();
+  const select = document.querySelector("#lineage-target");
+  const targets = nodes.filter((item) => item.selected || item.compiled || item.readiness_passed);
+  const previous = select.value;
+  select.innerHTML = targets.map((item) => `<option value="${item.id}">${item.project.toUpperCase()} · ${item.dataset} · ${item.label}</option>`).join("");
+  if (targets.some((item) => item.id === previous)) select.value = previous;
+  else if (targets.length) select.value = targets.find((item) => item.readiness_passed)?.id || targets[0].id;
+  drawLineage(select.value);
+}
+
+function drawLineage(targetId) {
+  const all = lineageNodes();
+  const byId = new Map(all.map((item) => [item.id, item]));
+  const target = byId.get(targetId);
+  const includedIds = ancestors(target, byId);
+  const nodes = all.filter((item) => includedIds.has(item.id));
+  const groups = new Map();
+  nodes.forEach((node) => { if (!groups.has(node.generation)) groups.set(node.generation, []); groups.get(node.generation).push(node); });
+  const generations = [...groups.keys()].sort((a,b) => a-b);
+  const positions = new Map();
+  const width = Math.max(680, generations.length * 190 + 80);
+  const height = Math.max(490, Math.max(...[...groups.values()].map((group) => group.length), 1) * 95 + 80);
+  generations.forEach((generation, column) => groups.get(generation).forEach((node, row) => positions.set(node.id, { x: 30 + column * 185, y: 35 + row * 90 })));
+  const edges = nodes.flatMap((node) => node.parents.filter((parent) => positions.has(parent)).map((parent) => {
+    const a = positions.get(parent), b = positions.get(node);
+    return `<path class="dag-edge ${node.id === targetId ? "active" : ""}" d="M ${a.x+140} ${a.y+30} C ${a.x+160} ${a.y+30}, ${b.x-20} ${b.y+30}, ${b.x} ${b.y+30}"/>`;
+  })).join("");
+  const marks = nodes.map((node) => {
+    const p = positions.get(node); const tone = node.id === targetId ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
+    return `<g class="dag-node ${tone}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="140" height="60"></rect><text x="10" y="23">${node.label.slice(0,18)}</text><text class="node-meta" x="10" y="43">G${node.generation} · ${node.dataset}</text></g>`;
+  }).join("");
+  const svg = document.querySelector("#lineage-dag");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.innerHTML = edges + marks;
+  svg.querySelectorAll("[data-dag-id]").forEach((node) => node.addEventListener("click", () => { document.querySelector("#lineage-target").value = node.dataset.dagId; drawLineage(node.dataset.dagId); }));
+  document.querySelector("#lineage-detail").innerHTML = target ? `<h3>${target.label}</h3><p>${target.public_title || "Scientific content remains private; lineage and delivery status are shown publicly."}</p><dl><dt>Project and dataset</dt><dd>${target.project.toUpperCase()} · ${target.dataset}</dd><dt>Generation</dt><dd>${target.generation}</dd><dt>Parents</dt><dd>${target.parents.map((id) => byId.get(id)?.label || id).join(", ") || "Seed hypothesis"}</dd><dt>Status</dt><dd>${target.readiness_passed ? "Readiness passed" : target.compiled ? "Compiled" : target.selected ? "Selected" : "Candidate"}</dd></dl>` : "<p>No lineage is available for this filter.</p>";
 }
 
 function render() {
@@ -72,6 +120,7 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
   document.querySelector(`#${button.dataset.view}-view`).classList.add("active");
 }));
+document.querySelector("#lineage-target").addEventListener("change", (event) => drawLineage(event.target.value));
 
 function loadSnapshot() {
   fetch(`data/public-snapshot.json?t=${Date.now()}`, { cache: "no-store" })
