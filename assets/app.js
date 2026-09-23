@@ -1,7 +1,8 @@
-const state = { project: "all", snapshot: null };
+const state = { project: "all", snapshot: null, treeDataset: null, treeNode: null };
 
 const sum = (projects, key) => projects.reduce((total, project) => total + Number(project.metrics[key] || 0), 0);
 const visibleProjects = () => state.snapshot.projects.filter((project) => state.project === "all" || project.id === state.project);
+const escapeHtml = (value) => String(value ?? "").replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
 
 function metric(projects, key) {
   return state.project === "all" ? sum(projects, key) : Number(projects[0]?.metrics[key] || 0);
@@ -68,51 +69,54 @@ function lineageNodes() {
   return state.snapshot.lineage.filter((item) => state.project === "all" || item.project === state.project);
 }
 
-function ancestors(target, byId, found = new Set()) {
-  if (!target || found.has(target.id)) return found;
-  found.add(target.id);
-  target.parents.forEach((id) => ancestors(byId.get(id), byId, found));
-  return found;
-}
-
 function renderLineage() {
   const nodes = lineageNodes();
-  const select = document.querySelector("#lineage-target");
-  const targets = nodes.filter((item) => item.selected || item.compiled || item.readiness_passed);
-  const previous = select.value;
-  select.innerHTML = targets.map((item) => `<option value="${item.id}">${item.project.toUpperCase()} · ${item.dataset} · ${item.label}</option>`).join("");
-  if (targets.some((item) => item.id === previous)) select.value = previous;
-  else if (targets.length) select.value = targets.find((item) => item.readiness_passed)?.id || targets[0].id;
-  drawLineage(select.value);
+  const datasets = [...new Map(nodes.map((item) => [`${item.project}::${item.dataset}`, { key: `${item.project}::${item.dataset}`, project: item.project, dataset: item.dataset }])).values()]
+    .sort((a, b) => a.project.localeCompare(b.project) || a.dataset.localeCompare(b.dataset));
+  const select = document.querySelector("#progress-tree-dataset");
+  if (!datasets.some((item) => item.key === state.treeDataset)) state.treeDataset = datasets[0]?.key || null;
+  select.innerHTML = datasets.map((item) => `<option value="${escapeHtml(item.key)}">${item.project.toUpperCase()} · ${escapeHtml(item.dataset)}</option>`).join("");
+  if (state.treeDataset) select.value = state.treeDataset;
+  drawProgressTree(state.treeDataset);
 }
 
-function drawLineage(targetId) {
-  const all = lineageNodes();
-  const byId = new Map(all.map((item) => [item.id, item]));
-  const target = byId.get(targetId);
-  const includedIds = ancestors(target, byId);
-  const nodes = all.filter((item) => includedIds.has(item.id));
+function drawProgressTree(datasetKey) {
+  if (!datasetKey) return;
+  const [project, ...datasetParts] = datasetKey.split("::");
+  const dataset = datasetParts.join("::");
+  const nodes = state.snapshot.lineage.filter((item) => item.project === project && item.dataset === dataset);
+  const byId = new Map(nodes.map((item) => [item.id, item]));
+  if (!nodes.some((item) => item.id === state.treeNode)) {
+    state.treeNode = nodes.find((item) => item.readiness_passed)?.id || nodes.find((item) => item.selected)?.id || nodes.at(-1)?.id || null;
+  }
   const groups = new Map();
-  nodes.forEach((node) => { if (!groups.has(node.generation)) groups.set(node.generation, []); groups.get(node.generation).push(node); });
-  const generations = [...groups.keys()].sort((a,b) => a-b);
+  nodes.forEach((node) => { if (!groups.has(node.episode)) groups.set(node.episode, []); groups.get(node.episode).push(node); });
+  const episodes = [...groups.keys()].sort((a,b) => a-b);
   const positions = new Map();
-  const width = Math.max(680, generations.length * 190 + 80);
-  const height = Math.max(490, Math.max(...[...groups.values()].map((group) => group.length), 1) * 95 + 80);
-  generations.forEach((generation, column) => groups.get(generation).forEach((node, row) => positions.set(node.id, { x: 30 + column * 185, y: 35 + row * 90 })));
+  const width = Math.max(760, episodes.length * 210 + 80);
+  const height = Math.max(520, Math.max(...[...groups.values()].map((group) => group.length), 1) * 92 + 100);
+  episodes.forEach((episode, column) => groups.get(episode).sort((a,b) => a.generation - b.generation || a.label.localeCompare(b.label)).forEach((node, row) => positions.set(node.id, { x: 35 + column * 210, y: 45 + row * 92 })));
   const edges = nodes.flatMap((node) => node.parents.filter((parent) => positions.has(parent)).map((parent) => {
     const a = positions.get(parent), b = positions.get(node.id);
     if (!a || !b) return "";
-    return `<path class="dag-edge ${node.id === targetId ? "active" : ""}" d="M ${a.x+140} ${a.y+30} C ${a.x+160} ${a.y+30}, ${b.x-20} ${b.y+30}, ${b.x} ${b.y+30}"/>`;
+    return `<path class="dag-edge ${node.id === state.treeNode ? "active" : ""}" d="M ${a.x+158} ${a.y+36} C ${a.x+178} ${a.y+36}, ${b.x-20} ${b.y+36}, ${b.x} ${b.y+36}"/>`;
   })).join("");
   const marks = nodes.map((node) => {
-    const p = positions.get(node.id); const tone = node.id === targetId ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
+    const p = positions.get(node.id); const tone = node.id === state.treeNode ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
     if (!p) return "";
-    return `<g class="dag-node ${tone}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="140" height="60"></rect><text x="10" y="23">${node.label.slice(0,18)}</text><text class="node-meta" x="10" y="43">G${node.generation} · ${node.dataset}</text></g>`;
+    const operation = node.operation || "unknown";
+    return `<g class="dag-node ${tone} op-${escapeHtml(operation)}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="158" height="72"></rect><text class="node-operation" x="10" y="19">${escapeHtml(operation)}</text><text x="10" y="39">${escapeHtml(node.label.slice(0,20))}</text><text class="node-meta" x="10" y="58">Episode ${node.episode || "seed"} · G${node.generation}</text></g>`;
   }).join("");
   const svg = document.querySelector("#lineage-dag");
+  svg.style.height = `${Math.min(960, Math.max(520, height))}px`;
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.innerHTML = edges + marks;
-  svg.querySelectorAll("[data-dag-id]").forEach((node) => node.addEventListener("click", () => { document.querySelector("#lineage-target").value = node.dataset.dagId; drawLineage(node.dataset.dagId); }));
-  document.querySelector("#lineage-detail").innerHTML = target ? `<h3>${target.label}</h3><p>${target.public_title || "Scientific content remains private; lineage and delivery status are shown publicly."}</p><dl><dt>Project and dataset</dt><dd>${target.project.toUpperCase()} · ${target.dataset}</dd><dt>Generation</dt><dd>${target.generation}</dd><dt>Parents</dt><dd>${target.parents.map((id) => byId.get(id)?.label || id).join(", ") || "Seed hypothesis"}</dd><dt>Status</dt><dd>${target.readiness_passed ? "Readiness passed" : target.compiled ? "Compiled" : target.selected ? "Selected" : "Candidate"}</dd></dl>` : "<p>No lineage is available for this filter.</p>";
+  svg.querySelectorAll("[data-dag-id]").forEach((mark) => mark.addEventListener("click", () => { state.treeNode = mark.dataset.dagId; drawProgressTree(datasetKey); }));
+  const operations = [...new Set(nodes.map((node) => node.operation || "unknown"))];
+  document.querySelector("#operation-legend").innerHTML = operations.map((operation) => `<span class="operation-key op-${escapeHtml(operation)}"><i></i>${escapeHtml(operation)}</span>`).join("");
+  document.querySelector("#progress-tree-count").textContent = `${nodes.length} hypotheses · ${episodes.length} episodes`;
+  const target = byId.get(state.treeNode);
+  const parentLabels = target?.parents.map((id) => byId.get(id)?.label || `External ${id.slice(-8)}`) || [];
+  document.querySelector("#lineage-detail").innerHTML = target ? `<h3>${escapeHtml(target.label)}</h3><p>${escapeHtml(target.change_note || "No change note was recorded.")}</p><dl><dt>Lead operation</dt><dd>${escapeHtml(target.operation)}</dd><dt>Episode and generation</dt><dd>Episode ${target.episode || "seed"} · generation ${target.generation}</dd><dt>Created by role</dt><dd>${escapeHtml(target.created_role)}</dd><dt>Parents</dt><dd>${parentLabels.map(escapeHtml).join(", ") || "Seed hypothesis"}</dd><dt>Lead rationale</dt><dd>${escapeHtml(target.operation_reason)}</dd><dt>Episode goal</dt><dd>${escapeHtml(target.operation_goal || "Not recorded")}</dd><dt>Status</dt><dd>${target.readiness_passed ? "Readiness passed" : target.compiled ? "Compiled" : target.selected ? "Selected" : "Proposed"}</dd></dl>` : "<p>No hypotheses are available for this dataset.</p>";
 }
 
 function openEnvironment(environmentId) {
@@ -138,7 +142,7 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   document.querySelector(`#${button.dataset.view}-view`).classList.add("active");
   if (button.dataset.view === "lineage" && state.snapshot) renderLineage();
 }));
-document.querySelector("#lineage-target").addEventListener("change", (event) => drawLineage(event.target.value));
+document.querySelector("#progress-tree-dataset").addEventListener("change", (event) => { state.treeDataset = event.target.value; state.treeNode = null; drawProgressTree(state.treeDataset); });
 document.querySelector("#environment-dialog-close").addEventListener("click", () => document.querySelector("#environment-dialog").close());
 document.querySelector("#environment-dialog").addEventListener("click", (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 

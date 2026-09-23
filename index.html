@@ -6,7 +6,7 @@
   <meta name="description" content="Public progress dashboard for autonomous scientific hypothesis discovery.">
   <title>Research Foundry</title>
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <link rel="stylesheet" href="assets/styles.css?v=20260924-1">
+  <link rel="stylesheet" href="assets/styles.css?v=20260924-2">
 </head>
 <body>
   <div class="app-shell">
@@ -17,7 +17,7 @@
       </a>
       <nav aria-label="Dashboard">
         <button class="nav-item active" data-view="portfolio">Portfolio</button>
-        <button class="nav-item" data-view="lineage">Public hypotheses</button>
+        <button class="nav-item" data-view="lineage">Research progress trees</button>
         <button class="nav-item" data-view="environments">Environments</button>
         <button class="nav-item" data-view="releases">Releases</button>
       </nav>
@@ -82,9 +82,9 @@
 
         <section class="view" id="lineage-view">
           <section class="panel">
-            <div class="panel-header"><div><h2>Hypothesis lineage</h2><p>Choose a selected hypothesis to trace its parents and evolutionary path.</p></div><select id="lineage-target" aria-label="Choose hypothesis lineage"></select></div>
+            <div class="panel-header"><div><h2>Research progress trees</h2><p>Every proposed hypothesis across episodes, with its Lead operation and scientific ancestry.</p></div><div class="tree-controls"><select id="progress-tree-dataset" aria-label="Choose research dataset"></select><span class="badge" id="progress-tree-count"></span></div></div>
             <div class="lineage-layout">
-              <div class="dag-wrap"><svg id="lineage-dag" role="img" aria-label="Hypothesis parent graph"></svg></div>
+              <div class="dag-wrap"><div class="operation-legend" id="operation-legend"></div><svg id="lineage-dag" role="img" aria-label="Research progress tree"></svg></div>
               <aside class="lineage-detail" id="lineage-detail"></aside>
             </div>
           </section>
@@ -117,6 +117,6 @@
     <section class="dialog-section"><h3>Task instructions</h3><pre id="environment-instructions"></pre></section>
     <section class="dialog-section"><h3>Original proposal</h3><pre id="environment-proposal"></pre></section>
   </dialog>
-  <script src="assets/app.js?v=20260924-1" defer></script>
+  <script src="assets/app.js?v=20260924-2" defer></script>
 </body>
 </html>
