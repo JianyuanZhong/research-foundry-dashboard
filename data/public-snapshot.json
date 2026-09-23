@@ -1,28 +1,47 @@
 {
-  "schema_version": "research-foundry-public-v1",
-  "generated_at": "2026-09-23T00:00:00Z",
-  "complete": false,
+  "complete": true,
+  "generated_at": "2026-09-23T16:13:36.378362Z",
   "projects": [
     {
       "id": "ehr",
+      "max_generation": 5,
+      "metrics": {
+        "candidates": 56,
+        "compiled": 4,
+        "public_releases": 0,
+        "readiness_passed": 1,
+        "reference_validated": 0,
+        "selected": 11
+      },
       "name": "EHR discovery",
+      "runtime_version": "ehr-thin/0.7.0",
       "short_name": "EHR",
-      "subtitle": "Clinical hypothesis discovery",
-      "status_label": "Snapshot pending",
+      "status_label": "In progress",
       "status_tone": "attention",
-      "metrics": {"candidates": 56, "selected": 11, "compiled": 4, "readiness_passed": 1, "reference_validated": 0, "public_releases": 0}
+      "subtitle": "Clinical hypothesis discovery"
     },
     {
       "id": "battery",
+      "max_generation": 11,
+      "metrics": {
+        "candidates": 122,
+        "compiled": 17,
+        "public_releases": 0,
+        "readiness_passed": 8,
+        "reference_validated": 0,
+        "selected": 43
+      },
       "name": "Battery discovery",
+      "runtime_version": "battery-discovery/0.7.x",
       "short_name": "Battery",
-      "subtitle": "Materials and diagnostic discovery",
-      "status_label": "Snapshot pending",
+      "status_label": "In progress",
       "status_tone": "attention",
-      "metrics": {"candidates": 122, "selected": 43, "compiled": 17, "readiness_passed": 8, "reference_validated": 0, "public_releases": 0}
+      "subtitle": "Materials and diagnostic discovery"
     }
   ],
-  "public_hypotheses": [],
   "public_environments": [],
-  "releases": []
+  "public_hypotheses": [],
+  "registry_revision": "22220a0f5bfdd61c07c0fe341fd61bf0adc90fac",
+  "releases": [],
+  "schema_version": "research-foundry-public-v1"
 }
