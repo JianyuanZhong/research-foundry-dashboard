@@ -1,6 +1,6 @@
 {
   "complete": true,
-  "generated_at": "2026-09-23T16:15:04.909763Z",
+  "generated_at": "2026-09-23T16:17:13.539669Z",
   "projects": [
     {
       "id": "ehr",
@@ -16,7 +16,7 @@
       "name": "EHR discovery",
       "runtime_version": "ehr-thin/0.7.0",
       "short_name": "EHR",
-      "status_label": "In progress",
+      "status_label": "Needs attention",
       "status_tone": "attention",
       "subtitle": "Clinical hypothesis discovery"
     },
@@ -34,14 +34,14 @@
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
       "short_name": "Battery",
-      "status_label": "In progress",
+      "status_label": "Needs attention",
       "status_tone": "attention",
       "subtitle": "Materials and diagnostic discovery"
     }
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "7d1796992a02b48a27233a0bcf488e608bf7866b",
+  "registry_revision": "5a88eb573192a5ca1eb23349de02a0b4b8b0f986",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
