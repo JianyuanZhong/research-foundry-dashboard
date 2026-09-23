@@ -58,7 +58,10 @@ function renderPublished() {
   document.querySelector("#environment-list").innerHTML = environments.map((item) => `<button class="environment-card" data-environment-id="${item.id}"><h3>${item.project.toUpperCase()} · ${item.public_id}</h3><p>${item.dataset} environment linked to hypothesis ${item.candidate_public_id}.</p><div class="environment-meta"><span>Compiled</span><span>${item.qa_status.replaceAll("_", " ")}</span><span>Open instructions and proposal</span></div></button>`).join("");
   document.querySelectorAll("[data-environment-id]").forEach((button) => button.addEventListener("click", () => openEnvironment(button.dataset.environmentId)));
   document.querySelector("#release-list").innerHTML = releases.map((item) => `<article class="release-card"><h3>${item.name} · ${item.version}</h3><p>${item.released_at}</p></article>`).join("");
-  renderLineage();
+}
+
+function lineageViewIsOpen() {
+  return document.querySelector("#lineage-view").classList.contains("active");
 }
 
 function lineageNodes() {
@@ -98,10 +101,12 @@ function drawLineage(targetId) {
   generations.forEach((generation, column) => groups.get(generation).forEach((node, row) => positions.set(node.id, { x: 30 + column * 185, y: 35 + row * 90 })));
   const edges = nodes.flatMap((node) => node.parents.filter((parent) => positions.has(parent)).map((parent) => {
     const a = positions.get(parent), b = positions.get(node.id);
+    if (!a || !b) return "";
     return `<path class="dag-edge ${node.id === targetId ? "active" : ""}" d="M ${a.x+140} ${a.y+30} C ${a.x+160} ${a.y+30}, ${b.x-20} ${b.y+30}, ${b.x} ${b.y+30}"/>`;
   })).join("");
   const marks = nodes.map((node) => {
     const p = positions.get(node.id); const tone = node.id === targetId ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
+    if (!p) return "";
     return `<g class="dag-node ${tone}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="140" height="60"></rect><text x="10" y="23">${node.label.slice(0,18)}</text><text class="node-meta" x="10" y="43">G${node.generation} · ${node.dataset}</text></g>`;
   }).join("");
   const svg = document.querySelector("#lineage-dag");
@@ -122,6 +127,7 @@ function openEnvironment(environmentId) {
 
 function render() {
   renderFunnel(); renderPrograms(); renderProgress(); renderPublished();
+  if (lineageViewIsOpen()) renderLineage();
   document.querySelectorAll("[data-project]").forEach((button) => button.classList.toggle("active", button.dataset.project === state.project));
 }
 
@@ -130,6 +136,7 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   document.querySelectorAll("[data-view]").forEach((item) => item.classList.toggle("active", item === button));
   document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
   document.querySelector(`#${button.dataset.view}-view`).classList.add("active");
+  if (button.dataset.view === "lineage" && state.snapshot) renderLineage();
 }));
 document.querySelector("#lineage-target").addEventListener("change", (event) => drawLineage(event.target.value));
 document.querySelector("#environment-dialog-close").addEventListener("click", () => document.querySelector("#environment-dialog").close());

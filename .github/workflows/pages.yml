@@ -21,6 +21,8 @@ jobs:
       - uses: actions/checkout@v6
       - name: Validate public snapshot
         run: python3 -m json.tool data/public-snapshot.json >/dev/null
+      - name: Validate DAG and environment details
+        run: node scripts/check_dashboard.mjs
       - name: Reject private material
         run: python3 scripts/check_public.py
 
