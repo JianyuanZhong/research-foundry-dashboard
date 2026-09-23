@@ -22,11 +22,7 @@ jobs:
       - name: Validate public snapshot
         run: python3 -m json.tool data/public-snapshot.json >/dev/null
       - name: Reject private material
-        run: |
-          if grep -RIE '/data_storage/|/Users/|BEGIN .*PRIVATE KEY|API[_-]?KEY|patient_id|subject_id|dataset_bindings|solution/' . --exclude-dir=.git; then
-            echo "Potential private material found in public repository" >&2
-            exit 1
-          fi
+        run: python3 scripts/check_public.py
 
   deploy:
     needs: validate
