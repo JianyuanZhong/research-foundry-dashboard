@@ -55,7 +55,8 @@ function renderPublished() {
   const ready = environments.filter((item) => item.qa_status === "readiness_passed").length;
   const reference = environments.filter((item) => item.qa_status === "reference_validated").length;
   document.querySelector("#environment-summary").innerHTML = [[environments.length,"Compiled"],[ready,"Readiness passed"],[reference,"Reference validated"]].map(([value,label]) => `<div class="environment-stat"><strong>${value}</strong><span>${label}</span></div>`).join("");
-  document.querySelector("#environment-list").innerHTML = environments.map((item) => `<article class="environment-card"><h3>${item.project.toUpperCase()} · ${item.public_id}</h3><p>${item.dataset} environment linked to hypothesis ${item.candidate_public_id}.</p><div class="environment-meta"><span>Compiled</span><span>${item.qa_status.replaceAll("_", " ")}</span></div></article>`).join("");
+  document.querySelector("#environment-list").innerHTML = environments.map((item) => `<button class="environment-card" data-environment-id="${item.id}"><h3>${item.project.toUpperCase()} · ${item.public_id}</h3><p>${item.dataset} environment linked to hypothesis ${item.candidate_public_id}.</p><div class="environment-meta"><span>Compiled</span><span>${item.qa_status.replaceAll("_", " ")}</span><span>Open instructions and proposal</span></div></button>`).join("");
+  document.querySelectorAll("[data-environment-id]").forEach((button) => button.addEventListener("click", () => openEnvironment(button.dataset.environmentId)));
   document.querySelector("#release-list").innerHTML = releases.map((item) => `<article class="release-card"><h3>${item.name} · ${item.version}</h3><p>${item.released_at}</p></article>`).join("");
   renderLineage();
 }
@@ -96,17 +97,27 @@ function drawLineage(targetId) {
   const height = Math.max(490, Math.max(...[...groups.values()].map((group) => group.length), 1) * 95 + 80);
   generations.forEach((generation, column) => groups.get(generation).forEach((node, row) => positions.set(node.id, { x: 30 + column * 185, y: 35 + row * 90 })));
   const edges = nodes.flatMap((node) => node.parents.filter((parent) => positions.has(parent)).map((parent) => {
-    const a = positions.get(parent), b = positions.get(node);
+    const a = positions.get(parent), b = positions.get(node.id);
     return `<path class="dag-edge ${node.id === targetId ? "active" : ""}" d="M ${a.x+140} ${a.y+30} C ${a.x+160} ${a.y+30}, ${b.x-20} ${b.y+30}, ${b.x} ${b.y+30}"/>`;
   })).join("");
   const marks = nodes.map((node) => {
-    const p = positions.get(node); const tone = node.id === targetId ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
+    const p = positions.get(node.id); const tone = node.id === targetId ? "active" : node.readiness_passed ? "ready" : node.compiled ? "compiled" : "";
     return `<g class="dag-node ${tone}" data-dag-id="${node.id}" transform="translate(${p.x},${p.y})"><rect width="140" height="60"></rect><text x="10" y="23">${node.label.slice(0,18)}</text><text class="node-meta" x="10" y="43">G${node.generation} · ${node.dataset}</text></g>`;
   }).join("");
   const svg = document.querySelector("#lineage-dag");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`); svg.innerHTML = edges + marks;
   svg.querySelectorAll("[data-dag-id]").forEach((node) => node.addEventListener("click", () => { document.querySelector("#lineage-target").value = node.dataset.dagId; drawLineage(node.dataset.dagId); }));
   document.querySelector("#lineage-detail").innerHTML = target ? `<h3>${target.label}</h3><p>${target.public_title || "Scientific content remains private; lineage and delivery status are shown publicly."}</p><dl><dt>Project and dataset</dt><dd>${target.project.toUpperCase()} · ${target.dataset}</dd><dt>Generation</dt><dd>${target.generation}</dd><dt>Parents</dt><dd>${target.parents.map((id) => byId.get(id)?.label || id).join(", ") || "Seed hypothesis"}</dd><dt>Status</dt><dd>${target.readiness_passed ? "Readiness passed" : target.compiled ? "Compiled" : target.selected ? "Selected" : "Candidate"}</dd></dl>` : "<p>No lineage is available for this filter.</p>";
+}
+
+function openEnvironment(environmentId) {
+  const environment = state.snapshot.environment_progress.find((item) => item.id === environmentId);
+  if (!environment) return;
+  document.querySelector("#environment-dialog-title").textContent = `${environment.project.toUpperCase()} · ${environment.public_id}`;
+  document.querySelector("#environment-dialog-meta").innerHTML = `<span>${environment.dataset}</span><span>${environment.qa_status.replaceAll("_", " ")}</span><span>${environment.candidate_public_id}</span>`;
+  document.querySelector("#environment-instructions").textContent = environment.instructions || "Instructions were not available in this compiled package.";
+  document.querySelector("#environment-proposal").textContent = environment.proposal || "The originating proposal was not available.";
+  document.querySelector("#environment-dialog").showModal();
 }
 
 function render() {
@@ -121,6 +132,8 @@ document.querySelectorAll("[data-view]").forEach((button) => button.addEventList
   document.querySelector(`#${button.dataset.view}-view`).classList.add("active");
 }));
 document.querySelector("#lineage-target").addEventListener("change", (event) => drawLineage(event.target.value));
+document.querySelector("#environment-dialog-close").addEventListener("click", () => document.querySelector("#environment-dialog").close());
+document.querySelector("#environment-dialog").addEventListener("click", (event) => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 
 function loadSnapshot() {
   fetch(`data/public-snapshot.json?t=${Date.now()}`, { cache: "no-store" })

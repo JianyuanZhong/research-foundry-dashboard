@@ -109,6 +109,8 @@ td { padding: 13px 14px; border-top: 1px solid var(--line); font-size: 12px; ver
 .lineage-detail dd { margin: 3px 0 0; font-size: 11px; }
 #lineage-target { border: 1px solid var(--line); color: var(--text); background: var(--panel-2); border-radius: 7px; padding: 7px 9px; max-width: 320px; }
 .hypothesis-card, .environment-card, .release-card { border: 1px solid var(--line); border-radius: 9px; padding: 13px; background: var(--panel-2); }
+.environment-card { color: var(--text); text-align: left; width: 100%; }
+.environment-card:hover, .environment-card:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .hypothesis-card h3, .environment-card h3, .release-card h3 { margin: 0 0 7px; font-size: 13px; }
 .hypothesis-card p, .environment-card p, .release-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .environment-summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; padding: 16px 16px 0; }
@@ -119,6 +121,17 @@ td { padding: 13px 14px; border-top: 1px solid var(--line); font-size: 12px; ver
 .environment-list, .release-list { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 10px; padding: 16px; }
 .environment-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .environment-meta span { background: var(--panel); border-radius: 999px; padding: 4px 7px; font-size: 9px; color: var(--muted); }
+dialog { width: min(900px, calc(100vw - 32px)); max-height: calc(100vh - 40px); padding: 0; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(4,10,8,.72); backdrop-filter: blur(3px); }
+.dialog-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 17px 20px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.dialog-header h2 { margin: 0; font-size: 18px; }
+.dialog-header button { border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); width: 34px; height: 34px; border-radius: 8px; font-size: 22px; line-height: 1; }
+.dialog-meta { display: flex; flex-wrap: wrap; gap: 8px; padding: 13px 20px; border-bottom: 1px solid var(--line); }
+.dialog-meta span { background: var(--panel-2); color: var(--muted); border-radius: 999px; padding: 5px 8px; font-size: 10px; }
+.dialog-section { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.dialog-section:last-child { border-bottom: 0; }
+.dialog-section h3 { margin: 0 0 10px; font-size: 13px; }
+.dialog-section pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: var(--text); }
 @media (max-width: 850px) {
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { position: static; padding: 14px 16px; }
