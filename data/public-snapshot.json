@@ -398,7 +398,7 @@
       "qa_status": "compiled"
     }
   ],
-  "generated_at": "2026-09-24T03:08:33.521718Z",
+  "generated_at": "2026-09-24T03:19:04.523463Z",
   "lineage": [
     {
       "change_note": "Explicit operator proposal import; assessment required",
@@ -1702,6 +1702,90 @@
       "readiness_passed": false,
       "reference_validated": false,
       "selected": true
+    },
+    {
+      "change_note": "Executes the frozen outcome-blind baseline joint-support and matched-overlap gates without opening health outcomes: all 24 profile/stratum hull checks pass, worst standardized raw-assay nearest-neighbor distance is 0.0431, and frozen matching yields 10,893 pairs with 54.9%/90.9% retention and max |SMD| 0.0352. Preserves the age-40–69 fixed-G hypothesis and all outcome, release, uncertainty and adjudication gates; requires the identical mechanical diagnosis-risk-set rerun before post-baseline outcome release. Preserves exactly the inherited three inspected references and receipts.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "ukb",
+      "episode": 12,
+      "generation": 8,
+      "id": "candidate-0cfde8666beab86be657f73d",
+      "label": "H-0cfde866",
+      "operation": "evolve",
+      "operation_goal": "Resolve the frozen outcome-blind joint-support and overlap-matching feasibility gates for the age-40–69 fixed-combined-eGFR marker-profile estimand; preserve the hypothesis and outcome blindness, and publish only a substantive evidence-bound child.",
+      "operation_reason": "The leading valid branch has undergone repeated design refinement and an age restriction after a failed support count. The remaining computable objection most likely to invalidate the exact estimand is conditional positivity/model extrapolation. Executing convex-hull, nearest-neighbor and frozen matching checks before any marker–outcome association can support, further restrict, or abandon the direction without favorable-result peeking.",
+      "parents": [
+        "candidate-bd4cc438890bf038609eca82"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive interpretation/computability child preserving the fixed ICU-to-ward population, 24h exposure, 48h horizon, exact MIMIC bindings, and S0/T1 contrast. Separates incremental information, clinical materiality, value/process/order attribution, and endpoint validity; enforces storetime<t0 after a 7.24M-row audit found 2,145 post-transfer entries; corrects planned-return automation to PACU-only; retains GRU-D and adds a two-stream TCN with order/value ablations.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "mimic",
+      "episode": 9,
+      "generation": 2,
+      "id": "candidate-b2ed8239f7c8267f93012167",
+      "label": "H-b2ed8239",
+      "operation": "evolve",
+      "operation_goal": "Determine whether the valid residual-instability proposal needs a substantive child that cleanly separates incremental prognostic information, clinical materiality, observation-process artifacts, and endpoint/component misclassification without changing its fixed ICU-to-ward population, 24-hour exposure window, or 48-hour outcome horizon. Preserve exact MIMIC bindings and the baseline-versus-substantive longitudinal comparison; publish only if the scientific interpretation or computability materially improves.",
+      "operation_reason": "The current mu leader is valid and reference-complete, but its conjunctive support/adverse criteria may overstate endpoint sufficiency when a signal is statistically real yet below one clinical threshold, and planned ICU return/treatment-limit ambiguity can alter component interpretation. These are the strongest remaining objections; the rejected recovery-order branch lacks temporal support.",
+      "parents": [
+        "candidate-4abe5d75e5aff52a84f62151"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Repairs the broad recovery-speed seed into a 24-hour landmark, 14-day eICU IMV multistate study. Audits the asymmetric respiratoryCare interval fields and sparse/site-concentrated chart events; separates sustained liberation from 48-hour reinstitution, death, tracheostomy and observation-ending transfer/discharge; requires blinded clinician validation before hospital comparison; and compares a transparent hierarchical semi-Markov baseline with a structured physiologic-versus-observation GRU on identical inputs/splits. Adds explicit case-mix, documentation, competing-event and leakage falsification, noncausal limits, exact table/column/time bindings, and exactly three inspected hash-bound references.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "eicu",
+      "episode": 9,
+      "generation": 1,
+      "id": "candidate-42aff08985f0ba0c400b705f",
+      "label": "H-42aff089",
+      "operation": "evolve",
+      "operation_goal": "Repair the unused eICU recovery-speed seed into a falsifiable, data-bound study of between-hospital differences in liberation from invasive mechanical ventilation, explicitly separating patient recovery from death, discharge/transfer, reintubation and documentation artifacts. Compare a transparent competing-risk multistate baseline with a scientifically substantive learned or mechanistic longitudinal alternative on identical inputs/splits; audit actual respiratory support episode fields and event support; establish exactly three inspected key references with frozen excerpts; define supportive, adverse and inconclusive results and noncausal limits.",
+      "operation_reason": "The current leader is mature and already judged substantive; further refinements risk repetition. The unused recovery-speed seed asks a distinct, clinically consequential question, but its broad organ-support framing must be narrowed to the best-measured support and repaired for competing events, support episode semantics, hospital inclusion, case mix, documentation and causal limits.operation. eICU provides respiratory charting/care, patient outcomes, severity, treatments and hospital identifiers, so a bounded ventilation-liberation audit can decide feasibility.",
+      "parents": [
+        "candidate-9d0409e906cd094e287019f7"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive positivity and interpretation repair. Exact same-label timestamp-bounded H exists in only 328/15,575 patients; the parent's high/persistent state has five patients total and none in validation/test, while locked-test LM/NL/LI/O-TM support is 9/10/10/9 and LM/O-TM discordance is sparse. A bounded train+validation continuous full-grid baseline converged, establishing computational feasibility only; its exploratory LM-versus-O-TM intervals include the null and cannot support specificity. The child therefore preserves the fixed cohort/grid and biological limits, declares the binary confirmatory experiment infeasible and the scientific claim unresolved, separates pre-rank from log-ratio to expose regression-to-the-mean, and defers the matched U+Q+B versus U+Q+B+V measurement-error alternative until explicit split/discordance gates are met. Exactly three inherited, rechecked, hash-linked references are attached.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "hcc",
+      "episode": 12,
+      "generation": 6,
+      "id": "candidate-fa844763f0e4fddfa613d106",
+      "label": "H-fa844763",
+      "operation": "evolve",
+      "operation_goal": "Resolve the leader's next consequential feasibility and interpretation gap: audit exact construction, overlap, era stability, and positivity of the pre-landmark marker-history exposure H; determine whether the transparent full-grid laboratory specificity baseline can be fit and falsify target-specific surveillance against retention, liver-injury monitoring, and oncology-panel bundling without changing the fixed cohort or biological claim limits. Preserve a matched substantive recording-process alternative and exact three-reference delivery.",
+      "operation_reason": "The top candidate is valid and preferred, but its strongest remaining risk is not another comparator definition: it is whether H exists with sufficient within-label/era support and overlap to estimate the prespecified LM-versus-NL/LI/O-TM specificity contrasts. A bounded exposure/positivity diagnostic and, if feasible, transparent baseline fit can materially confirm, revise, or abandon the branch. Restart would discard a mature clinically relevant design without evidence that a different HCC question is more consequential.",
+      "parents": [
+        "candidate-e0e5a6138d6b64662869b5ca"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
     },
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -4010,7 +4094,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Changes the acquisition-time estimand: tests whether an online q/C0=.30 prefix (with causal 3.90-V confirmation) adds specimen-specific t+2 information and is equivalent to the parent's completed-curve oracle, while prohibiting contemporaneous capacity, resistance, full span, duration, and own-span leakage. A full 511-curve audit verifies every stop on all 275/107 nominal rows, quantifies ~2.9 h versus ~8.4 h median burden, and exposes the inherited 6-row/12-row eligibility discrepancy; support must replicate on the stricter 240/67 subset. Adds matched history, structured, functional, full-curve and completed-RPT models, controls, uncertainty and explicit partial-useful/full-only/inconclusive outcomes.",
@@ -4685,7 +4769,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Adds a scientifically substantive raw-capacity curvature adjudicator without changing the exact eight-cell c=50-99 population, c=100-119 no-refit gate, P/C estimands, margins, nulls, or confirmatory direct/exact-slope functional gates. A new read-only audit shows 159/281 nonzero-P mature origins fail four-segment persistence and exact-slope cubic reconstruction changes robust half-window contrast sign in 181/800 windows, so cubic shape cannot establish locally steady fade. The child adds matched fold-local robust-H Q/A1/ADX fits for four five-cycle shifts, derived P4/K controls, separate specimen-level uncertainty, and predeclared multiscale-consistent/curvature-confounded/rate-only/shape-only interpretations that cannot rescue failed P/C claims. It records source bindings, compute, missing replicate capacity evidence, and deferred change-point/state-space/nonlinear methods.",
@@ -4749,19 +4833,106 @@
       "readiness_passed": false,
       "reference_validated": false,
       "selected": false
+    },
+    {
+      "change_note": "Targeted compilation-ready repair independently reproducing the canonical target-only endpoint and resolving the no-skip ambiguity: 1,411 windows, 143 overlapping positives, and 977 first-event rows with 59 events. The outcome-blind audit establishes the actual localization structure—30 informative single-event occasions across 21 conditions (21 triplets, 9 pairs), below the frozen >=35 confirmatory gate—so localization is explicitly exploratory without changing the endpoint. The child compares an auditable own-history plus exact metadata shadow with a nested forward-filtered common/specimen-specific peer state on identical folds, states triplicate identifiability assumptions, and preserves adverse/inconclusive/nonmechanistic limits.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "KIT_EIS",
+      "episode": 22,
+      "generation": 6,
+      "id": "candidate-047d2df5316fa69208b2b1b6",
+      "label": "H-047d2df5",
+      "operation": "evolve",
+      "operation_goal": "Develop a compilation-ready child that independently reproduces the canonical target-only persistent-break endpoint, quantifies event-localization support without fitting the peer association, and tests whether strictly prior peer trajectories localize which specimen breaks beyond own-history and exact timing/acquisition metadata. Preserve exact KIT bindings, completion-time chronology, held-condition inference, supportive/adverse/inconclusive outcomes, and explicit nonmechanistic limits. Compare a simple auditable baseline with a scientifically substantive sequential peer alternative on identical folds.",
+      "operation_reason": "Episode 21 established substantive scientific value for target attribution but exposed non-identical endpoint reconstruction and sub-threshold localization support. A successor should resolve the reproducibility ambiguity and let actual support determine whether localization is confirmatory, exploratory, or infeasible, without changing the scientific endpoint post hoc.",
+      "parents": [
+        "candidate-50049dff26e9ee6a47c57cc6"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Independent compiler-ready crossover: preserves candidate-b7562848c1e4aa83249caf31 as authority for the exact eight-cell c=50-99 P/C core, exact-slope direct/functional fits, Qsel, finite-cell uncertainty, robustness, outcome precedence, and frozen c=100-119 transport. Adds candidate-65b5b9721b07f2317e622fe5's audited raw H1-H4 control as two separately selected H-P4 and H-K Q/A1/ADX families, with exact P4/K definitions, its own F4 max-|t| family, frozen forward scoring, and deterministic post-primary interpretation labels. Raw-H cannot enter, rescue, veto, or redefine any primary P/C gate.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 19,
+      "generation": 15,
+      "id": "candidate-bcbe924a7ca2225e90d6cb5c",
+      "label": "H-bcbe924a",
+      "operation": "crossover",
+      "operation_goal": "Create a compiler-ready crossover that preserves the exact eight-cell c=50-99 mature hypothesis, c=100-119 frozen transport, exact-slope direct/functional core, and deterministic adjudication of candidate-b7562848c1e4aa83249caf31, while adding candidate-65b5b9721b07f2317e622fe5's audited raw four-half-window curvature adjudicator as a separately fitted, non-rescuing scientific interpretation branch. Specify exact targets, folds, contrasts, uncertainty, outcomes, source bindings, compute, and evidence boundaries; prevent curvature from redefining or vetoing the primary P/C hypothesis except through an explicit predeclared interpretation label.",
+      "operation_reason": "Episode 18 selected the executable core and explicitly deferred the curvature extension. Existing audits show a substantive unresolved issue: 159/281 nonzero-P origins fail four-segment sign consistency and exact-slope cubic reconstruction changes 181/800 raw half-window curvature signs. A crossover can now answer whether any predictive P/C signal is multiscale-consistent or curvature-confounded without sacrificing the prior candidate's uniquely computable gates.",
+      "parents": [
+        "candidate-b7562848c1e4aa83249caf31",
+        "candidate-65b5b9721b07f2317e622fe5"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Crosses the q30 multi-horizon trajectory design with the audited causal 3.60-V boundary to test only information acquired in the intervening segment. Adds matched elapsed-time/charge/current/temperature, family/stage, registration, generated-state and actual-state persistence controls; makes capacity h=1/2/3 slope primary and resistance h=2 secondary; and defines supportive, proxy/state-only, adverse and inconclusive gates. A complete 511-curve audit finds 3.60 V after q30 in 509 curves and in every primary origin, while identifying two excluded late Expt-1 reversals and quantifying strong family/stage dependence. No predictive or mechanistic result is claimed.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Li2025",
+      "episode": 19,
+      "generation": 10,
+      "id": "candidate-f42af90f941dd15dc38c11dc",
+      "label": "H-f42af90f",
+      "operation": "crossover",
+      "operation_goal": "Develop a fully bound Li2025 experiment testing whether information acquired between the causal q/C0=0.30 stop and a later causal 3.60-V stop adds multi-horizon future-capacity trajectory information beyond pre-RPT history, online acquisition scalars, and contemporaneous-state reconstruction, while separating present-state refinement from future-slope information and preserving resistance as a scheduled secondary endpoint.",
+      "operation_reason": "Episode 18 established a feasible q30 level-versus-trajectory test but did not localize where along the discharge future-trajectory information, if any, is acquired. The high-ranked 3.60-V parent supplies a distinct later causal boundary with audited common support and meaningful remaining time. A crossover can answer a consequential acquisition decision: whether waiting from q30 to 3.60 V buys genuinely trajectory-relevant information rather than only a better proxy for completed capacity. The fixed-q30 trajectory parent and fixed-3.60-V replacement parent are both assessed valid; adaptive stopping remains deferred until fixed-boundary incremental value is established.",
+      "parents": [
+        "candidate-6ecfb4e926eeda969b9a0c63",
+        "candidate-89a2a195e34c0ddfaf7adf30"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Compiler-ready crossover preserving candidate-b7562848c1e4aa83249caf31's exact eight-cell c=50-99 P/C core, c=100-119 frozen transport, exact-slope direct/functional fits, nulls, sensitivity reruns, finite-cell uncertainty, gates and precedence. Adds candidate-65b5b9721b07f2317e622fe5's audited four raw five-cycle shifts only as a separately fitted interpretation branch. Strengthens the extension with matched flat-direct and exact-cubic H comparators, a single inner H-loss objective, a separate eight-contrast F4 family, and deterministic representation/scale labels assigned after and unable to rescue or veto the primary result. Removes redundant P4/K-specific tuning and requires both predictive raw-H gain and incremental gain over constrained representations before claiming information loss.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 19,
+      "generation": 15,
+      "id": "candidate-040d49f715262d4b3961dc8b",
+      "label": "H-040d49f7",
+      "operation": "crossover",
+      "operation_goal": "Create a compiler-ready crossover that preserves the exact eight-cell c=50-99 mature hypothesis, c=100-119 frozen transport, exact-slope direct/functional core, and deterministic adjudication of candidate-b7562848c1e4aa83249caf31, while adding candidate-65b5b9721b07f2317e622fe5's audited raw four-half-window curvature adjudicator as a separately fitted, non-rescuing scientific interpretation branch. Specify exact targets, folds, contrasts, uncertainty, outcomes, source bindings, compute, and evidence boundaries; prevent curvature from redefining or vetoing the primary P/C hypothesis except through an explicit predeclared interpretation label.",
+      "operation_reason": "Episode 18 selected the executable core and explicitly deferred the curvature extension. Existing audits show a substantive unresolved issue: 159/281 nonzero-P origins fail four-segment sign consistency and exact-slope cubic reconstruction changes 181/800 raw half-window curvature signs. A crossover can now answer whether any predictive P/C signal is multiscale-consistent or curvature-confounded without sacrificing the prior candidate's uniquely computable gates.",
+      "parents": [
+        "candidate-b7562848c1e4aa83249caf31",
+        "candidate-65b5b9721b07f2317e622fe5"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
     }
   ],
   "projects": [
     {
       "id": "ehr",
-      "max_generation": 7,
+      "max_generation": 8,
       "metrics": {
-        "candidates": 65,
+        "candidates": 69,
         "compiled": 11,
         "public_releases": 0,
         "readiness_passed": 2,
         "reference_validated": 0,
-        "selected": 16
+        "selected": 17
       },
       "name": "EHR discovery",
       "runtime_version": "ehr-thin/0.7.0",
@@ -4772,14 +4943,14 @@
     },
     {
       "id": "battery",
-      "max_generation": 14,
+      "max_generation": 15,
       "metrics": {
-        "candidates": 146,
+        "candidates": 150,
         "compiled": 25,
         "public_releases": 0,
         "readiness_passed": 13,
         "reference_validated": 0,
-        "selected": 50
+        "selected": 52
       },
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
@@ -4791,7 +4962,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "94f2194d9cfdac856d0830e6503e0cc9c663a31b",
+  "registry_revision": "3abd4582320be12d5fd4bde9dcf438c95d4b4ab6",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
