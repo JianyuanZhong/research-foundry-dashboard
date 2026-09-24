@@ -1,4 +1,7 @@
 const state = { project: "all", snapshot: null, treeDataset: null, treeNode: null };
+const SNAPSHOT_URL = window.location.protocol === "file:"
+  ? "https://jianyuanzhong.github.io/research-foundry-dashboard/data/public-snapshot.json"
+  : "data/public-snapshot.json";
 
 const sum = (projects, key) => projects.reduce((total, project) => total + Number(project.metrics[key] || 0), 0);
 const visibleProjects = () => state.snapshot.projects.filter((project) => state.project === "all" || project.id === state.project);
@@ -161,7 +164,7 @@ proposalPane.addEventListener("scroll", () => { if (syncingEnvironmentScroll) re
 instructionPane.addEventListener("scroll", () => { if (syncingEnvironmentScroll) return; syncingEnvironmentScroll = true; synchronizeScroll(instructionPane, proposalPane); syncingEnvironmentScroll = false; });
 
 function loadSnapshot() {
-  fetch(`data/public-snapshot.json?t=${Date.now()}`, { cache: "no-store" })
+  fetch(`${SNAPSHOT_URL}?t=${Date.now()}`, { cache: "no-store" })
     .then((response) => { if (!response.ok) throw new Error(`Snapshot request failed (${response.status})`); return response.json(); })
     .then((snapshot) => {
       const changed = !state.snapshot || state.snapshot.generated_at !== snapshot.generated_at;
