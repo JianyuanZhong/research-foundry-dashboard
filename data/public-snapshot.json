@@ -343,6 +343,17 @@
       "qa_status": "compiled"
     },
     {
+      "candidate_id": "candidate-0aebf7200e65eacdf8e52f53",
+      "candidate_public_id": "H-0aebf720",
+      "dataset": "hcc",
+      "id": "job-e1843afb047d487801cbb28f",
+      "instructions": "# Recompute and interpret the frozen HCC 144-hour recovery diagnostic\n\n## Objective\n\nReproduce the selected, already executed diagnostic from the four read-only HCC tables. Determine whether the 0–144-hour INR/total-bilirubin trajectory—especially bilirubin lag despite INR improvement—adds clinically meaningful, temporally transported prediction of discharge later than 240 hours beyond a POD5 snapshot.\n\nThis is a scoped numerical reproducibility task. You must newly construct the cohort, fit the models and controls, estimate uncertainty, and derive the interpretation from your computed outputs. The previously reported answer is not supplied as a solver artifact. Do not merely write expected aggregate numbers.\n\nThe hypothesis under test is prognostic, not causal: trajectory T1 should improve 2024–2025 prediction over snapshot B0 and show an adverse bilirubin-lag contrast. The strongest rival is that current POD5 state, operative burden, measurement practice, and calendar era explain any apparent trajectory signal. The endpoint is delayed recorded discharge. It is not PHLF, morbidity, mortality, survival, or discharge readiness.\n\n## Evidence boundary and clinical relevance\n\nSelected preoperative and operative factors have been associated with postoperative hospital stay after HCC resection [K1]. POD1 bilirubin plus clinical factors predicted adjudicated grade B/C post-hepatectomy liver failure after major hepatectomy [K2]. ISGLS PHLF requires concomitant INR and bilirubin abnormalities relative to local laboratory limits on or after POD5 and is graded by management consequences [K3]. None of these works establishes that the path to POD5 adds information about discharge delay.\n\nAt 144 hours, a stable trajectory association could motivate targeted review rather than indiscriminate testing. A precise adverse result would instead support retaining the simpler current-state model class for this recorded-discharge endpoint. Even a supportive result would not identify liver regeneration, cholestasis, PHLF, a complication, a treatment effect, or readiness for discharge.\n\n## Exact private data bindings\n\nAll sources are ordinary CSV files (not archive members), mounted read-only. Write derived files only below `/workspace`.\n\n| Table | Runtime path | Configured source path | Required columns |\n|---|---|---|---|\n| procedures | `/data/procedures.csv` | `[private path]` | `患者主索引`, `就诊号`, `手术`, `开始时间`, `结束时间` |\n| encounters | `/data/encounters.csv` | `[private path]` | `患者主索引`, `就诊号`, `年龄`, `性别`, `就诊时间`, `入院时间`, `出院时间` |\n| diagnoses | `/data/diagnoses.csv` | `[private path]` | `患者主索引`, `就诊号`, `诊断名称`, `诊断类型` |\n| labs | `/data/labs.csv` | `[private path]` | `患者主索引`, `就诊号`, `检验`, `定量结果`, `检验时间` |\n\nJoin tables by the exact string pair `患者主索引 + 就诊号`; never coerce identifiers to numbers. Read UTF-8 with BOM handling. The labs file is about 2.2 GB, so stream selected columns in chunks. Do not emit direct identifiers, names, contact details, or exact source timestamps. The binding layer verifies the configured hashes; your analysis must also record the four expected hashes in `results.json` under `source_hashes`, although a second full 2.2 GB hash pass is optional.\n\n## Frozen cohort and clocks\n\n1. In procedures, require `手术` to contain both `肝` and `切除`. Exclude labels containing the regular expression `胆囊切除|肝移植|供肝|肝动脉|胰|胃|结肠|肾|肺`. Require a parseable `开始时间`.\n2. Sort qualifying procedures by `患者主索引, 开始时间` and retain the chronologically first qualifying resection per patient. This procedure start is T0.\n3. Join its encounter. Require age at least 18, parseable admission and discharge, and T0 between admission and discharge inclusive.\n4. Require discharge from 144 hours through 90 days after T0, T0 year 2013–2025, and a same-key diagnosis containing `肝细胞癌|原发性肝癌`.\n5. Define delayed discharge `Y=1` when discharge is strictly later than T0 + 240 hours; otherwise `Y=0`.\n6. From labs, retain exact labels `国际标准化比值`, `总胆红素`, and, for the negative control only, `丙氨酸氨基转移酶`. Parse comma-stripped numeric results and lab times.\n7. Use half-open postoperative windows [0,48), [48,96), and [96,144) hours. In each label/window retain the last value by `检验时间`. Apply broad data-error bounds, not clinical normal ranges: INR 0.5–20, bilirubin 0.1–1000, ALT 0.1–20000.\n8. The primary complete-case cohort requires INR and total bilirubin in all three windows. ALT may be missing and is imputed only in its control.\n9. Split solely by T0 year: train 2013–2021, validation 2022–2023, locked test 2024–2025. Use 2022 only for B1/T1 hyperparameter selection and 2023 only for logistic recalibration. Do not tune on test.\n10. Assert one row per patient and report flow counts, events, annual completeness, and annual raw late-value/collection-time summaries. The frozen snapshot should reconstruct train 6,975/1,851 events, validation 2,562/428, and test 2,700/387. A mismatch is a failed computation, not a reason to alter the cohort.\n\nDerive operation duration in hours, its missing indicator, laparoscopic flag from `腹腔镜`, coarse major-resection flag from `半肝|肝叶切除|右三叶|左三叶`, and cirrhosis flag from selected-encounter diagnosis text containing `肝硬化`. Derive calendar year and sex. The major flag is coarse and must not be represented as adjudicated operative extent.\n\nFor each lab axis use natural-log early, middle, and late values and exact collection offsets from T0. Derive early-to-middle, middle-to-late, and early-to-late log changes; late INR × late bilirubin interaction; and raw discordance = bilirubin early-to-late change minus INR early-to-late change. Define:\n\n- concordant recovery: both early-to-late changes < 0;\n- bilirubin lag: INR change < 0 and bilirubin change >= 0;\n- INR lag: INR change >= 0 and bilirubin change < 0;\n- concordant non-recovery: both changes >= 0.\n\nThese quadrants are descriptive phenotypes, not diagnoses.\n\n## Frozen models and fitting\n\nUse deterministic seed 260924. Fit all transformations on train only.\n\n**B0 snapshot baseline.** L2 logistic regression, C=1, maximum 3,000 iterations. Restricted cubic-style spline implementation is `SplineTransformer(n_knots=4, degree=3, include_bias=False)` for age, operation duration, late log INR, and late log bilirubin after median imputation with missing indicators; standardize those and all regular numeric terms. Regular terms are calendar year, late INR/bilirubin interaction, and late collection offsets. Include duration-missing, laparoscopic, major, and cirrhosis indicators and one-hot sex.\n\n**B1 transparent trajectory model.** Elastic-net logistic regression using all B0 information plus early/middle log values and collection offsets, both interval changes, total changes, and discordance. Median-impute with indicators and standardize numeric inputs; one-hot sex. Select by uncalibrated 2022 log loss from C ∈ {0.03, 0.1, 0.3, 1.0} × l1_ratio ∈ {0.2, 0.8}; use SAGA, maximum 3,000 iterations.\n\n**T1 learned trajectory model.** Histogram gradient boosting on the same substantive inputs as B1. Median-impute numeric values with indicators and one-hot sex. Fix max depth 3, L2=1, no early stopping. Select by uncalibrated 2022 log loss from learning rate {0.03, 0.07}, minimum leaf {30, 80}, and iterations {150, 300}.\n\nFit each candidate model on 2013–2021 only. For each frozen fitted model, fit a logistic recalibrator on 2023 only: regress 2023 outcome on the logit of clipped raw probability (clip 1e-5 to 1−1e-5), then apply that intercept/slope to validation and test probabilities. The 2022 tuning subset must not fit recalibration.\n\nFit these frozen controls:\n\n- temporal shuffle: jointly permute early/middle INR/bilirubin values and offsets within train-year × major × laparoscopic strata, preserve each patient's late state, recompute changes/discordance, and fit T1 with selected hyperparameters;\n- timing-only: logistic model on age, duration, year, procedure indicators, sex, and all six INR/bilirubin collection offsets, without lab values;\n- no-offset T1: selected T1 without any collection-offset features;\n- ALT-history control: selected tree model on B0 plus ALT early/middle/late values, offsets, and changes, with missing-value indicators.\n\nUse the same 2023-only recalibration procedure for every control.\n\n## Estimates and uncertainty\n\nOn validation and locked test, report for every primary model and control: N, events, Brier score, log loss, AUROC, AUPRC, calibration intercept/slope, mean prediction, and event rate.\n\nFor B1, T1, temporal shuffle, timing-only, and ALT control, estimate paired differences from B0 in Brier and log loss with 2,000 patient bootstrap resamples of locked-test rows. Keep fitted and calibrated models frozen: this bootstrap quantifies test-sample uncertainty and deliberately does not include model-fitting uncertainty. Report percentile 95% intervals and disclose this limitation.\n\nFor the quadrant contrast, first restrict test patients to the train 1st–99th percentile range for both late log INR and late log bilirubin. Fit a train-only multinomial logistic model for quadrant using age, duration, year, late logs and interaction, major, laparoscopic, cirrhosis, and late collection offsets. Use generalized overlap weights: for a comparison of quadrant q against concordant recovery, assign the estimated probability of the other group. Report group N, effective N, weighted observed outcome difference, and the T1 predicted-risk difference with 2,000 patient bootstrap percentile intervals. This is adjusted descriptive separation, not a causal contrast.\n\nReport B0 and T1 Brier scores and their difference within major/minor, cirrhosis/no-cirrhosis, laparoscopic/open, 2024, and 2025 strata. Small strata must be labeled unstable.\n\n## Prespecified interpretation\n\nSupport the trajectory hypothesis only if all five gates pass on locked test:\n\n1. B0 minus T1 Brier gain is at least 0.005 and the paired CI for T1−B0 is wholly below zero;\n2. T1 calibration slope is 0.8–1.2 and absolute intercept <= 0.05;\n3. bilirubin-lag versus concordant-recovery T1 risk difference is at least +0.03 and its CI is wholly above zero;\n4. temporal shuffling removes at least half the favorable T1 Brier gain; and\n5. T1−B0 direction is consistent in major/minor and cirrhosis/no-cirrhosis strata, allowing imprecision.\n\nA result is **adverse to this exact prognostic phenotype** when adequate events and overlap permit a precise decision and the primary proper-score gain is below 0.005 or compatible with no gain, or when the bilirubin-lag interval excludes the prespecified clinically relevant +0.03 contrast. This adverse label takes precedence over inconclusive calibration when the primary proper-score comparison and lag contrast are already decisively adverse. A favorable AUROC alone cannot rescue failed proper-score/calibration gates. If T1 has no favorable gain, “fraction removed by shuffle” is undefined and cannot count as support.\n\nUse **inconclusive** for failed computation, fewer than 200 test events, gross bilirubin scale discontinuity, inadequate overlap/effective N, or intervals broad enough to span clinically opposite bilirubin-lag effects. Calibration failure makes an otherwise favorable result inconclusive; it does not erase a separately precise adverse primary comparison. Never label the result supportive simply because one secondary metric improves, and never call a precise adverse result inconclusive merely because the favored hypothesis failed.\n\nWhichever result you compute, distinguish:\n\n- computationally checkable claims: cohort/split counts, leakage controls, model inputs, metrics, intervals, controls, subgroup directions, and whether gates pass;\n- claims outside this experiment: biological recovery mechanism, PHLF, complication type, treatment benefit, mortality, discharge readiness, or external validity.\n\nThe latter require a laboratory unit/reference-limit dictionary, reliable operative extent, timestamped interventions and complications, death/disposition, clinical adjudication, and another external/prospective study. The local data do not supply these.\n\n## Required outputs\n\nProduce all five files below. Private row-level predictions remain in `/workspace` and must not be published.\n\n1. `/workspace/analysis.py`: runnable source implementing the complete analysis from the four mounted CSVs. It must read the data and fit models; canned constants are invalid.\n2. `/workspace/results.json`: machine-readable complete results with top-level keys:\n   `schema`, `status`, `seed`, `data_snapshot`, `source_hashes`, `cohort`, `leakage_controls`, `choices`, `calibrators`, `validation_metrics`, `test_metrics`, `paired_patient_bootstrap_2000`, `primary`, `bilirubin_lag_contrast`, `subgroups`, `controls`, `prespecified_criteria`, `interpretation`, and `limits`. Use schema `hcc-recovery-diagnostic-v1`, status `executed`, and snapshot `3f97e661e1884c34c1e2cdbf74ba0cf6d6c8995853e85f1857c3d72b82ccf521`.\n3. `/workspace/test_predictions.csv`: exactly one row per locked-test patient with columns `patient_hash,year,y,B0,B1,T1,T1_temporal_shuffle,T1_no_offsets,timing_only,ALT_history_control`. Set `patient_hash = SHA256(UTF-8 exact 患者主索引)`; do not write the identifier itself. Probabilities must be finite and in (0,1).\n4. `/workspace/annual_drift.csv`: one row per year 2013–2025 with `year,n,events,event_rate,inr5_median,bili5_median,inr5_p90,bili5_p90,inr_t5_median,bili_t5_median`.\n5. `/workspace/claims.json`: schema `hcc-recovery-claims-v1`, status `executed`, one of `supportive|adverse|inconclusive`, and claims linked to JSON paths in `results.json`. It must explicitly state the T1-versus-B0 proper-score conclusion, bilirubin-lag threshold conclusion, controls conclusion, and the non-computable clinical boundary. The last claim must be marked `checkable: false` and identify the additional evidence required.\n\nThe evaluator recomputes metrics from predictions, checks frozen cohort/model outputs within deterministic numerical tolerances, checks source-driven code and output provenance, and evaluates whether `claims.json` follows the prespecified rules. It rejects malformed or canned outputs, unsupported confirmation, and an unjustified interpretation. Passing the evaluator establishes computational reproduction and internally supported interpretation only—not clinical truth.\n\n## Key references\n\n[K1] Li F, Ren Y, Fan J, Zhou J. *The predictive value of the preoperative albumin-to-fibrinogen ratio for postoperative hospital length of stay in liver cancer patients.* Cancer Medicine. 2023;12:20321–20331. [doi:10.1002/cam4.6606](https://doi.org/10.1002/cam4.6606). Full-text abstract and methods passages were inspected.\n\n[K2] Baumgartner R, Engstrand J, Rajala P, et al. *Comparing the accuracy of prediction models to detect clinically relevant post-hepatectomy liver failure early after major hepatectomy.* British Journal of Surgery. 2024;111:znad433. [doi:10.1093/bjs/znad433](https://doi.org/10.1093/bjs/znad433). Full-text abstract, introduction, methods, and result passages were inspected.\n\n[K3] Rahbari NN, Garden OJ, Padbury R, et al. *Posthepatectomy liver failure: a definition and grading by the International Study Group of Liver Surgery (ISGLS).* Surgery. 2011;149:713–724. [doi:10.1016/j.surg.2010.10.001](https://doi.org/10.1016/j.surg.2010.10.001). Abstract only was inspected; full text was unavailable through the frozen route.\n",
+      "project": "ehr",
+      "proposal": "# Executed HCC 144-hour recovery diagnostic\n\nStatus: executed on the unchanged parent cohort and locked temporal split. Results are adverse to the prespecified trajectory hypothesis.\n\n## Frozen question and evidence boundary\n\nThe evidence inspected before this analysis supports three limited facts: selected preoperative and operative factors have been associated with postoperative length of stay in HCC [K1]; POD1 bilirubin plus clinical factors predicted adjudicated grade B/C PHLF in a major-hepatectomy cohort [K2]; and ISGLS PHLF requires concomitant INR and bilirubin abnormalities on/after POD5 plus management-based grading [K3]. None establishes that the path to POD5 adds information about discharge delay.\n\nThe tested claim was that 0–144-hour INR/bilirubin trajectory—especially bilirubin lag despite INR improvement—would improve 2024–2025 prediction of discharge after 240 hours beyond a POD5 snapshot. The strongest rival was that current POD5 state, operative burden, measurement practice, and era explain the apparent signal. The endpoint remains delayed recorded discharge, not PHLF, morbidity, mortality, or discharge readiness.\n\n## Data and execution\n\nThe parent’s population, T0, 48-hour windows, complete-case requirement, outcome, broad data-quality bounds, and thresholds were unchanged. Exact read-only bindings were:\n\n- procedures: [private path]; 患者主索引, 就诊号, 手术, 开始时间, 结束时间.\n- encounters: [private path]; 患者主索引, 就诊号, 年龄, 性别, 入院时间, 出院时间.\n- diagnoses: [private path]; 患者主索引, 就诊号, 诊断名称.\n- labs: [private path]; 患者主索引, 就诊号, 检验, 定量结果, 检验时间.\n\nJoins used exact string 患者主索引 + 就诊号; first qualifying resection per patient defined T0. The reconstructed complete cohort exactly matched the frozen audit: train 2013–2021 N=6,975/events=1,851; validation 2022–2023 N=2,562/events=428; locked test 2024–2025 N=2,700/events=387. Patients were unique. Validation was divided before fitting: 2022 (N=1,025/events=212) tuned B1/T1; 2023 (N=1,537/events=216) fit logistic recalibration only. Test was evaluated after all choices and controls were frozen.\n\nB0 was spline-penalized logistic regression on age, sex, operation duration/missingness, laparoscopic and coarse major-resection flags, cirrhosis, year, late measurement offsets, late log INR/bilirubin, and their interaction. B1 was elastic-net logistic regression on matched trajectory features; validation chose C=0.03 and l1_ratio=0.2. T1 was depth-3 histogram gradient boosting; validation chose learning rate 0.03, 150 iterations, minimum leaf 80, and L2=1. Controls were a timing-only model, T1 without offsets, within-train-year × major × laparoscopic early/middle temporal shuffle preserving late state, and B0 plus ALT history.\n\n## Executed results\n\nOn locked test, B0 Brier was 0.11763 (log loss 0.39191; AUROC 0.650). T1 was worse: Brier 0.11857, paired difference T1−B0 +0.00094 (2,000-patient bootstrap 95% CI −0.00046 to +0.00231), log-loss difference +0.00393 (−0.00096 to +0.00861), and AUROC 0.645. T1 calibration slope was 1.342 and intercept 0.453, outside the prespecified 0.8–1.2 and ±0.05 bounds.\n\nTransparent B1 was only trivially better in Brier: 0.11741, difference −0.00022 (95% CI −0.00180 to +0.00133), below the 0.005 threshold and compatible with no improvement. Its AUROC was 0.668, which is hypothesis-generating rank separation but does not rescue the failed proper-score/calibration criteria.\n\nThe train-weighted, late-state/severity-overlap bilirubin-lag contrast was +0.30 percentage points versus concordant recovery (95% CI −0.41 to +1.01; effective N 313 vs 710), far below the required +3 points. The weighted observed outcome difference was −0.19 points. These results are adverse to the proposed bilirubin-lag phenotype for this endpoint.\n\nControls did not reveal a hidden favorable interpretation:\n\n- Temporal shuffle was worse than B0 by +0.00312 Brier (95% CI +0.00180 to +0.00446), showing that early/middle linkage contains some rank information, but T1 itself still did not beat B0; the required “half the gain removed” criterion is undefined because there was no positive T1 gain.\n- Timing-only was worse than B0 by +0.00359 (95% CI +0.00149 to +0.00561), so timing alone did not explain a favorable trajectory gain.\n- ALT history was worse than B0 by +0.00057 (95% CI −0.00128 to +0.00239), providing no evidence that nonspecific injury history adds a robust gain.\n- T1 without measurement offsets remained worse than B0 (+0.00055 Brier), so offsets were not masking a useful trajectory result.\n- T1−B0 directions were inconsistent across major/minor and cirrhosis strata; the coarse major flag had only 58 test patients and is not stable enough for a strong modern-era subgroup claim.\n\nAnnual outcome rates fell from 26.2% in 2021 to 20.7% in 2022, 14.1% in 2023, 15.9% in 2024, and 12.4% in 2025. Median late bilirubin remained about 19 across 2022–2025, while median late collection shifted from ~129 hours in 2024 to ~119 hours in 2025. Complete-trajectory coverage also rose from 31.0% in 2013 to 76.4% in 2025. This supports material discharge/measurement-era drift, not a gross bilirubin scale discontinuity.\n\n## Interpretation and decision\n\nThe strongest computed claim is adverse: in this unchanged cohort, the prespecified learned INR/bilirubin trajectory did not improve locked-test proper scores or calibration over the POD5 snapshot, and bilirubin lag did not show the required adverse risk contrast. Current late state plus ordinary covariates should remain the preferred parsimonious model class for this recorded-discharge endpoint. The small B1 AUROC increase does not justify clinical use or a mechanistic label.\n\nThis result does not establish that biological recovery path never matters. It tests one routinely observed, complete-case, three-window representation against recorded discharge in one institution. The bootstrap resampled locked-test patients with frozen fitted/calibrated models; it did not refit the complete training/calibration pipeline, so its intervals omit model-fitting uncertainty. The first-versus-last value sensitivity was not fitted; all 12,237 primary complete cases had first values, making it feasible but unnecessary to overturn the decisive primary failure. Selection weighting and 336-hour outcome were not executed in this bounded diagnostic. These omissions narrow precision and generalizability but do not turn the failed prespecified primary gates into support.\n\nThe branch should be parked for this endpoint. Revisit only with adjudicated PHLF/complications, laboratory units/reference limits, reliable operative extent, timestamped interventions and disposition/death, preferably external validation. Those data could test liver-specific recovery rather than institutional discharge practice.\n\n## Supportive, adverse, and inconclusive meanings\n\nSupportive would have required all five frozen gates: Brier gain ≥0.005 with CI below zero, acceptable calibration, bilirubin-lag risk difference ≥3 points with CI above zero, ≥50% gain loss under shuffle, and consistent subgroup direction. None passed.\n\nThe executed result is adverse to this exact prognostic phenotype and model comparison. It is not proof of equivalence, absence of liver injury, or absence of PHLF. A future adjudicated study could reach a different conclusion.\n\nAn inconclusive label would have applied for inadequate events, gross scale drift, poor overlap, or intervals spanning clinically opposite bilirubin-lag effects. Events and weighted overlap were adequate, no gross bilirubin shift appeared, and the lag CI excluded the prespecified clinically relevant +3-point threshold; therefore “adverse” is more accurate than “inconclusive.”\n\n## Exactly three inspected works\n\n[K1] Li F, Ren Y, Fan J, Zhou J. *The predictive value of the preoperative albumin-to-fibrinogen ratio for postoperative hospital length of stay in liver cancer patients.* Cancer Med. 2023;12:20321–20331. doi:10.1002/cam4.6606. Full-text abstract/method passages inspected.\n\n[K2] Baumgartner R, Engstrand J, Rajala P, et al. *Comparing the accuracy of prediction models to detect clinically relevant post-hepatectomy liver failure early after major hepatectomy.* Br J Surg. 2024;111:znad433. doi:10.1093/bjs/znad433. Full-text abstract/introduction/method/result passages inspected.\n\n[K3] Rahbari NN, Garden OJ, Padbury R, et al. *Posthepatectomy liver failure: a definition and grading by the International Study Group of Liver Surgery (ISGLS).* Surgery. 2011;149:713–724. doi:10.1016/j.surg.2010.10.001. Abstract only inspected; full text unavailable through the frozen route.\n",
+      "public_id": "ENV-e1843afb",
+      "qa_status": "compiled"
+    },
+    {
       "candidate_id": "candidate-aec1c5d90d60b8171b428462",
       "candidate_public_id": "H-aec1c5d9",
       "dataset": "Oxford_path_dependence",
@@ -893,7 +904,7 @@
       "qa_status": "compiled"
     }
   ],
-  "generated_at": "2026-09-24T08:16:06.632310Z",
+  "generated_at": "2026-09-24T08:26:42.344900Z",
   "lineage": [
     {
       "change_note": "Explicit operator proposal import; assessment required",
@@ -2994,7 +3005,7 @@
     },
     {
       "change_note": "Executed the frozen 144-hour HCC recovery diagnostic on the exact parent cohort (6,975/2,562/2,700; 387 locked-test events) with 2022 tuning, 2023-only recalibration, and one 2024–2025 evaluation. T1 was worse than B0 in test Brier (+0.000943; 95% CI −0.000461,+0.002314), B1's −0.000220 difference was below threshold and compatible with zero, bilirubin-lag RD was +0.0030 (−0.0041,+0.0101), calibration failed, and all support gates failed. Temporal shuffle, timing-only, ALT-history, subgroup, and annual drift checks favor a parsimonious late-state interpretation and parking this discharge-endpoint branch. Reuses three re-inspected evidence snapshots with byte-matched receipts and revised contribution mappings.",
-      "compiled": false,
+      "compiled": true,
       "created_role": "generation",
       "dataset": "hcc",
       "episode": 17,
@@ -3724,6 +3735,90 @@
       "readiness_passed": false,
       "reference_validated": false,
       "selected": true
+    },
+    {
+      "change_note": "Substantive result-contract child preserving the frozen 49,157-transfer population, t0, outcomes, S, E0/P1/J1, Q0/Q1, endpoint-fixed nulls, learned alternative, split, thresholds and K1-K3 evidence. A pre-outcome algebraic audit shows routed Brier is exactly Pr(S=1) times complete-case J1-versus-P1 Brier because Q0=Q1 on S=0; in pooled test the multiplier is 8729/9871=0.8843076, so an unchanged routed 0.002 cutoff is defective and routed Brier is not independent applicability evidence. The child retains it as a translated loss report and adds one bounded 5% global-versus-S0-frozen/S1-slot-fixed queue diagnostic with 2,000 validation-calibrator-refit plus pooled-test subject-cluster resamples and endpoint-fixed null comparison. This separates within-S1 value reranking from cross-branch placement. An executable evaluator and exact artifact contract are attached; no held-out outcome or learned model was opened.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "mimic",
+      "episode": 22,
+      "generation": 14,
+      "id": "candidate-701b9b8706b71e32ceea6f94",
+      "label": "H-701b9b87",
+      "operation": "evolve",
+      "operation_goal": "Execute or concretely stage the prespecified outcome-linked comparison for residual instability before ICU-to-ward transfer, prioritizing the transparent E0/P1/J1 and routed Q0/Q1 estimands, and resolve any result-contract or feasibility defect exposed by execution without changing the frozen scientific question.",
+      "operation_reason": "The top valid, reference-complete candidate has established cohort reconstruction, informative endpoint-fixed null feasibility, and a consequential observability repair. Its bounded progress review states further iteration is worthwhile specifically as outcome-linked execution rather than contract elaboration. This is the smallest check that can now distinguish ordered-value information from endpoint/process coupling and determine whether it materially improves the all-transfer queue.",
+      "parents": [
+        "candidate-c1379e05c1d8cb0aa956a6b8"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Repaired the estimand/execution mismatch without changing the 2018–2025 N=17,733 population or 300-event context-supported recorded-intervention endpoint. Clinical adjudication is now a parallel gate only for stronger unplanned-complication interpretation, never a prerequisite for the computable experiment. Replaced the overambitious mandatory state-space primary with a same-split ladder: fixed latest-state ridge B0; a nested, prespecified 12-feature ordered domain-summary ridge T1 appropriate to 73 development/106 development-plus-tuning events; and a 2–3 factor D1 only after frozen coverage, masked-reconstruction, five-seed stability, loading-concentration, convergence, and transition gates. Added exact fits, phase gates, outputs, uncertainty, controls, supportive/adverse/inconclusive criteria, resources, and claim-checkability. Reused and rechecked exactly three inherited byte-matched references; no outcome model was fitted.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "hcc",
+      "episode": 23,
+      "generation": 2,
+      "id": "candidate-f18e0cf55ce91212181bbe12",
+      "label": "H-f18e0cf5",
+      "operation": "evolve",
+      "operation_goal": "Produce a substantive, executable child that preserves the POD2 ordered-recovery question but separates the fully computable recorded-intervention estimand from the unavailable adjudicated unplanned-complication claim; make baseline and learned/mechanistic alternatives equally specific and statistically credible for 73 development/106 development+tuning events; define what the future solver must fit, exact outputs, phase gates, uncertainty, and honest interpretation.",
+      "operation_reason": "The highest-mu valid candidate has strong full-census endpoint evidence and complete references, but its hard pre-fit clinician gate conflicts with its explicitly computable recorded-intervention estimand, and its dynamic-factor alternative may be overambitious for the event count. The executed MVI branch is already outcome-opened and inconclusive, so further tuning there would be less informative.",
+      "parents": [
+        "candidate-5a653d81a87dc6e04e8501d2"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive execution/staging child preserving the frozen 49,157-transfer population, t0, outcomes, complete-case E0/P1/J1 and all-transfer P_A/Q0/Q1 estimands, thresholds, nulls, roles, learned alternative, exact MIMIC bindings, and K1-K3. Managed job job-020df18f817319dac51001ed passed all nine archive member/header checks and exactly reconstructed 49,157 transfers/40,014 subjects in 8.85 seconds. Outcome opening then stopped before pooled-test labels because the lineage attaches only receipts—not the frozen tensor (05e8ec...), split (4b01f0...), or any row-level E0/P/Z feature artifact—and managed compute cannot read ancestor workspace paths. A second defect was exposed: the inherited ridge grid/calibration algorithm was named but not enumerated. The child supplies a machine-readable mechanical lock, hard-gated transparent/routed fitter, executed source receipt, fixture smoke test, and explicit inconclusive_input_gate state. No J1/P1, Q1/Q0, null, or learned result is claimed.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "mimic",
+      "episode": 22,
+      "generation": 14,
+      "id": "candidate-0592bf11618bd8ef30891218",
+      "label": "H-0592bf11",
+      "operation": "evolve",
+      "operation_goal": "Execute or concretely stage the prespecified outcome-linked comparison for residual instability before ICU-to-ward transfer, prioritizing the transparent E0/P1/J1 and routed Q0/Q1 estimands, and resolve any result-contract or feasibility defect exposed by execution without changing the frozen scientific question.",
+      "operation_reason": "The top valid, reference-complete candidate has established cohort reconstruction, informative endpoint-fixed null feasibility, and a consequential observability repair. Its bounded progress review states further iteration is worthwhile specifically as outcome-linked execution rather than contract elaboration. This is the smallest check that can now distinguish ordered-value information from endpoint/process coupling and determine whether it materially improves the all-transfer queue.",
+      "parents": [
+        "candidate-c1379e05c1d8cb0aa956a6b8"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Reference-delivery-complete publication of the substantive execution/staging child. It preserves the frozen science, records the passed 49,157-transfer/40,014-subject managed source gate, exposes unavailable frozen tensor/split/E0-P-Z bytes before label opening, supplies hard-gated executable fitting and machine-readable mechanical locks, and assigns the honest inconclusive_input_gate state. The existing three-work receipt is attached under canonical filename key-references.json; K1-K3 source bytes remain hash-identical.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "mimic",
+      "episode": 22,
+      "generation": 14,
+      "id": "candidate-fbf352dbbbee9c5b004e2f0f",
+      "label": "H-fbf352db",
+      "operation": "evolve",
+      "operation_goal": "Execute or concretely stage the prespecified outcome-linked comparison for residual instability before ICU-to-ward transfer, prioritizing the transparent E0/P1/J1 and routed Q0/Q1 estimands, and resolve any result-contract or feasibility defect exposed by execution without changing the frozen scientific question.",
+      "operation_reason": "The top valid, reference-complete candidate has established cohort reconstruction, informative endpoint-fixed null feasibility, and a consequential observability repair. Its bounded progress review states further iteration is worthwhile specifically as outcome-linked execution rather than contract elaboration. This is the smallest check that can now distinguish ordered-value information from endpoint/process coupling and determine whether it materially improves the all-transfer queue.",
+      "parents": [
+        "candidate-c1379e05c1d8cb0aa956a6b8"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
     },
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -9978,7 +10073,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Substantive pre-acquisition estimand repair. Moves issuance from post-acquisition Q_j to the open P_j cutoff before the earliest current-bin source timestamp and removes every current-bin target, peer, destination, correction, and acquisition feature. An executed full-source audit exactly reproduces the 44-condition/132-specimen/774-bin/2,322-visit cohort, 1,411 windows and inherited 808/122 and 861/121 canaries, then constructs outcome-independent operational ledgers of 1,506 E_BC and 1,575 E_AD issuances. It retains 219/204 rows issued after an unadjudicated latent prior event, distinguishes 73/68 current events from 49/53 genuine next-bin opportunities, and preserves 394/418 X0 plus 85/92 X1 censored rows. B-pre, transported moments, and transported HSMM consume identical strictly prior information; event and delayed-row weighting, grouped uncertainty, controls, adverse/inconclusive rules, source/schema bindings, and conditional-on-observed-checkup limits are explicit. No association was fitted.",
@@ -9999,6 +10094,90 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Substantive crossed-map child testing the consequential allocation question left unresolved by reciprocal sibling calibration: strict zero-shot versus sibling-only versus evaluator-self early-EIS calibration on byte-identical frozen source models and evaluation rows. Adds DA and shrinkage-CA comparisons on identical 24-row outcome-free inputs/targets, explicit self-minus-sibling r/v contrasts, crossed role perturbation invariants, and fixed-cell adverse/interchangeable/specimen-required/inconclusive labels. An independent read-only audit verifies exact early availability and chronology and newly exposes raw endpoint overlap through c=55; preserves the c=50-99 primary estimand while requiring c=56-99 and c=100-119 persistence before any specimen-specific interpretation. Explicitly limits inference: two cells can test donor-map interchangeability for this archive but cannot identify family/specimen variance components or a temperature-family rule.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Zhang2020",
+      "episode": 35,
+      "generation": 23,
+      "id": "candidate-b2788741c66f9bead0d317dc",
+      "label": "H-b2788741",
+      "operation": "evolve",
+      "operation_goal": "Develop a compiler-ready child that tests whether the minimum outcome-free calibration information for held-35C temporal-placebo transfer is temperature-family-level or specimen-specific, comparing strict zero-shot, reciprocal sibling-only, and evaluator-self early-EIS calibration on identical frozen source models and mature/forward rows; preserve exact identity-blind parent estimand, chronology, adverse/inconclusive interpretations, and explicit baseline versus substantive learned alternative.",
+      "operation_reason": "Episode 34 established substantive feasibility for reciprocal sibling calibration, but its result cannot distinguish correction of a shared 35C coordinate shift from compensation for individual-cell offsets. That ambiguity changes the consequential measurement decision: characterize any sibling from the deployment family or characterize each deployed specimen. The parent is assessed valid and has verified early EIS availability; this is a substantive scientific child rather than a repair.",
+      "parents": [
+        "candidate-5f92a043dc5970296bf40413"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive compiler-ready child crossing each frozen 35C early-EIS donor map onto both target evaluators. Adds an exact matched comparison of strict zero-shot, reciprocal sibling-only, and evaluator-self calibration under byte-identical source models, mature c=50-99 and forward c=100-119 rows, with DA baseline and CA learned alternative. A new outcome-free audit verifies exact early chronology and exposes primitive overlap at c=50-55; specimen-specific interpretation now requires persistence on raw-disjoint c=56-99 and forward rows. Freezes crossed routing perturbations, practical self-minus-sibling margins, supportive/adverse/inconclusive and role-sensitive labels, exact bindings, outputs, evidence limits and CPU budget.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 35,
+      "generation": 23,
+      "id": "candidate-95dad5f18570b8c6a64ef26d",
+      "label": "H-95dad5f1",
+      "operation": "evolve",
+      "operation_goal": "Develop a compiler-ready child that tests whether the minimum outcome-free calibration information for held-35C temporal-placebo transfer is temperature-family-level or specimen-specific, comparing strict zero-shot, reciprocal sibling-only, and evaluator-self early-EIS calibration on identical frozen source models and mature/forward rows; preserve exact identity-blind parent estimand, chronology, adverse/inconclusive interpretations, and explicit baseline versus substantive learned alternative.",
+      "operation_reason": "Episode 34 established substantive feasibility for reciprocal sibling calibration, but its result cannot distinguish correction of a shared 35C coordinate shift from compensation for individual-cell offsets. That ambiguity changes the consequential measurement decision: characterize any sibling from the deployment family or characterize each deployed specimen. The parent is assessed valid and has verified early EIS availability; this is a substantive scientific child rather than a repair.",
+      "parents": [
+        "candidate-5f92a043dc5970296bf40413"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Targeted identifiability successor preserving the frozen 40-specimen/five-family Li2025 population, 200/166 origins, q30 G clock, measured future-only capacity slope, symmetric parent arms, and T/A sensitivities. A new source-only audit shows exact same-stage, same-recorded-date prior-history risk sets for 187/196 informative nominal and 153/162 conservative origins (2–7 donor identities; all 40 specimens/five families), while nine origins lack exact overlap and four t=1 origins have no prior innovation. The child adds leave-{i,h}-out risk-set matched identity swaps, a sealed same-day current-stage oracle, explicit partial-identification masses, matched CF-AR1/CF-FRR alternatives, clustered/refit uncertainty, and supportive/adverse/inconclusive mappings. Recorded date is explicitly only a day-level acquisition-batch proxy; no prognosis or mechanism was fitted.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Li2025",
+      "episode": 34,
+      "generation": 17,
+      "id": "candidate-3a050b8a51caeacc9f562b49",
+      "label": "H-3a050b8a",
+      "operation": "evolve",
+      "operation_goal": "Resolve whether the q30 own-versus-identity-broken capacity-slope contrast is identifiable after matching history freshness and acquisition chronology, while preserving the frozen 40-specimen Li2025 population, operational clock, measured outcome, matched baseline/functional alternative, and explicit supportive/adverse/inconclusive interpretations.",
+      "operation_reason": "The current highest-mu valid leader is scientifically mature and feasible, but its broken history is matched on stage, prior gap, prefix duration, and generated state—not explicitly on source-history age relative to the prediction landmark. With strongly batched/asynchronous acquisition dates, an own advantage could reflect fresher information rather than physical-specimen identity. This is a consequential remaining threat to the primary estimand, suitable for a targeted evidence-backed evolution rather than a restart.",
+      "parents": [
+        "candidate-332be071b9a6c1febba100ed"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Repairs source-history freshness/acquisition-calendar confounding without changing the frozen Li2025 40 specimens, five families, exact 200/166 origins, G/T/A clocks, future-only measured-capacity slope, AR1/FRR alternatives, specimen/date firewalls, uncertainty, or interpretation thresholds. An executed outcome-blind audit verifies exact joins of 40 summaries to 511 discharges, quantifies own age 18-38 d (median 23) versus all eligible broken age 1-252 d (median 88/90), and finds exact-age sources at 187/200 and 153/166 origins across all specimens/families. Freshness-first matching uses exact sources, bracket interpolation, or eight predeclared nearest one-sided sources under a hard 14-day caliper; support also requires the frozen exact-day masks, age-stratum/family stability, and failure of age-only/acquisition controls.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Li2025",
+      "episode": 34,
+      "generation": 17,
+      "id": "candidate-44e7b2279e1ad1818ac62148",
+      "label": "H-44e7b227",
+      "operation": "evolve",
+      "operation_goal": "Resolve whether the q30 own-versus-identity-broken capacity-slope contrast is identifiable after matching history freshness and acquisition chronology, while preserving the frozen 40-specimen Li2025 population, operational clock, measured outcome, matched baseline/functional alternative, and explicit supportive/adverse/inconclusive interpretations.",
+      "operation_reason": "The current highest-mu valid leader is scientifically mature and feasible, but its broken history is matched on stage, prior gap, prefix duration, and generated state—not explicitly on source-history age relative to the prediction landmark. With strongly batched/asynchronous acquisition dates, an own advantage could reflect fresher information rather than physical-specimen identity. This is a consequential remaining threat to the primary estimand, suitable for a targeted evidence-backed evolution rather than a restart.",
+      "parents": [
+        "candidate-332be071b9a6c1febba100ed"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
       "selected": false
     }
   ],
@@ -10007,8 +10186,8 @@
       "id": "ehr",
       "max_generation": 16,
       "metrics": {
-        "candidates": 138,
-        "compiled": 31,
+        "candidates": 142,
+        "compiled": 32,
         "public_releases": 0,
         "readiness_passed": 6,
         "reference_validated": 0,
@@ -10023,14 +10202,14 @@
     },
     {
       "id": "battery",
-      "max_generation": 22,
+      "max_generation": 23,
       "metrics": {
-        "candidates": 299,
+        "candidates": 303,
         "compiled": 50,
         "public_releases": 0,
         "readiness_passed": 24,
         "reference_validated": 0,
-        "selected": 101
+        "selected": 104
       },
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
@@ -10042,7 +10221,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "427fa1134eb407eaacef9ee338e5926b4c0955cf",
+  "registry_revision": "1fc433de5de27c8870c77465387cac68d8ab90d3",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
