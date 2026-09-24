@@ -541,7 +541,7 @@
       "qa_status": "compiled"
     }
   ],
-  "generated_at": "2026-09-24T04:22:20.165982Z",
+  "generated_at": "2026-09-24T04:32:54.451797Z",
   "lineage": [
     {
       "change_note": "Explicit operator proposal import; assessment required",
@@ -2012,7 +2012,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Repairs the fatal comparability objection with a measurement-first gate: removes ascertainment-dependent hospital selection; reviews every phenotype-negative episode and a probability sample of positives; estimates hospital-specific sensitivity, PPV, specificity and worst-case ambiguity bounds; uses trigger-suppressed duplicate ICU-clinician review; compares a direct survey-weighted baseline with a hierarchical multi-source hidden semi-Markov alternative; and prohibits recovery modeling unless both show ascertainment could induce at most a 3-point P90-P10 contrast. Preserves the 24-hour/14-day multistate recovery question, competing death/exit/reintubation/tracheostomy, exact eICU bindings, matched recovery models, and noncausal limits. Adds a bounded source-support audit and rechecked three frozen references.",
@@ -2295,6 +2295,48 @@
       "operation_reason": "The current ventilation and observation-process leaders are mature and await execution or external adjudication. Nighttime discharge is an unused clinically consequential seed with an identifiable temporal contrast, rich pre-discharge physiology, and linked hospital course; its key unresolved issue is whether night timing adds risk primarily among unstable patients or merely reflects selection and destination artifacts.",
       "parents": [
         "candidate-81cb66cd20f3a8991506a822"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive discordance child preserving the frozen 49,157-transfer population, t0, strict final-24h inputs, raw and adjudicated endpoints, pooled and locked approximate-era transport analyses, and exact bindings. Adds a clinically anchored current-state × recent-direction D1 model and a matched D0-logit-anchored two-stream TCN with cross-fitted development logits, process/value, detrending, order, and patient-value ablations. Pre-specifies RW/CI decision corrections, discordance-specific Brier interaction, fixed-capacity worklist movements, support gates, leakage traps, falsification, and bounded claims. Three inherited source excerpts were re-inspected and hashes/claim mappings rechecked. No predictor was fit.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "mimic",
+      "episode": 13,
+      "generation": 6,
+      "id": "candidate-8659684e80f2387293371b71",
+      "label": "H-8659684e",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive child that tests whether transported final-24-hour trajectory information changes risk specifically when the current endpoint state and recent direction disagree, versus the rival that apparent discordance is severity, measurement-process, or transfer-selection artifact. Preserve the frozen cohort, decision time, endpoint adjudication, pooled and temporal transport analyses, and exact data bindings unless evidence requires a scientific revision. Compare a simple prespecified discordance model with a matched learned value/process sequence alternative; define consequential decision outputs, falsification, support limits, and compute.",
+      "operation_reason": "The selected parent is valid and already resolves broad temporal/workflow transport. Its strongest remaining computable uncertainty is clinical meaning: an average trajectory gain may merely refine patients already high-risk at the endpoint, whereas the consequential claim is that direction/history changes ranking when the current state appears reassuring or concerning. This can be tested on the same frozen data and should distinguish endpoint-state sufficiency from trajectory-state discordance without claiming mechanism or intervention benefit.",
+      "parents": [
+        "candidate-9d37fa89858946cdf497fd17"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive outcome-ascertainment repair of the preoperative MVI trajectory leader. A 102.6-second full-source aggregate audit reconstructed 12,574 eligible 2014–2021 first resections, 11,405 same-encounter pathology-HCC cases, and 9,084 (79.65%) with one nonconflicting explicit grade; 30 were conflicting, 177 generic-ungraded, and 2,114 had no MVI text. Grade availability shifted from ~0.2% in 2014 and ~50% in 2015 to 96–98% in 2016–2020 and ~50% in 2021. Parent all-year and frozen split counts reconcile exactly. Temporal selection models failed and IPW showed a max stabilized weight of 63, so primary inference is restricted to explicitly graded cases; observed-covariate weighting and worst-case prevalence bounds are secondary, and transport requires pathology adjudication. Core outcome, cutoff, split, bindings, matched transparent/learned alternatives, falsification and claim limits are preserved. K1/K2 mappings were rechecked and K3 replaced with inspected partial-verification methods evidence.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "hcc",
+      "episode": 15,
+      "generation": 2,
+      "id": "candidate-01b979be671691fc6e0750d7",
+      "label": "H-01b979be",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive child of the preoperative MVI trajectory leader that audits and addresses selective ascertainment of explicit M0/M1/M2 pathology grading across the full eligible resection denominator. Preserve the clinical question, prediction cutoff, outcome definition, temporal split, exact bindings, matched baseline/learned alternatives, and honest claim limits unless executed evidence requires a scientific revision. Distinguish association within recorded-grade cases from transport to all resection candidates; define selection diagnostics, appropriate weighting/bounding or target-population restriction, falsification, and supportive/adverse/inconclusive interpretations. Recheck three key-reference mappings and solver deliverables.",
+      "operation_reason": "The leader has strong controls for value, chronology, observation intensity, index ambiguity and report leakage, but it does not yet establish that explicit MVI-grade availability is stable or representative. This can invalidate the clinical interpretation and temporal transport while leaving model computation correct. The next smallest decision-changing check is a full-denominator pathology/template ascertainment audit and a design repair conditional on its result.",
+      "parents": [
+        "candidate-c5d8f8dec6cef68a3cf42134"
       ],
       "project": "ehr",
       "public_title": null,
@@ -6091,6 +6133,132 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Preserves the exact eight-cell c=50-99 mature and c=100-119 no-refit P/C experiment, direct/exact_slope_v2 families, AD clock baseline, all parent labels, and non-rescue precedence. Adds a leakage-safe timing test of fresh U_X(c) against exactly matched stale U_X(c-1), with shared fold-local PCA and fixed localized representations, additive and dimension-matched replacement contrasts, finite-cell F5 inference, deterministic mature/forward labels, exact artifacts, and CPU limits. A new outcome-blind audit verifies the cycle-48 boundary and all 560 nonzero, nonidentical fresh/stale pairs without reading capacity outcomes or fitting a predictor.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Zhang2020",
+      "episode": 23,
+      "generation": 15,
+      "id": "candidate-ef061677633db2c898136954",
+      "label": "H-ef061677",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive, compiler-ready child that preserves the exact eight-cell c=50-99 mature and c=100-119 no-refit P/C experiment but tests a more consequential acquisition-timing uncertainty: whether the newly observed current IX-minus-V impedance update adds held-cell information beyond both the current V-to-IX clock and an exactly matched stale/prior impedance-update comparator. Keep a simple matched linear baseline and a scientifically substantive structured or learned alternative on identical folds and outcomes; bind exact files/tables/columns/joins, define current-versus-stale estimands, finite-cell inference, supportive/adverse/inconclusive outcomes, non-rescue precedence, deliverables, compute, and scientific adjudication limits.",
+      "operation_reason": "The top-ranked valid parent has been selected for three episodes and resolves clock-versus-spectrum attribution, while its own alternative record leaves acquisition timing unresolved. A positive current-spectrum result could reflect smooth autocorrelated longitudinal drift that a previous-cycle update already carries, not information uniquely gained by measuring at the current LX landmark. The existing fixed-band and PCA representations provide matched low-complexity alternatives; adding an outcome-blind stale control targets a consequential measurement decision without changing population or outcomes. The recent B4 and quadratic children are preserved as context but address frequency retention/complexity rather than this timing attribution.",
+      "parents": [
+        "candidate-7e16eefef612c8bd635ab829"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Preserves the exact eight-cell c=50-99 mature and c=100-119 no-refit P/C experiment while resolving acquisition timing. Defines the exactly matched stale update U_X(c-1)=X(c-1)-X(c-2), verifies cycle-48 availability and 560 stale/current pairs, and replaces an unsupported smooth-drift premise after an outcome-blind audit found anticorrelated consecutive updates. Adds clock-only, stale-only, current-only, and both arms with three conjunctive timing contrasts; a fixed-band linear ridge is primary and a same-coordinate squared/continuation-reversal ridge is non-rescuing. Freezes finite-cell inference, supportive/stale-sufficient/substitution-only/adverse/inconclusive outcomes, chronology/leakage hard failures, deliverables, resources, and adjudication limits.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 23,
+      "generation": 15,
+      "id": "candidate-8fdb6d7e2a6a98e6ebbf4f77",
+      "label": "H-8fdb6d7e",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive, compiler-ready child that preserves the exact eight-cell c=50-99 mature and c=100-119 no-refit P/C experiment but tests a more consequential acquisition-timing uncertainty: whether the newly observed current IX-minus-V impedance update adds held-cell information beyond both the current V-to-IX clock and an exactly matched stale/prior impedance-update comparator. Keep a simple matched linear baseline and a scientifically substantive structured or learned alternative on identical folds and outcomes; bind exact files/tables/columns/joins, define current-versus-stale estimands, finite-cell inference, supportive/adverse/inconclusive outcomes, non-rescue precedence, deliverables, compute, and scientific adjudication limits.",
+      "operation_reason": "The top-ranked valid parent has been selected for three episodes and resolves clock-versus-spectrum attribution, while its own alternative record leaves acquisition timing unresolved. A positive current-spectrum result could reflect smooth autocorrelated longitudinal drift that a previous-cycle update already carries, not information uniquely gained by measuring at the current LX landmark. The existing fixed-band and PCA representations provide matched low-complexity alternatives; adding an outcome-blind stale control targets a consequential measurement decision without changing population or outcomes. The recent B4 and quadratic children are preserved as context but address frequency retention/complexity rather than this timing attribution.",
+      "parents": [
+        "candidate-7e16eefef612c8bd635ab829"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Substantive event-geometry child preserving the parent’s exact KIT source/member/schema binding, 44-condition/132-specimen/774-bin/2,322-visit cohort, completion-time chronology, normalized 180-coordinate representation, target-only 3-pre/3-post endpoint and canonical 1,411-window/977-risk-row/59-first-event support. It changes the estimand from peer warning to whether already-adjudicated first-break directions contain condition-transferable SOC-by-frequency interaction beyond a broad across-SOC common shape and cross-fitted acquisition/correction shadow. A bounded full-archive audit reproduced all canaries and found median descriptive interaction energy 0.513 but diffuse block entropy, without fitting the hypothesis. The solver compares B-common, rank-matched unstructured low rank and nested smooth tensor interaction models using held SOC×frequency blocks, matched non-events, whole-condition uncertainty, SOC/frequency/artifact nulls and explicit supportive/adverse/inconclusive rules; mechanism and artifact-free claims remain unavailable.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "KIT_EIS",
+      "episode": 25,
+      "generation": 5,
+      "id": "candidate-baa45094baa2cac6c6f8d6bc",
+      "label": "H-baa45094",
+      "operation": "evolve",
+      "operation_goal": "Evolve the persistent-break branch into a falsifiable decomposition of whether target trajectory breaks are structured SOC–frequency events rather than broad common-mode or acquisition artifacts, while preserving exact chronology, canonical endpoint support, and nonmechanistic limits.",
+      "operation_reason": "The top-ranked parent establishes feasible persistent target-break incidence but not what spectral structure those events contain. Existing descendants address peer attribution and endpoint reproducibility; neither makes structured cross-SOC/frequency localization the primary scientific estimand. Resolving this determines whether alarms indicate reproducible electrochemical-state geometry worth follow-up or nonspecific corrected-EIS shifts.",
+      "parents": [
+        "candidate-7ef21eed58d5b8aeffb63d56"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive child that preserves the canonical 3-pre/3-post target-only endpoint but changes the scientific estimand from peer warning to decomposition of the break itself. An outcome-blind full-archive audit exactly reproduces 44/132/774/2,322, 1,411 windows, 143 positives and the 977-row/59-event risk set, and verifies complete 5-SOC x 18-frequency six-visit support for every event and both peers without inspecting coordinate effects. The frozen experiment compares a broad SOC-common deformation baseline with transparent ANOVA and low-rank dynamic SOC-frequency alternatives, using later-horizon prediction, matched non-event pseudo-cutoffs, SOC/phase/frequency/chronology nulls, artifact strata, peer reproducibility gates and explicit nonmechanistic supportive/adverse/inconclusive rules.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "KIT_EIS",
+      "episode": 25,
+      "generation": 5,
+      "id": "candidate-9492f3fe5d82e199c3ae5b9a",
+      "label": "H-9492f3fe",
+      "operation": "evolve",
+      "operation_goal": "Evolve the persistent-break branch into a falsifiable decomposition of whether target trajectory breaks are structured SOC–frequency events rather than broad common-mode or acquisition artifacts, while preserving exact chronology, canonical endpoint support, and nonmechanistic limits.",
+      "operation_reason": "The top-ranked parent establishes feasible persistent target-break incidence but not what spectral structure those events contain. Existing descendants address peer attribution and endpoint reproducibility; neither makes structured cross-SOC/frequency localization the primary scientific estimand. Resolving this determines whether alarms indicate reproducible electrochemical-state geometry worth follow-up or nonspecific corrected-EIS shifts.",
+      "parents": [
+        "candidate-7ef21eed58d5b8aeffb63d56"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive unseen-protocol transport child. Replaces specimen-LOSO action validation with four fully nested LOGO folds while preserving the exact 11-cell/66-table binding, independently sorted empirical-quantile displacement, frozen five-vertex rank-measure class, six target-matched edges, and parent-compatible action gate. Adds matched protocol-blind pooled and identifiable rate/periodicity-additive zero-shot families on the same prospective one-anchor task; forbids held-group outcomes, group interaction, and protocol-specific slopes. Separately costs and evaluates a one-fully-characterized-calibration-cell action strategy that may choose an anchor but cannot refit or translate predictions. Freezes group-balanced losses, action/target corroboration, complete 432 within-group bundle relinkings, simultaneous conditional stability, deletion/leakage/invariance gates, supportive/adverse/calibration-dependent/inconclusive branches, solver outputs, and a 16-CPU/64-GiB/no-GPU execution envelope. Claims are limited to the four archive schedule combinations, not protocol populations, mechanisms, causal factor effects, cost savings, or fifth-protocol transfer.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Oxford_path_dependence",
+      "episode": 26,
+      "generation": 10,
+      "id": "candidate-d37cddcaaf640596d38a9a98",
+      "label": "H-d37cddca",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive Oxford child that tests whether the parent's measure-robust single-MoL-SOC anchor decision transports to a wholly unseen protocol group, with a matched pooled baseline and scientifically useful additive or sparse-calibration alternative on the same prospective acquisition question. Preserve the exact row-order-invariant 11-cell/66-table binding, prevent held-group outcome leakage, define supportive/adverse/inconclusive transport conclusions, distinguish archive-conditional action transport from population or mechanistic claims, and freeze computable solver outputs and resource bounds.",
+      "operation_reason": "The top-ranked valid parent answers within-population target-matched anchor robustness but its strongest actionable claim is not tested under a held protocol combination. Prior lower-ranked branches developed LOGO and one-anchor recalibration logic for a different affine-to-shape estimand; their design lessons are transition context, not ancestry. This evolution addresses a decision-relevant scientific boundary rather than repeating representation sensitivities.",
+      "parents": [
+        "candidate-3643233d62a094d53caf5b68"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive unseen-protocol transport child: replaces specimen-LOSO action validation with four outer train-three/test-fourth LOGO trials and inner LOGO tuning, removes protocol/exact-peer predictors, and freezes a training-only minimax SOC action before any held-group MoL outcome is seen. Retains the parent's exact 11-cell/66-table row-order-invariant quantile-displacement binding, five-measure class, matched B0/location/smooth-shape models, target-matched corroboration, 432 joint-bundle linkage calibration, and strict action gate. Adds a scientifically distinct one-complete-cell scalar calibration arm to distinguish zero-shot failure from low-dimensional recoverability, explicit 2/3/3/3 and four-protocol identification limits, group-balanced uncertainty/influence, deterministic supportive/adverse/inconclusive outcomes, leakage traps, solver outputs, and bounded CPU resources. Defers the tempting 2x2 additive protocol extrapolator because nested LOGO leaves only two corners and cannot identify its main effects without a coding-dependent penalty.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Oxford_path_dependence",
+      "episode": 26,
+      "generation": 10,
+      "id": "candidate-c8bbe19311eaffbb63125237",
+      "label": "H-c8bbe193",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive Oxford child that tests whether the parent's measure-robust single-MoL-SOC anchor decision transports to a wholly unseen protocol group, with a matched pooled baseline and scientifically useful additive or sparse-calibration alternative on the same prospective acquisition question. Preserve the exact row-order-invariant 11-cell/66-table binding, prevent held-group outcome leakage, define supportive/adverse/inconclusive transport conclusions, distinguish archive-conditional action transport from population or mechanistic claims, and freeze computable solver outputs and resource bounds.",
+      "operation_reason": "The top-ranked valid parent answers within-population target-matched anchor robustness but its strongest actionable claim is not tested under a held protocol combination. Prior lower-ranked branches developed LOGO and one-anchor recalibration logic for a different affine-to-shape estimand; their design lessons are transition context, not ancestry. This evolution addresses a decision-relevant scientific boundary rather than repeating representation sensitivities.",
+      "parents": [
+        "candidate-3643233d62a094d53caf5b68"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
       "selected": false
     }
   ],
@@ -6099,12 +6267,12 @@
       "id": "ehr",
       "max_generation": 9,
       "metrics": {
-        "candidates": 87,
+        "candidates": 89,
         "compiled": 18,
         "public_releases": 0,
         "readiness_passed": 4,
         "reference_validated": 0,
-        "selected": 26
+        "selected": 27
       },
       "name": "EHR discovery",
       "runtime_version": "ehr-thin/0.7.0",
@@ -6117,12 +6285,12 @@
       "id": "battery",
       "max_generation": 15,
       "metrics": {
-        "candidates": 181,
+        "candidates": 187,
         "compiled": 31,
         "public_releases": 0,
         "readiness_passed": 15,
         "reference_validated": 0,
-        "selected": 62
+        "selected": 64
       },
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
@@ -6134,7 +6302,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "16721c2e46efd9ed42dfb6a48a81c952c5648374",
+  "registry_revision": "a133f7cb2d833d979be129a9f0d4f86e0f1ef288",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
