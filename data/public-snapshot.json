@@ -285,7 +285,7 @@
       "project": "ehr",
       "proposal": "# Fixed-combined-eGFR marker profiles and recorded renal transition with baseline-only observation-process repair\n\nStatus: prospective substantive child of candidate-d231a1dcdc20105c0b885f95. No marker-profile/outcome association has been fitted. The age-40–69 population, fixed-combined-eGFR P− versus P0 contrast, day-30 origin, competing N17/N18 first transitions, profile support, matching, censoring, adjudication, uncertainty and three inspected works are preserved. The scientific repair is to remove every post-baseline code-emission state from adjustment. All observation-process adjustment is frozen at index; post-index nonrenal emissions are outcomes or descriptive diagnostics only.\n\n## Supported evidence, unresolved claim, and advance\n\nThe strongest evidence currently supports only three bounded claims. Large eGFRcys-minus-eGFRcr differences are common in UK Biobank and have kidney and non-GFR predictors [K1]. Such differences carry frailty and broad adverse-outcome information in SPRINT, and a combined equation may lose some prognostic information [K2]. Administrative AKI coding can have incomplete and subgroup-dependent recognition relative to serum-creatinine KDIGO AKI [K3]. The parent’s outcome-only audit additionally observed different coding contexts for recorded N17-first and N18-first (12.0% versus 1.39% same-day principal-family confirmation and median prior-year nonrenal first-code counts 3 versus 0). That observation neither establishes a profile association nor identifies its cause.\n\nUnresolved hypothesis: among supported UKB adults aged 40–69 in the common day-30 N17/N18-free state, the profile P− (2021 combined eGFR G=90; eGFRcys−eGFRcr=−15), versus P0 (G=90; delta=0), has a larger adjusted 10-year relative-risk contrast for first recorded inpatient N17 than for first recorded inpatient N18, and this N17 selectivity is not merely a manifestation of pre-index coding/frailty burden or a similarly broad association with subsequent nonrenal code emission.\n\nLet theta17=log RR10(N17_first; P−/P0), theta18=log RR10(N18_first; P−/P0), and D=theta17−theta18. D remains the primary estimand. The child improves discrimination between two explanations without conditioning on an exposure-, prodrome-, or outcome-affected process:\n\n- renal-selective profile information predicts N17 more than N18 even after measured pre-index history, without a comparably strong broad nonrenal-code pattern;\n- broad morbidity/observation explains the apparent selectivity if the profile tracks pre-index code-history structure and subsequent nonrenal first-code emission as strongly as N17.\n\nThis is a descriptive standardized joint-marker profile contrast. “Robust to measured baseline history” is not “deconfounded,” and no result identifies an intervention, true GFR, renal reserve, biological AKI/CKD, treatment effect, or mechanism.\n\n## Exact UKB data binding and availability\n\nUse read-only snapshot d836bc0ca31c844b0462e1a293673818bfed046b8b0173bf360958169e8958a1. All sources are ordinary CSVs joined one-to-one on eid; no archive member is involved.\n\n- population: [private path]; datasets/ukb/table-38565c9e35e7cb6c.json; eid, sex 31-0.0, age 21022-0.0, linkage-loss field 191-0.0 (do not use until semantics are verified).\n- assessment: [private path]; datasets/ukb/table-901ef6c7ddce2d51.json; index 53-0.0, centre 54-0.0, grips 46-0.0/47-0.0, waist 48-0.0, BMI 21001-0.0, ethnicity 21000-0.0, smoking 20116-0.0, diabetes 2443-0.0, SBP 4080-0.0/.1, DBP 4079-0.0/.1.\n- biological_samples: [private path]; datasets/ukb/table-c6b666d905f3b02f.json; creatinine 30700-0.0, cystatin C 30720-0.0, CRP 30710-0.0, urine albumin 30500-0.0, urine creatinine 30510-0.0, glucose 30740-0.0, HbA1c 30750-0.0.\n- health_outcomes: [private path]; datasets/ukb/table-3cfae45e0905b0e3.json; all-position codes 41270-0.0…258 paired by array index with first inpatient diagnosis dates 41280-0.0…258; principal codes 41202-0.0…79 paired with 41262-0.0…79; death 40000-0.0/1.0; lifetime HESIN row count 41259-0.0 descriptive only.\n\nThe full catalog and direct headers confirm these fields: 259 all-position and 80 principal code/date pairs. The parent audit found 84 all-position and 35 principal codes without paired dates and no dates without codes; exclude unpaired entries from date-dependent features and report them. Normalize codes uppercase and alphanumeric.\n\nCritical measurement limit: 41270/41280 and 41202/41262 are first recorded code appearances, not all diagnoses, admissions, tests, or contacts. There are no record-level HESIN/HESIN_DIAG rows, admission identifiers/dates, provider/nation, outpatient kidney trajectories, or validated healthcare-contact process. Field 41259 includes post-outcome care and is prohibited from every adjustment/representation. Available fields can distinguish a renal profile association from *measured baseline first-code history and broad subsequent first-code emission*, but cannot separate biological N17 from unmeasured contact, testing, or coding propensity.\n\n## Population, clocks, profiles, outcomes, censoring\n\nPreserve the parent exactly: baseline instance 0; age 40–69; valid sex/index; positive creatinine/cystatin C; at least one grip; race-free 2021 eGFRcr >=60. Verify assay and urine units. Risk starts S=index+30 days. Exclude N17 on/before S and pre-S N18.5/N18.6/Z49/Z94.0/Z99.2/T86.1; the common state also excludes all N18* on/before S. A renal clinician must approve this operational set.\n\nGenerate participant-age/sex-specific raw P− and P0 profiles by inverting the inherited equations. Preserve the frozen windows: P− is 85<=G<=95 and −18<=delta<=−12; P0 is 85<=G<=95 and −3<=delta<=3. Require >=100 observations for each window in every sex × five-year-age stratum, both target points inside each observed stratum convex hull, and the inherited local raw-assay nearest-neighbour audit. The frozen 1:1 match is without replacement, exact on sex, five-year age band and assessment year, with |G_i−G_j|<=1.5 and a 0.2 pooled-SD propensity-logit caliper; its propensity model uses inherited nonprofile covariates, centre, continuous age and G. Reject matched inference if either group loses >50%, there are <1,000 pairs, or any prespecified covariate/G |SMD|>0.10. Repeat matching inside each participant bootstrap.\n\nThe baseline-only audit had all 24 profile/stratum hull checks pass, worst standardized raw-assay nearest-neighbour distance 0.0431, and 10,893 pairs with 54.9%/90.9% retention and max |SMD| 0.0352. Rerun unchanged after diagnosis restriction and corrected calendar eligibility before outcome modeling; failure is inconclusive, never permission to move G/delta or relax gates.\n\nThrough 10 years assign mutually exclusive N17-first, N18-first, same-day N17/N18 tie, death-first, death/renal same-day tie, or event-free/censored. Preserve both tie categories and inherited assignment/exclusion sensitivities.\n\nTen-year eligibility is S+10 calendar years <= verified administrative end C, not index+10 years. Use a participant-applicable C only if export-linked provider documentation validates it; otherwise censoring_status=unverified and every 10-year clinical inference is inconclusive. Observed maxima (diagnoses 2022-10-31; death 2022-12-19) cannot prove completeness. Do not treat missing 191 as continued observation.\n\n## Frozen pre-index observation profile\n\nAll features are calculated strictly before index, not before each outcome. The primary lookback is [index−5 calendar years, index); sensitivity windows are [index−2 years,index) and [index−10,index−5). Report left-history availability because the export begins yielding first appearances around 1995.\n\nTransparent baseline-history block, from valid non-N17/N18 41270/41280 pairs:\n\n1. log1p total distinct code first appearances in the five-year window;\n2. log1p counts in [index−5,index−2) and [index−2,index);\n3. number of represented ICD-10 chapters;\n4. days since the most recent nonrenal first appearance, with “none” explicit;\n5. proportion of all-position code/date pairs exactly matched by normalized code and date to a principal 41202/41262 pair, with “none” explicit;\n6. assessment calendar year.\n\nModel counts/recency with prespecified restricted splines. This is a baseline morbidity/coding summary, not admission intensity. Missing history may mean no recorded first appearance or unavailable history and is not proof of health.\n\nNo post-index or peri-event code count, state, principal confirmation, 41259 total, or future outcome is an adjustment variable. Prior-365-day and event-day counts remain labeled descriptive diagnostics. A post-index HMM may be reported only as an explicitly different mediation/prodrome sensitivity with no “adjusted/deconfounded” language; it is not required and cannot support the primary claim.\n\nBefore fitting renal outcomes, quantify the association of P− versus P0 with the *pre-index* scalar-history features and NMF scores using the frozen matched windows and standardized differences. This is a temporal negative-control-style comparison: an index assay profile cannot cause codes first recorded before index, so a strong broad association flags selection, stable frailty/morbidity, or persistent observation differences. It is not a true causal negative control because the biological marker profile may predate its measurement and genuinely relate to prior illness. Report it regardless of direction and never use a favorable balance result to claim absence of unmeasured observation bias.\n\n## Transparent primary analysis and falsification comparisons\n\nFit inherited cause-specific Cox transition models and standardized CIFs for all-position N17/N18/death/ties with splined G, delta, prespecified G×delta, inherited covariates, and the frozen pre-index observation block. Report theta17, theta18 and D with joint participant-bootstrap uncertainty (>=500 successful replicates; <90% convergence is inconclusive). The unchanged matched Aalen–Johansen corroboration adds the pre-index block to propensity balance and preserves exact strata, |G|<=1.5 pair caliper, propensity caliper, retention, pair-count and SMD gates.\n\nRepeat endpoint definition using principal-position N17/N18 as a directional ascertainment analysis. Estimate profile-by-endpoint principal-confirmation probabilities among all-position events using only baseline variables. Sparse principal N18 prevents treating this as co-primary.\n\nPrespecified post-index comparison outcomes use the same risk origin/horizon but are never covariates:\n\n- annual count/rate of new non-N17/N18 all-position code first appearances, analyzed by overdispersed recurrent-count regression with death and verified follow-up offset;\n- any newly first-recorded acute respiratory infection code J09–J18;\n- any newly first-recorded injury/poisoning code S00–T14;\n- remote negative-control-style families H60–H95 (ear/mastoid) and L00–L99 (skin).\n\nFor each family, report all-cohort “any new code” and family-free-at-S first-family-code risk; the latter uses its own explicitly reported risk subset and cannot replace the renal estimand. Report the number of eligible unseen codes at S because first-appearance counts mechanically deplete as history accumulates; do not call the resulting rate healthcare utilization. These are falsification/comparison outcomes, not guaranteed null controls: frailty may genuinely affect infection/injury and cystatin C may have nonrenal correlates. Their role is to detect a broad, non-N17-selective pattern. Freeze families before viewing any profile association; no replacement after results.\n\nDefine thetaB for broad nonrenal emission and thetaNC,j for each family. Bootstrap Qj=theta17−thetaNC,j on a compatible log-risk scale. Negative controls support specificity only if their estimates are precise enough; “not significant” is not evidence of absence.\n\n## Substantive learned alternative: baseline-history phenotypes\n\nThe scalar block loses diagnosis composition, recency-by-chapter structure, and principal/all-position mix. Learn an outcome-blind nonnegative matrix factorization (NMF) from pre-index history only.\n\nFreeze the inherited participant-level 70/15/15 train/validation/test split, stratified by sex and aggregate first-transition class, before profile associations are inspected. Construct participant rows and columns for normalized 3-character ICD-10 group × recency bin ([5,2), [2,0.5), [0.5,0) years) × position (all-position; same-code/same-date principal-confirmed). Entries are binary first appearance plus a separate count channel. Drop no rare column using outcome information; prespecify training-frequency >=50. Fit rank 8, 16, and 32 NMFs in training participants only, seeds 20260923–20260925. Select rank by validation Poisson reconstruction deviance plus stability (matched-component cosine >=0.80 across seeds), not renal prediction. Apply frozen loadings to validation/test and bootstrap refits; name components only after listing highest-loading codes, and never label them admissions or mechanisms.\n\nUse the learned component scores, rather than post-baseline states, in the identical cause-specific/discrete-time competing-risk model. Compare: inherited clinical covariates; transparent scalar-history block; NMF history; and scalar+NMF. Hold the P−/P0 estimand, population, horizon and endpoint definitions fixed. Evaluate held-out calibration-in-the-large/slope, endpoint/multiclass IPCW Brier, time-dependent AUC, and exact theta17/theta18/D across seeds. Scientific value comes from whether composition/recency reveals a shared morbidity/coding axis that the scalar count hides, not a small AUC gain.\n\nAs a multi-outcome stress test, use frozen NMF scores with the broad comparison outcomes. A component that predicts N17, injury/infection, remote-code families and total nonrenal emission similarly favors a shared history/observation interpretation; an N17 association orthogonal to broad components is compatible with, but does not prove, renal selectivity.\n\nA sequence transformer is deferred because each code has only a first-appearance date and NMF directly targets the unresolved baseline composition/recency question. Revisit only if NMF reconstruction/stability fails and a preregistered sequence model improves held-out baseline-history reconstruction—not merely renal AUC. A latent true-GFR model remains deferred absent measured GFR or validated repeat-assay errors.\n\n## Interpretation and falsification\n\nAll interpretations require verified censoring, units/code semantics, exact-risk-set support, convergence, calibrated held-out predictions and justified uncertainty.\n\nSupportive for *recorded* N17 selectivity robust to measured baseline history requires: theta17 lower 95% bound >0; D lower bound >0; matched D agrees; transparent and stable NMF baseline-only models preserve positive compatible D; principal-position estimates do not reverse; and broad/nonrenal Q comparisons do not show equally strong profile associations with adequate precision. This supports prioritizing encounter/laboratory-validated AKI study only.\n\nAdverse for the broad coding/frailty rival: D is precisely null/reversed after baseline-history adjustment; P− predicts broad nonrenal emission or multiple comparison families comparably to N17; NMF shows the apparent N17 signal concentrated on a shared high-burden component; or principal-position D reverses with incompatibility. Do not rescue by changing profiles, windows, code families, NMF rank, or outcomes.\n\nAdverse for acute selectivity but supportive of chronic/shared renal information: theta18>0 with D<=0, or both renal contrasts are similar with adequate precision. Adverse to both profile claims: both endpoint upper bounds <=0 with adequate precision.\n\nInconclusive: export provenance remains unverified; negative controls or principal N18 are too sparse; comparison estimates are imprecise; support/matching/calibration/stability fails; methods disagree without adjudication; ties alter direction; or intervals cannot distinguish patterns. An imprecise null does not refute the hypothesis.\n\nEven fully supportive results do not establish KDIGO AKI, biochemical CKD onset, complete contact opportunity, true GFR, renal reserve, mechanism, transportability, or benefit from marker-guided care. Those require record-level encounters, longitudinal creatinine/cystatin C/albuminuria, provider/nation/test data, renal clinician adjudication, external validation and ultimately an intervention study.\n\n## Deliverable, compute, and verifier gates\n\nA future solver must newly compute the corrected cohort/support rerun; pairing/release audit; frozen baseline-history matrix; transparent and NMF models; comparison outcomes; principal/matched analyses; joint uncertainty; and a rule-consistent conclusion. Required outputs: run-manifest.json, censoring-provenance.json, field-audit.json, cohort-flow.csv, profile-support.json, events-by-definition.json, baseline-history-audit.json, negative-control-results.json, matched-balance.csv, cox-results.json, nmf-history-results.json, transition-contrasts.json, conclusion.json, report.md.\n\nMeasured parent discovery cost: full outcome diagnostic used 8 CPUs, 65,536 MiB requested, no GPU, 953 seconds, observed RSS under about 2 GiB. A bounded baseline/control support audit that read no marker fields was attempted with 8 CPUs, 65,536 MiB and no GPU but reached its 1,800-second deadline without output; this is a preprocessing-performance warning, not scientific evidence or a failed comparison-support gate. A future solver should vectorize/sparsify the chapter/control construction and checkpoint intermediate long-form code data. Future solver envelope: <=16 CPUs, <=262,144 MiB, <=8 hours. Sparse NMF and survival/count models are CPU-feasible; one A100 may be used only after profiling sparse factorization/bootstraps, with no scientific credit for GPU use.\n\nThe verifier can check hashes/fields/pairing, strict pre-index feature timestamps, absence of 41259/post-index covariates, clocks/exclusions, frozen controls, NMF train isolation/rank selection, support/matching gates, computed uncertainty and conclusion-rule consistency. It cannot validate missing export provenance, equate code first appearances with encounters, adjudicate AKI/CKD, establish true filtration/mechanism, or infer clinical benefit.\n\n## Exactly three inspected works\n\n[K1] Chen DC et al. *Cystatin C- and Creatinine-based Estimated GFR Differences: Prevalence and Predictors in the UK Biobank.* Kidney Medicine. 2024;6:100796. doi:10.1016/j.xkme.2024.100796. Relevant full-text XML inspected.\n\n[K2] Potok OA et al. *The Difference Between Cystatin C- and Creatinine-Based Estimated GFR and Associations With Frailty and Adverse Outcomes: A Cohort Analysis of SPRINT.* American Journal of Kidney Diseases. 2020;76:765–774. doi:10.1053/j.ajkd.2020.05.017. Relevant PMC full text inspected.\n\n[K3] Zhang J et al. *Validation of Administrative Coding and Clinical Notes for Hospital-Acquired Acute Kidney Injury in Adults.* AMIA Annual Symposium Proceedings. 2021:1234–1243. PMID:35308921; PMCID:PMC8861756. Relevant full-text sections inspected; US single-system performance estimates are not transported to UKB.\n",
       "public_id": "ENV-4db09182",
-      "qa_status": "compiled"
+      "qa_status": "readiness_passed"
     },
     {
       "candidate_id": "candidate-a55f6605efa134eb3b52755f",
@@ -1025,7 +1025,7 @@
       "qa_status": "compiled"
     }
   ],
-  "generated_at": "2026-09-24T09:41:14.439949Z",
+  "generated_at": "2026-09-24T09:51:54.780029Z",
   "lineage": [
     {
       "change_note": "Explicit operator proposal import; assessment required",
@@ -2866,7 +2866,7 @@
       ],
       "project": "ehr",
       "public_title": null,
-      "readiness_passed": false,
+      "readiness_passed": true,
       "reference_validated": false,
       "selected": true
     },
@@ -4338,6 +4338,48 @@
       "operation_reason": "The highest-mu valid candidate is clinically important and compilation-ready, but its primary monitored-time burden treats observed bins as representative after a coverage threshold. The inherited 11.3-point creatinine-opportunity gradient addresses outcome observation, while state-dependent MAP observation can still bias the exposure itself. This is a substantive, decision-changing validity issue rather than a cosmetic repair; resolving it can preserve, narrow, or stop the main burden-versus-nadir claim.",
       "parents": [
         "candidate-5696996e3799f49eb883abf6"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": true
+    },
+    {
+      "change_note": "Targeted execution/reproducibility repair. Replaces the leader's impossible dependency on unavailable ancestor tensor/split bytes with a frozen source-derived rebuild contract whose identity is the immutable MIMIC-IV 3.1 source hash, catalog schema hashes, exact cohort/split/S invariants, feature and clock formulas, contract/code/environment derivation hashes, and new artifact byte receipts. Preserves the 49,157-transfer population, t0, raw/adjudicated 48-hour outcomes, deterministic outcome-by-destination subject split, E0/P1/J1/P_A estimands, 200 endpoint-fixed null refits, calibration-robust global/slot-fixed routed queue, temporal roles, materiality rules, and matched masked-TCN alternative. The inspected source gate remains the only executed data result; no outcome contrast was opened.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "mimic",
+      "episode": 24,
+      "generation": 16,
+      "id": "candidate-d8c73a6b6e824d37f420ee04",
+      "label": "H-d8c73a6b",
+      "operation": "evolve",
+      "operation_goal": "Resolve the leader's inconclusive_input_gate by deriving a reproducible, source-bound pre-outcome tensor/split/feature package or a scientifically equivalent frozen rebuild contract, then publish an execution-ready child that preserves the 49,157-transfer population, t0, outcomes, E0/P1/J1 estimand, endpoint-fixed nulls, routed queue interpretation, temporal roles, and matched learned alternative. Do not add further contract complexity unless it fixes a demonstrated execution or inference defect.",
+      "operation_reason": "The current leader has the highest mu and valid complete references, while repeated progress reviews state that further value depends on opening the prespecified outcome experiment. The exact source cohort is reconstructible, but the leader intentionally stops because inherited intermediate bytes are unavailable. A targeted source-derived repair is the smallest check that can change the next decision. The newer hyperlactatemia branch is scientifically valuable context but is lower ranked and has unresolved strict support/causal confounding; it remains parked rather than falsely crossed into this question.",
+      "parents": [
+        "candidate-065714ea9bf358904c71d6cf"
+      ],
+      "project": "ehr",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Targeted execution/reproducibility repair with canonical reference delivery. Replaces unavailable ancestor tensor/split byte prerequisites with a frozen source-derived rebuild contract and fail-closed validator while preserving the 49,157-transfer population, t0, outcomes, deterministic split, E0/P1/J1/P_A estimands, 200 endpoint-fixed nulls, calibration-robust routed queue, temporal roles, thresholds, and matched masked-TCN. The unchanged three-work receipt is attached as key-references.json with its byte-identical inspected excerpts.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "mimic",
+      "episode": 24,
+      "generation": 16,
+      "id": "candidate-41206e98d5251cf0edaafd6d",
+      "label": "H-41206e98",
+      "operation": "evolve",
+      "operation_goal": "Resolve the leader's inconclusive_input_gate by deriving a reproducible, source-bound pre-outcome tensor/split/feature package or a scientifically equivalent frozen rebuild contract, then publish an execution-ready child that preserves the 49,157-transfer population, t0, outcomes, E0/P1/J1 estimand, endpoint-fixed nulls, routed queue interpretation, temporal roles, and matched learned alternative. Do not add further contract complexity unless it fixes a demonstrated execution or inference defect.",
+      "operation_reason": "The current leader has the highest mu and valid complete references, while repeated progress reviews state that further value depends on opening the prespecified outcome experiment. The exact source cohort is reconstructible, but the leader intentionally stops because inherited intermediate bytes are unavailable. A targeted source-derived repair is the smallest check that can change the next decision. The newer hyperlactatemia branch is scientifically valuable context but is lower ranked and has unresolved strict support/causal confounding; it remains parked rather than falsely crossed into this question.",
+      "parents": [
+        "candidate-065714ea9bf358904c71d6cf"
       ],
       "project": "ehr",
       "public_title": null,
@@ -11286,7 +11328,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Publishable targeted crossover of the leading prospective Oxford ownership design with the independently sorted scalar-transport repair. Replaces the falsely capacity-matched 35-output kernel (whose response-space df is 35*trace(H)) with explicit weighted scalar regressions: one same-SOC slope versus three cross-SOC slopes per target, with hat traces/parameter counts 1 versus 3 and two honest incremental degrees. Preserves absolute ordinal MoL, exact 11-cell/66-table binding, whole-bundle 432 full refits, conditional off-target refits, frozen LOGO target-owner matrices, reverse/coupling/affine controls, tiny-cohort deletions and adverse/inconclusive gates. A predictor-only screen found six independent contrasts per LOSO fold and full-rank, well-conditioned three-column designs across all primary allocations, deletions and frozen LOGO fits; no MoL outcome or hypothesis result was computed.",
@@ -11393,7 +11435,7 @@
       "public_title": null,
       "readiness_passed": false,
       "reference_validated": false,
-      "selected": false
+      "selected": true
     },
     {
       "change_note": "Preserves the leader's exact eight-cell c=50-99 mature/c=100-119 frozen-forward P/C design, direct/exact_slope_v2 responses, family-blind folds, parent prefix experiment, and noncausal limits. Resolves the strongest remaining confound—unmatched decision landmarks—by separating equal-dimensional current-versus-stale prefix contrasts at observed K landmarks from a common-full-landmark 2x2 frontier over K={20,40,60} and d={4,8,12,16}. Adds disjoint two-cycle stale chords, explicit history-clock controls, equal-family ridge and source-family-DRO ridge on identical inputs, specimen-level uncertainty, monotonicity/hierarchy gates, deterministic shorter/less-frequent/both/neither/inconclusive labels, exact bindings, and verifier-ready artifacts. An outcome-blind EIS audit verifies all required cycles 32-119 and 560 origins with zero order/grid/lag violations; no capacity rows or outcome models were used.",
@@ -11415,6 +11457,132 @@
       "readiness_passed": false,
       "reference_validated": false,
       "selected": false
+    },
+    {
+      "change_note": "Substantive estimand/timing repair preserving the exact Li2025 40-specimen/five-family, 200/166-origin measured h=1-3 future-slope study. It makes q44-time held-specimen value versus q30 and a fair full-curve oracle primary without measured C[t], and moves C[t]-adjusted value to a secondary retrospective attribution estimand. A new outcome-blind source audit shows q44 requires median 1.3597 h beyond q30 and precedes active-discharge completion by median 4.1389 h on all frozen origins. The child disjoins q30 state, non-voltage acquisition, and q44 voltage blocks; replaces invalid target/horizon permutation null gates with paired held-specimen risk inference; and treats only X/Y-byte-invariant feature interventions as non-exact falsification diagnostics. Matched structured and functional models, explicit operational/state-proxy/residual/full-only outcomes, source bindings, compute, and adjudication limits are retained.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Li2025",
+      "episode": 38,
+      "generation": 13,
+      "id": "candidate-a9cf9fa9e75da4163655deb7",
+      "label": "H-a9cf9fa9",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive successor to the top-ranked observable q30–q44 innovation study by resolving the remaining operational-versus-retrospective estimand ambiguity and any invalid negative-control or timing logic, while preserving the exact Li2025 specimen population, measured future-capacity endpoint, source bindings, and evidence limits. Compare a transparent baseline with a scientifically substantive functional/dynamic alternative at matched support and define a consequential acquisition decision.",
+      "operation_reason": "The top-ranked parent has the broadest audited support and the clearest observable hypothesis, but its support gate requires retrospective measured C[t] even though q44 is an earlier acquisition landmark, and its target/horizon permutations may not be conditionally exchangeable. Recent target-linkage successors improve specificity on only 128/104 matched origins and rank lower. A targeted child can preserve the 200/166 design while separating an operational q44 incremental-value estimand from a retrospective attribution estimand and replacing non-exact nulls with falsification diagnostics.",
+      "parents": [
+        "candidate-61e14a611ca92eee170c309f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Preserves the leader's exact eight cells, c=50-99 mature and c=100-119 frozen-forward P/C experiment, response families, folds, margins, prefix basis, source-only support, and noncausal limits. Narrows the requested adaptive action question to a fixed, phase-aware cadence × prefix frontier because only six source specimens are available in the primary fold and repeated cycles cannot identify an outcome-trained policy. Compares skip and K=20/40/60 renewal arms at explicit d=2/4/6/8 schedules, forbids intermediate spectra under less-frequent schedules, separates full-history from repeatedly shortened schedules, uses observed IX duration only, and retains equal-family ridge versus source-family DRO. A new EIS-only audit verifies all 688 required IX sweeps through c-2d=34, chronology, grids, and duration ranges; no P/C model was fit.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 40,
+      "generation": 23,
+      "id": "candidate-2b25cdb920237eaf701c58dc",
+      "label": "H-2b25cdb9",
+      "operation": "evolve",
+      "operation_goal": "Develop a compiler-ready, falsifiable child that preserves the leader's eight-cell c=50-99 mature and c=100-119 frozen-forward P/C experiment but resolves the remaining acquisition-cadence question: compare current chronological IX prefixes with explicitly stale full/prefix spectra at fixed lags on matched decision landmarks, using leakage-safe timing/history controls, equal-specificity baseline and substantive alternative, specimen-level uncertainty, and exact source bindings. Establish whether shorter sweeps, less frequent sweeps, both, or neither retain archive-specific predictive information without claiming causal stopping value or mechanism.",
+      "operation_reason": "The current leader resolves within-sweep prefix sufficiency and challenges fresh IX with smooth-history forecasts, but it does not directly quantify the cadence frontier or compare a newly acquired short prefix against an older completed spectrum at matched information availability. This is the next consequential scientific/operational uncertainty supported by the same longitudinal archive. The prior fresh-versus-one-lag candidate is context because it establishes timing feasibility, not ancestry.",
+      "parents": [
+        "candidate-8df8aa9ada0303ad7bbd51f0"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive estimand-and-control repair preserving the exact Li2025 40-specimen, 200/166-origin measured h=1–3 future-slope design and source bindings. It separates the q44-operational acquisition estimand, which sees only resolved history and current samples through q44, from retrospective attribution conditional on completed measured C[t]. A new source-only audit freezes the exact 200-row origin manifest with all 166 conservative flags and shows q30→q44 costs median 81.58 minutes. Matched transparent-summary and equal-support functional spline models share rows, clocks, folds and <=8 added effective df. Nonexchangeable target/horizon/sibling/sign controls are removed; exact clock/provenance canaries, independently generated shadow curves and explicitly model-dependent specimen-cluster wild-bootstrap nulls replace them. Independent supportive, early-proxy, retrospective-only, adverse and inconclusive verdicts now map directly to a retain-q44 versus prospectively validate-q30-stop decision without mechanism or interruption-safety claims.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Li2025",
+      "episode": 38,
+      "generation": 13,
+      "id": "candidate-e3eadb04e0f536ccce2a3793",
+      "label": "H-e3eadb04",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive successor to the top-ranked observable q30–q44 innovation study by resolving the remaining operational-versus-retrospective estimand ambiguity and any invalid negative-control or timing logic, while preserving the exact Li2025 specimen population, measured future-capacity endpoint, source bindings, and evidence limits. Compare a transparent baseline with a scientifically substantive functional/dynamic alternative at matched support and define a consequential acquisition decision.",
+      "operation_reason": "The top-ranked parent has the broadest audited support and the clearest observable hypothesis, but its support gate requires retrospective measured C[t] even though q44 is an earlier acquisition landmark, and its target/horizon permutations may not be conditionally exchangeable. Recent target-linkage successors improve specificity on only 128/104 matched origins and rank lower. A targeted child can preserve the 200/166 design while separating an operational q44 incremental-value estimand from a retrospective attribution estimand and replacing non-exact nulls with falsification diagnostics.",
+      "parents": [
+        "candidate-61e14a611ca92eee170c309f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Substantive attribution child of the selected capacity-matched Oxford ownership experiment. Preserves the exact 11-specimen/66-table binding, independently sorted absolute-MoL endpoint, three-versus-three coefficient C/M capacity, specimen/group splits, 432 refitted and frozen ownership tests, reverse/coupling controls, uncertainty, and evidence limits. Promotes affine-versus-non-affine rank attribution from an audit to the estimand: exactly decomposes frozen parent gains, newly fits matched affine-only and rank-33-per-SOC quotient models, and separates raw non-affine amplitude from normalized shape direction under training-frozen energy gates. Adds explicit supportive, affine-confined, amplitude-only, adverse, no-advantage, low-energy, and inconclusive branches; no scientific outcome was computed.",
+      "compiled": false,
+      "created_role": "evolution",
+      "dataset": "Oxford_path_dependence",
+      "episode": 46,
+      "generation": 3,
+      "id": "candidate-30b9e44a3517e7e54b1e26d8",
+      "label": "H-30b9e44a",
+      "operation": "evolve",
+      "operation_goal": "Develop a scientifically substantive successor to the selected, capacity-matched Oxford BoL-to-MoL identity-transport experiment. Preserve the exact 11-specimen/66-table ordinal ReZ population and its evidence limits, but resolve one consequential remaining scientific or identification question rather than adding safeguards. Compare a transparent baseline with a matched substantive structured alternative, define newly computed deliverables, and retain adverse/inconclusive branches.",
+      "operation_reason": "Episode 45 selected candidate-0150 after repairing model-capacity comparability. The older schedule leader has higher historical mu but its protocol interaction is exactly aliased with corner-specific group effects, as established by candidate-136 and the prior selection. The best next work is therefore an evidence-bound evolution of the selected ownership/transport prerequisite, informed by earlier affine-quotient and sparse-panel branches.",
+      "parents": [
+        "candidate-0150bdbe71ccaa7853ff1a73"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Publishes the repaired fixed cadence × prefix frontier directly under the assigned scientific parent. Preserves the frozen eight-cell c=50-99/c=100-119 P/C design, exact bindings, folds, margins, estimators, specimen uncertainty, and noncausal limits. Rejects adaptive policy identification with six primary source specimens. Compares skip and K=20/40/60 at d=2/4/6/8, with no intermediate spectra; adds disjoint SD/SKIPD/DISJOINT controls so shared-middle noise cannot support a cadence claim. The EIS-only audit verifies all 752 required IX sweeps through c-3d=26, chronology, grids, and observed durations; no P/C model was fit.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Zhang2020",
+      "episode": 40,
+      "generation": 23,
+      "id": "candidate-d69378a547039562edaca3c0",
+      "label": "H-d69378a5",
+      "operation": "evolve",
+      "operation_goal": "Develop a compiler-ready, falsifiable child that preserves the leader's eight-cell c=50-99 mature and c=100-119 frozen-forward P/C experiment but resolves the remaining acquisition-cadence question: compare current chronological IX prefixes with explicitly stale full/prefix spectra at fixed lags on matched decision landmarks, using leakage-safe timing/history controls, equal-specificity baseline and substantive alternative, specimen-level uncertainty, and exact source bindings. Establish whether shorter sweeps, less frequent sweeps, both, or neither retain archive-specific predictive information without claiming causal stopping value or mechanism.",
+      "operation_reason": "The current leader resolves within-sweep prefix sufficiency and challenges fresh IX with smooth-history forecasts, but it does not directly quantify the cadence frontier or compare a newly acquired short prefix against an older completed spectrum at matched information availability. This is the next consequential scientific/operational uncertainty supported by the same longitudinal archive. The prior fresh-versus-one-lag candidate is context because it establishes timing feasibility, not ancestry.",
+      "parents": [
+        "candidate-8df8aa9ada0303ad7bbd51f0"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
+    },
+    {
+      "change_note": "Targeted clock/estimand successor preserving the exact Li2025 40-specimen/five-family population, 200/166 origins, q30-q44 observed innovation, measured h=1/2/3 future-capacity endpoint, source bindings, and evidence limits. A new outcome-value-blind source audit reproduces the frozen supports and shows q30-to-q44 costs median 1.360 h while measured C[t] remains unavailable for at least 2.502 h in every origin (median 4.139 h). The child therefore makes q44-versus-q30 operational acquisition value the primary G-clock estimand and measured-C[t] conditional attribution a separate post-completion T-clock estimand, with non-joint interpretations. It replaces non-exchangeable target/horizon/sign permutations with synthetic independent matched-rank known-null calibration and labels sibling/lag substitutions as specificity diagnostics. Matched structured and functional models, acquisition decision, falsification, deliverables, and adjudication limits are explicit.",
+      "compiled": false,
+      "created_role": "generation",
+      "dataset": "Li2025",
+      "episode": 38,
+      "generation": 13,
+      "id": "candidate-07ca1655ca6e07c8d16974c2",
+      "label": "H-07ca1655",
+      "operation": "evolve",
+      "operation_goal": "Develop a substantive successor to the top-ranked observable q30–q44 innovation study by resolving the remaining operational-versus-retrospective estimand ambiguity and any invalid negative-control or timing logic, while preserving the exact Li2025 specimen population, measured future-capacity endpoint, source bindings, and evidence limits. Compare a transparent baseline with a scientifically substantive functional/dynamic alternative at matched support and define a consequential acquisition decision.",
+      "operation_reason": "The top-ranked parent has the broadest audited support and the clearest observable hypothesis, but its support gate requires retrospective measured C[t] even though q44 is an earlier acquisition landmark, and its target/horizon permutations may not be conditionally exchangeable. Recent target-linkage successors improve specificity on only 128/104 matched origins and rank lower. A targeted child can preserve the 200/166 design while separating an operational q44 incremental-value estimand from a retrospective attribution estimand and replacing non-exact nulls with falsification diagnostics.",
+      "parents": [
+        "candidate-61e14a611ca92eee170c309f"
+      ],
+      "project": "battery",
+      "public_title": null,
+      "readiness_passed": false,
+      "reference_validated": false,
+      "selected": false
     }
   ],
   "projects": [
@@ -11422,12 +11590,12 @@
       "id": "ehr",
       "max_generation": 17,
       "metrics": {
-        "candidates": 161,
+        "candidates": 163,
         "compiled": 36,
         "public_releases": 0,
-        "readiness_passed": 6,
+        "readiness_passed": 7,
         "reference_validated": 0,
-        "selected": 63
+        "selected": 64
       },
       "name": "EHR discovery",
       "runtime_version": "ehr-thin/0.7.0",
@@ -11440,12 +11608,12 @@
       "id": "battery",
       "max_generation": 25,
       "metrics": {
-        "candidates": 337,
+        "candidates": 343,
         "compiled": 57,
         "public_releases": 0,
         "readiness_passed": 27,
         "reference_validated": 0,
-        "selected": 115
+        "selected": 117
       },
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
@@ -11457,7 +11625,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "508507b825aea510f9f9c56371a4bab46e14f22d",
+  "registry_revision": "e37c7a19e40964b41b3903b126286199edfd1c0d",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
