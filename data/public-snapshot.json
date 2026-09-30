@@ -959,7 +959,7 @@
       "qa_status": "readiness_passed"
     }
   ],
-  "generated_at": "2026-09-30T16:04:35.234370Z",
+  "generated_at": "2026-09-30T16:15:16.135201Z",
   "lineage": [
     {
       "change_note": "Explicit operator proposal import; assessment required",
@@ -11834,7 +11834,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "ad6c7069e4e8efb1e51e1464a98683e82f42057d",
+  "registry_revision": "56fb6c6e570ba213dcdced22f88532924f0c1f04",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
