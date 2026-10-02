@@ -552,7 +552,7 @@
       "qa_status": "readiness_passed"
     }
   ],
-  "generated_at": "2026-10-02T01:54:37.690880Z",
+  "generated_at": "2026-10-02T01:56:08.196533Z",
   "lineage": [
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -7937,7 +7937,7 @@
       "name": "EHR discovery",
       "runtime_version": "ehr-thin/0.8.0",
       "short_name": "EHR",
-      "status_label": "Queued",
+      "status_label": "In progress",
       "status_tone": "good",
       "subtitle": "Clinical hypothesis discovery"
     },
@@ -7962,7 +7962,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "f665e033581e2360609e8c8bf375dfea5e26017a",
+  "registry_revision": "017679af839914b42e4de1bc23329a42845b8ecf",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
