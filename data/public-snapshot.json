@@ -552,7 +552,7 @@
       "qa_status": "readiness_passed"
     }
   ],
-  "generated_at": "2026-10-02T09:42:44.112401Z",
+  "generated_at": "2026-10-02T09:48:14.736359Z",
   "lineage": [
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -7934,10 +7934,10 @@
         "reference_validated": 0,
         "selected": 0
       },
-      "name": "EHR discovery",
+      "name": "EHR discovery · GPT-5.6 Luna",
       "runtime_version": "ehr-thin/0.8.0",
       "short_name": "EHR",
-      "status_label": "Queued",
+      "status_label": "In progress",
       "status_tone": "good",
       "subtitle": "Clinical hypothesis discovery"
     },
@@ -7955,14 +7955,14 @@
       "name": "Battery discovery",
       "runtime_version": "battery-discovery/0.7.x",
       "short_name": "Battery",
-      "status_label": "Up to date",
+      "status_label": "Provider blocked",
       "status_tone": "attention",
       "subtitle": "Materials and diagnostic discovery"
     }
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "12d05e8041f1a2d517fca26c98088e723cc12389",
+  "registry_revision": "8c0f7cdc4f83fa8fd1ef2d5d4a5ee9058d57e52f",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
