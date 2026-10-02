@@ -552,7 +552,7 @@
       "qa_status": "readiness_passed"
     }
   ],
-  "generated_at": "2026-10-02T10:46:42.270924Z",
+  "generated_at": "2026-10-02T10:57:19.329417Z",
   "lineage": [
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -7927,12 +7927,12 @@
       "id": "ehr",
       "max_generation": 5,
       "metrics": {
-        "candidates": 86,
-        "compiled": 9,
+        "candidates": 94,
+        "compiled": 11,
         "public_releases": 0,
         "readiness_passed": 0,
         "reference_validated": 0,
-        "selected": 11
+        "selected": 13
       },
       "name": "EHR discovery · GPT-5.6 Luna",
       "runtime_version": "ehr-thin/0.8.0",
@@ -7962,7 +7962,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "5e11835992c7a56f7fb8aa46896821554f8672c9",
+  "registry_revision": "5fde427d4f5971b1b121608cfe1dc6d75954fd93",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
