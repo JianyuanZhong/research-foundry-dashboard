@@ -32,7 +32,7 @@ jobs:
           printf '%s\n' "$SNAPSHOT_KEY" > "$RUNNER_TEMP/snapshot-key"
           printf '%s\n' "$SNAPSHOT_HOSTS" > "$RUNNER_TEMP/snapshot-hosts"
           trap 'rm -f "$RUNNER_TEMP/snapshot-key"' EXIT
-          if timeout 90 ssh -i "$RUNNER_TEMP/snapshot-key" -p 33388 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/snapshot-hosts" -o ConnectTimeout=15 root@115.190.98.251 snapshot > "$RUNNER_TEMP/snapshot.json"; then
+          if timeout 90 ssh -C -o "ProxyCommand=python3 scripts/snapshot_transport.py" -i "$RUNNER_TEMP/snapshot-key" -p 33388 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/snapshot-hosts" -o ConnectTimeout=15 root@115.190.98.251 snapshot > "$RUNNER_TEMP/snapshot.json"; then
             python3 - "$RUNNER_TEMP/snapshot.json" <<'PY'
           import json,sys
           from pathlib import Path
