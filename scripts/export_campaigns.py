@@ -3,6 +3,7 @@ import json,time,urllib.request,urllib.error,sys,re
 from pathlib import Path
 CURRENT='novita-luna56-native36-20261003'
 LEGACY='ehr-luna56-high-20261002'
+ACCOUNT='codex-account-gpt6-luna-20261003'
 DOMAINS=['clinical_population','therapeutic_targets','disease_mechanisms','population_multiomics']
 NAMES=['Clinical & Population Health Research','Therapeutic Target Prioritization','Disease Mechanisms & Pathway Hypotheses','Population Multi-omics & Disease Targets']
 DATASETS=set(DOMAINS+['hcc','mimic','eicu','ukb'])
@@ -12,10 +13,10 @@ def ident(v):
  return v
 def number(v):return v if type(v) in (int,float) else 0
 def state(v):return v if v in ['running','queued','prepared','settled','succeeded','failed','cancelled','partial','provider_paused','operator_paused','provider_or_operator_paused','pilot_review','generation_budget_paused','budget_accounting_unavailable','selected','incomplete','no_selection','valid','repairable','invalid','pending'] else 'pending'
-def project(x,legacy=False):
- expected=LEGACY if legacy else CURRENT
+def project(x,legacy=False,expected=None):
+ expected=expected or (LEGACY if legacy else CURRENT)
  if not x['run']['label'].startswith(expected):raise ValueError('Unexpected campaign')
- out={'schema':'experiment-dashboard-v1','collected_at':number(x['collected_at']),'domain':'legacy' if legacy else x['domain'],'run':{'label':expected,'model':x['run']['model'] if x['run']['model'] in ['pa/gpt-5.6-luna','gpt-5.6-luna'] else 'GPT-5.6 Luna','provider':'Polo (resumed)' if x['run']['model']=='gpt-5.6-luna' else 'Novita','state':'archived' if legacy else state(x['run']['state']),'target':200 if legacy else 20,'clock':{'start':number(x['run'].get('clock',{}).get('start'))}},'islands':[],'episodes':[],'candidates':[],'workers':[],'jobs':[]}
+ out={'schema':'experiment-dashboard-v1','collected_at':number(x['collected_at']),'domain':'legacy' if legacy else x['domain'],'run':{'label':expected,'model':x['run']['model'] if x['run']['model'] in ['pa/gpt-5.6-luna','gpt-5.6-luna','gpt-6-luna'] else 'GPT-5.6 Luna','provider':'Codex account via CLIProxyAPI' if x['run']['model']=='gpt-6-luna' else 'Polo (resumed)' if x['run']['model']=='gpt-5.6-luna' else 'Novita','state':'archived' if legacy else state(x['run']['state']),'target':200 if legacy else 20,'clock':{'start':number(x['run'].get('clock',{}).get('start'))}},'islands':[],'episodes':[],'candidates':[],'workers':[],'jobs':[]}
  def identity(row,keys):
   z={k:ident(row.get(k)) for k in keys}
   for k in ['dataset','source_dataset']:
@@ -48,24 +49,29 @@ def export(out):
  root=Path(out);root.mkdir(parents=True,exist_ok=True)
  oldpath=root/'legacy.json'
  old=json.loads(oldpath.read_text()) if oldpath.exists() else project(get('/api/campaign?run=legacy'),True)
- new={'schema':'four-domain-dashboard-v1','trial_label':CURRENT,'domains':[],'campaign':{'state':state(reg['campaign'].get('state')),'closed':number(reg['campaign'].get('closed')),'target':80},'historical_available':True,'previous_trial_available':False,'budget':None,'publication':{'generated_at':time.time(),'content_policy':'Structural progress only; scientific text withheld pending review'}}
- for d in reg['domains']:
-  i=DOMAINS.index(d['id']);s=project(d['snapshot'])
-  if (reg.get('budget') or {}).get('provider')=='novita_mac':s['run']['provider']='Novita via Mac relay'
-  new['domains'].append({'id':DOMAINS[i],'number':i+1,'name':NAMES[i],'target':20,'run':s['run'],'snapshot':s,**{k:number(d[k]) for k in ['closed','generated','workers']}})
+ def registry_public(reg,label):
+  if reg['trial_label']!=label:raise ValueError('Unexpected campaign registry')
+  new={'schema':'four-domain-dashboard-v1','trial_label':label,'domains':[],'campaign':{'state':state(reg['campaign'].get('state')),'closed':number(reg['campaign'].get('closed')),'target':80},'historical_available':True,'previous_trial_available':False,'budget':None,'publication':{'generated_at':time.time(),'content_policy':'Public progress and authorized environment documents'}}
+  for d in reg['domains']:
+   i=DOMAINS.index(d['id']);s=project(d['snapshot'],expected=label)
+   if (reg.get('budget') or {}).get('provider')=='novita_mac':s['run']['provider']='Novita via Mac relay'
+   new['domains'].append({'id':DOMAINS[i],'number':i+1,'name':NAMES[i],'target':20,'run':s['run'],'snapshot':s,**{k:number(d[k]) for k in ['closed','generated','workers']}})
+  return new
+ new=registry_public(reg,CURRENT)
+ account=registry_public(get('/api/domains?run=account'),ACCOUNT)
  # User authorized publication of proposal and model-instruction panels.
  from public_documents import detail
  envpath=root/'environments.json'
  previous=json.loads(envpath.read_text()) if envpath.exists() else {}
  documents={}
- for run,snapshots in [('current',[d['snapshot'] for d in new['domains']]),('legacy',[old])]:
+ for run,snapshots in [('current',[d['snapshot'] for d in new['domains']]),('legacy',[old]),('account',[d['snapshot'] for d in account['domains']])]:
   for snapshot in snapshots:
    for job in snapshot['jobs']:
     if job['operation']!='compile':continue
     key=run+':'+job['id'];cached=previous.get(key)
     if cached and cached.get('state')=='succeeded':documents[key]=cached
     else:
-     domain=snapshot['domain'] if run=='current' else 'clinical_population'
+     domain=snapshot['domain'] if run!='legacy' else 'clinical_population'
      try:documents[key]=detail(get('/api/environment/'+job['id']+'?domain='+domain+'&run='+run))
      except (ValueError,urllib.error.HTTPError):documents[key]={'id':job['id'],'candidate_id':job['candidate_id'],'dataset':job['dataset'],'state':job['state'],'proposal':None,'instructions':None,'document_status':'Document requires publication review'}
     text=documents[key].get('proposal') or ''
@@ -74,6 +80,6 @@ def export(out):
      for candidate in snapshot['candidates']:
       if candidate['id']==job['candidate_id']:candidate['title']=title;candidate['public_document']=True
  new['publication']['content_policy']='Public progress plus user-authorized scientific proposals and model instructions; source rows, credentials, raw traces and packages excluded'
- for name,obj in [('environments.json',documents),('current.json',new),('legacy.json',old)]:
+ for name,obj in [('environments.json',documents),('current.json',new),('legacy.json',old),('account.json',account)]:
   p=root/name;tmp=p.with_suffix('.tmp');tmp.write_text(json.dumps(obj,separators=(',',':')));tmp.replace(p)
 if __name__=='__main__':export(sys.argv[1])
