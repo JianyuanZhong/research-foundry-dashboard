@@ -51,6 +51,7 @@ def export(out):
  new={'schema':'four-domain-dashboard-v1','trial_label':CURRENT,'domains':[],'campaign':{'state':state(reg['campaign'].get('state')),'closed':number(reg['campaign'].get('closed')),'target':80},'historical_available':True,'previous_trial_available':False,'budget':None,'publication':{'generated_at':time.time(),'content_policy':'Structural progress only; scientific text withheld pending review'}}
  for d in reg['domains']:
   i=DOMAINS.index(d['id']);s=project(d['snapshot'])
+  if (reg.get('budget') or {}).get('provider')=='novita_mac':s['run']['provider']='Novita via Mac relay'
   new['domains'].append({'id':DOMAINS[i],'number':i+1,'name':NAMES[i],'target':20,'run':s['run'],'snapshot':s,**{k:number(d[k]) for k in ['closed','generated','workers']}})
  # User authorized publication of proposal and model-instruction panels.
  from public_documents import detail
