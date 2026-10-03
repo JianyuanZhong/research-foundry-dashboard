@@ -15,7 +15,7 @@
   const root=document.querySelector('#rolling-root');if(!root||!snapshot)return;
   ids=$('#run-mode').value==='legacy'?['hcc','mimic','eicu','ukb']:lifeDomains.map(d=>d.id);
   const d=snapshot,id=ids[index],island=d.islands.find(i=>i.id===id)||{},cs=d.candidates.filter(c=>!c.imported_seed),local=cs.filter(c=>c.dataset===id),js=d.jobs.filter(j=>j.dataset===id),workers=d.workers.filter(w=>w.dataset===id),closed=d.episodes.filter(e=>e.closed_at),start=d.run.clock?.start||Math.min(...cs.map(c=>c.created_at),d.collected_at),end=d.collected_at;
-  const stale=Date.now()/1000-end>1200,generated=cs.length,compiled=count(d.jobs,'compile','succeeded'),active=d.jobs.filter(j=>j.state==='running').length;
+  const stale=d.run.state!=='archived'&&Date.now()/1000-end>1200,generated=cs.length,compiled=count(d.jobs,'compile','succeeded'),active=d.jobs.filter(j=>j.state==='running').length;
   const events=[...local.map(c=>({at:c.created_at,title:operationLabel(c)+' hypothesis saved',body:c.title,kind:'Hypothesis'})),...d.episodes.filter(e=>e.dataset===id&&e.closed_at).map(e=>({at:e.closed_at,title:`Episode ${e.ordinal+1} closed`,body:e.outcome||'Outcome recorded',kind:'Episode'}))].sort((a,b)=>b.at-a.at).slice(0,7);
   const roleCounts={};for(const w of workers)roleCounts[w.role]=(roleCounts[w.role]||0)+1;
   root.innerHTML=`<div class="roll-heading"><div><p class="eyebrow">RESEARCH FOUNDRY / LIVE OBSERVATORY</p><h2>Watch scientific ideas evolve.</h2><p>${esc(d.run.model)} · ${esc(d.run.label)}</p></div><div class="roll-health"><span class="status-dot"></span>${stale?'Data stale':esc(stateLabel(d.run.state))}<small>Snapshot ${time(end)} · <span id="roll-age">${Math.round(Date.now()/1000-end)}</span>s ago</small></div></div>
