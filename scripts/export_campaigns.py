@@ -1,5 +1,5 @@
 """Allowlisted, text-free public projection of exactly two campaign snapshots."""
-import json,time,urllib.request,urllib.error,sys,re
+import json,time,urllib.request,urllib.error,sys,re,sqlite3
 from pathlib import Path
 CURRENT='novita-luna56-native36-20261003'
 LEGACY='ehr-luna56-high-20261002'
@@ -35,6 +35,12 @@ def project(x,legacy=False,expected=None):
   z['operation']=c.get('operation') if c.get('operation') in ['seed','generation','evolve','evolution','repair','crossover','restart'] else 'unrecorded'
   z['title']=('Seed ' if z['imported_seed'] else 'Hypothesis ')+c['id'][-8:]
   z['operation_reason']='Scientific text is not included in this public release.';z['operation_goal']=''
+  if expected in [CURRENT,ACCOUNT] and not z['imported_seed']:
+   from public_documents import public_document
+   try:
+    z['operation_reason']=public_document(c.get('operation_reason')) or z['operation_reason']
+    z['operation_goal']=public_document(c.get('operation_goal')) or ''
+   except ValueError:pass
   out['candidates'].append(z)
  for w in ([] if legacy else x['workers']):
   out['workers'].append({**identity(w,['id','episode_id']),'role':w.get('role') if w.get('role') in ['lead','generation','evolution','critique','compiler','progress'] else 'research','work_seq':number(w.get('work_seq'))})
@@ -49,11 +55,30 @@ def export(out):
  root=Path(out);root.mkdir(parents=True,exist_ok=True)
  oldpath=root/'legacy.json'
  old=json.loads(oldpath.read_text()) if oldpath.exists() else project(get('/api/campaign?run=legacy'),True)
+ def candidate_text(snapshot,label):
+  if label not in [CURRENT,ACCOUNT]:return
+  from public_documents import public_document
+  release=Path('/data_storage/yl_test/zjy/ehr-hypothesis-harness-agent-led/releases/life-science-v1-20261003/trials')/label
+  domain=snapshot['domain'];assert domain in DOMAINS
+  dbpath=release/'domains'/domain/'private/run/state.sqlite'
+  with sqlite3.connect(dbpath.as_uri()+'?mode=ro',uri=True,timeout=5) as db:
+   db.execute('PRAGMA query_only=ON')
+   records={r[0]:(r[1],r[2]) for r in db.execute('SELECT id,proposal,change_note FROM candidates WHERE origin IS NULL')}
+  for item in snapshot['candidates']:
+   if item['imported_seed'] or item['id'] not in records:continue
+   proposal,change=records[item['id']]
+   try:
+    approved=public_document(proposal);reason=public_document(change or item.get('operation_reason'));goal=public_document(item.get('operation_goal'))
+   except ValueError:continue
+   if not approved:continue
+   heading=next((line.strip().lstrip('#').strip() for line in approved.splitlines() if line.strip()),'Scientific hypothesis')[:180]
+   detail=next((line.strip() for line in approved.splitlines() if len(line.strip())>80 and not line.lstrip().startswith('#')),approved[:500])[:650]
+   item.update(title=heading+' · '+item['id'][-8:],operation_reason=item.get('operation_reason') if item.get('operation_reason')!='Scientific text is not included in this public release.' else (reason or 'See the recorded proposal.'),operation_goal=goal or '',proposal_excerpt=detail,public_proposal=approved,public_document=True)
  def registry_public(reg,label):
   if reg['trial_label']!=label:raise ValueError('Unexpected campaign registry')
-  new={'schema':'four-domain-dashboard-v1','trial_label':label,'domains':[],'campaign':{'state':state(reg['campaign'].get('state')),'closed':number(reg['campaign'].get('closed')),'target':80},'historical_available':True,'previous_trial_available':False,'budget':None,'publication':{'generated_at':time.time(),'content_policy':'Public progress and authorized environment documents'}}
+  new={'schema':'four-domain-dashboard-v1','trial_label':label,'domains':[],'campaign':{'state':state(reg['campaign'].get('state')),'closed':number(reg['campaign'].get('closed')),'target':80},'historical_available':True,'previous_trial_available':False,'budget':None,'publication':{'generated_at':time.time(),'content_policy':'Public progress and authorized scientific documents'}}
   for d in reg['domains']:
-   i=DOMAINS.index(d['id']);s=project(d['snapshot'],expected=label)
+   i=DOMAINS.index(d['id']);s=project(d['snapshot'],expected=label);candidate_text(s,label)
    if (reg.get('budget') or {}).get('provider')=='novita_mac':s['run']['provider']='Novita via Mac relay'
    new['domains'].append({'id':DOMAINS[i],'number':i+1,'name':NAMES[i],'target':20,'run':s['run'],'snapshot':s,**{k:number(d[k]) for k in ['closed','generated','workers']}})
   return new

@@ -1,6 +1,7 @@
 import json,re
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]/'site'
+from public_documents import public_document
 for p in root.rglob('*'):
  if not p.is_file():continue
  assert p.suffix in {'.html','.css','.js','.json'},p
@@ -20,11 +21,13 @@ for s in [h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['do
  for n in s['candidates']:
   assert n.get('public_document') or re.fullmatch(r'(Seed|Hypothesis) [a-f0-9]{8}',n['title'])
   assert all(p in ids for p in n['parents'])
-  assert n['operation_reason']=='Scientific text is not included in this public release.'
+  if n.get('public_proposal'):
+   assert n.get('proposal_excerpt') and n.get('public_document')
+   assert public_document(n['public_proposal'])==n['public_proposal']
+  else:assert n['operation_reason']=='Scientific text is not included in this public release.'
  assert sum(i['closed'] for i in s['islands'])==sum(bool(e['closed_at']) for e in s['episodes'])
 print('Public artifact checks passed: three campaigns, counts, lineage and private-material boundary.')
 
-from public_documents import public_document
 for item in json.loads((root/'data/environments.json').read_text()).values():
  for field in ['proposal','instructions']:
   if item.get(field):assert public_document(item[field])==item[field]
