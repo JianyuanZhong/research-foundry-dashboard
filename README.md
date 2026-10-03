@@ -1,17 +1,9 @@
-# Research Foundry Dashboard
+# Research Foundry public observatory
 
-Public, static dashboard for approved projections from the private EHR and Battery hypothesis-discovery systems.
+GitHub Pages serves only `site/`. Its landing page opens the rolling four-domain demo; `report.html` compares the current 80-episode trial with the archived 200-episode-target EHR run.
 
-## Privacy boundary
+A Phai-local publisher exports allowlisted structural snapshots approximately every five minutes. Browser polling does not imply source updates every few seconds. Publication and deployment delays are displayed through snapshot timestamps. This is a descriptive comparison, not a controlled benchmark.
 
-This repository accepts only `research-foundry-public-v1` snapshots. It must not contain source datasets, clinical rows or notes, licensed papers, credentials, absolute private paths, raw trajectories, dataset bindings, reference solutions, private tests, or private validation scripts.
+Scientific text is withheld pending separate review. Only numbered hypotheses, ancestry, recorded operations, selection and aggregate execution metadata are exported. No environment detail API, clinical rows, credentials, raw traces or private packages are public. Export validation scans the entire deployed directory. Old repository files outside `site/` are not part of the Pages artifact.
 
-The dashboard has no connection to Phai Labs or the private registry. A cluster-local publisher writes the approved JSON snapshot into this repository and GitHub Pages deploys it.
-
-## Local preview
-
-```bash
-python3 -m http.server 8080
-```
-
-Open `http://localhost:8080`.
+`python3 scripts/check_public_v2.py` validates the deployment. The private source exporter is `scripts/export_campaigns.py`; it contains no credentials and is run on Phai, not in the browser.

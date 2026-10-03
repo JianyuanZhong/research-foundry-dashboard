@@ -19,12 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Validate public snapshot
-        run: python3 -m json.tool data/public-snapshot.json >/dev/null
-      - name: Validate DAG and environment details
-        run: node scripts/check_dashboard.mjs
-      - name: Reject private material
-        run: python3 scripts/check_public.py
+      - name: Validate public deployment artifact
+        run: python3 scripts/check_public_v2.py
+      - name: Validate JavaScript syntax
+        run: |
+          node --check site/comparison.js
+          node --check site/demo/live.js
+          node --check site/demo/live-environments.js
+          node --check site/demo/rolling.js
 
   deploy:
     needs: validate
@@ -37,7 +39,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: site
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
