@@ -57,9 +57,9 @@ function render(){
  $('#view-title').textContent=({live:'Live research',progress:'Research, across four domains',discovery:'From expert seeds to new hypotheses',environments:'From proposal to executable environment',benchmark:'Scientific quality, at every scale'})[view];
  $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
  $('#run-id').textContent=data.run.label;
- const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>1200||connectionFailed;
+ const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
- $('#freshness').textContent=`Last snapshot ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
+ $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
  const islands=filtered(data.islands),candidates=filtered(data.candidates),jobs=filtered(data.jobs),workers=filtered(data.workers),episodes=filtered(data.episodes);
  const generated=candidates.filter(c=>!c.imported_seed),closed=islands.reduce((n,i)=>n+i.closed,0),target=islands.reduce((n,i)=>n+i.target,0);
  $('#summary').innerHTML=[[`${closed} / ${target}`,'Episodes closed'],[generated.length,'New versions'],[workers.length,'Active workers']].map(([v,l])=>`<div><strong>${esc(v)}</strong>${esc(l)}</div>`).join('');
@@ -107,9 +107,9 @@ function render(){
  document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{$('#island').value=b.dataset.focus;location.hash='discovery';render()});
 }
 async function refresh(){if(busy)return;busy=true;try{
- const r=await fetch('../data/current.json',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Live connection unavailable. Previous snapshot retained.');
+ const r=await publicSnapshot('current');if(!r.ok)throw Error('Live connection unavailable. Previous snapshot retained.');
  const registry=await r.json();if(registry.schema!=='four-domain-dashboard-v1')throw Error('Unexpected domain registry');domainRegistry=registry;
- if($('#run-mode').value==='legacy'){const response=await fetch('../data/legacy.json',{cache:'no-store'});if(!response.ok)throw Error('Historical campaign unavailable');data=await response.json();}
+ if($('#run-mode').value==='legacy'){const response=await publicSnapshot('legacy');if(!response.ok)throw Error('Historical campaign unavailable');data=await response.json();}
  else {const snapshots=registry.domains.map(d=>d.snapshot);data={schema:'experiment-dashboard-v1',collected_at:Math.min(...snapshots.map(s=>s.collected_at)),run:{label:registry.trial_label||'life-science-four-domains-20261003',model:snapshots[0].run.model,provider:snapshots[0].run.provider,state:registry.campaign.state||'prepared',target:80},islands:[],episodes:[],candidates:[],workers:[],jobs:[]};for(const s of snapshots){for(const k of ['islands','episodes','candidates','workers','jobs'])data[k].push(...(s[k]||[]).map(x=>k==='islands'?{...x,state:s.run.state}:x));}}
  const choices=$('#run-mode').value==='legacy'?['hcc','mimic','eicu','ukb']:lifeDomains.map(d=>d.id),previous=chosen();$('#island').innerHTML='<option value="all">All '+($('#run-mode').value==='legacy'?'historical islands':'four domains')+'</option>'+choices.map(id=>`<option value="${id}">${esc(names[id])}</option>`).join('');$('#island').value=choices.includes(previous)?previous:'all';
  connectionFailed=false;$('#connection-error').hidden=true;render();
@@ -117,6 +117,6 @@ async function refresh(){if(busy)return;busy=true;try{
 window.environmentQuery=dataset=>'?domain='+encodeURIComponent($('#run-mode').value==='legacy'?'clinical_population':dataset||selectedDomain)+'&run='+$('#run-mode').value;
 if(new URLSearchParams(location.search).get('campaign')==='legacy')$('#run-mode').value='legacy';
 $('#run-mode').onchange=()=>{selectedNode=null;refresh()};
-$('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,60000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`Last snapshot ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>1200&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
+$('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
 
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&treeView.wide){treeView.wide=false;render()}});

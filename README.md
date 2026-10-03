@@ -7,3 +7,5 @@ GitHub Actions requests allowlisted structural snapshots from Phai using a force
 The user authorized publication of environment proposals and model instructions. These are exported as static documents with private host paths redacted and sensitive-content checks; compiled source instruction hashes are verified. Other hypotheses retain numbered titles. Clinical rows, credentials, raw traces and private packages remain excluded. Export validation scans the entire deployed directory. Old repository files outside `site/` are not part of the Pages artifact.
 
 `python3 scripts/check_public_v2.py` validates the deployment. The private source exporter is `scripts/export_campaigns.py`; it contains no credentials and is run on Phai, not in the browser.
+
+Live mode polls a dedicated public-only feed every10seconds; Phai exports it every120seconds. GitHub Actions remains the archival fallback and updates the feed address if the demo tunnel restarts. The temporary Cloudflare tunnel has no production SLA; the timestamp and backup indicator expose interruptions. Only three sanitized JSON documents and aggregate health are served, never a private API or directory listing.
