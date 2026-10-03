@@ -55,14 +55,20 @@ function render(){
  document.body.classList.toggle('rolling-mode',view==='live');
  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.hash==='#'+view));
  $('#view-title').textContent=({live:'Live research',progress:'Research, across four domains',discovery:'From expert seeds to new hypotheses',environments:'From proposal to executable environment',benchmark:'Scientific quality, at every scale'})[view];
- $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
+ const campaignClosed=data.islands.reduce((n,i)=>n+i.closed,0);
+ $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${campaignClosed}/${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
  $('#run-id').textContent=data.run.label;
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
  $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
  const islands=filtered(data.islands),candidates=filtered(data.candidates),jobs=filtered(data.jobs),workers=filtered(data.workers),episodes=filtered(data.episodes);
  const generated=candidates.filter(c=>!c.imported_seed),closed=islands.reduce((n,i)=>n+i.closed,0),target=islands.reduce((n,i)=>n+i.target,0);
- $('#summary').innerHTML=[[`${closed} / ${target}`,'Episodes closed'],[generated.length,'New versions'],[workers.length,'Active workers']].map(([v,l])=>`<div><strong>${esc(v)}</strong>${esc(l)}</div>`).join('');
+ const focused=chosen()!=='all';
+ $('#summary').innerHTML=[
+  [`${campaignClosed} / ${data.run.target}`,'Campaign episodes closed',focused?`Focus: ${closed}/${target}`:''],
+  [generated.length,focused?'New versions in focus':'New versions',''],
+  [workers.length,focused?'Active workers in focus':'Active workers','']
+ ].map(([v,l,detail])=>`<div><strong>${esc(v)}</strong>${esc(l)}${detail?`<br>${esc(detail)}`:''}</div>`).join('');
  let html='';
  if(view==='live'){html='<div id="rolling-root"></div>';}else if(view==='progress'){
  html=`<div class="live-grid">${islands.map(i=>{const js=jobs.filter(j=>j.dataset===i.id),ws=workers.filter(w=>w.dataset===i.id);return `<article class="live-card"><p class="eyebrow">${esc(names[i.id])}</p><h3>${esc(stateLabel(i.state||data.run.state))}</h3><button class="mini-tree-link" data-focus="${i.id}" aria-label="Open ${esc(names[i.id])} research tree">${miniOverview(candidates.filter(c=>c.dataset===i.id))}</button><div class="mini-caption"><span>● Seeds</span><span>● New hypotheses</span></div><div class="number">${i.closed}<small> / ${i.target}</small></div><progress value="${i.closed}" max="${i.target}" aria-label="${esc(names[i.id])} episodes closed"></progress><p>${i.generated_versions} new hypothesis versions<br>${i.source_islands?i.source_islands.map(x=>esc(names[x.id])+': '+x.closed+'/'+x.target).join(' · ')+'<br>':''}${i.distinct_selected} selected · ${ws.length} active workers<br>${js.filter(j=>j.state==='running').length} running jobs · ${js.filter(j=>j.state==='failed').length} failed jobs</p><button data-focus="${i.id}">Inspect this domain ↗</button></article>`}).join('')}</div><p class="live-note">Imported seeds are counted separately from generated hypotheses. Closed episodes include all outcomes; they do not imply a successful discovery.</p><section class="live-section"><h3>Active research team</h3>${workers.length?table(['Domain','Dataset','Role','Branch','Episode'],workers.map(w=>[names[w.dataset],names[w.source_dataset]||names[w.dataset],w.role,w.work_seq??'Lead coordination',(episodes.find(e=>e.id===w.episode_id)?.ordinal??0)+1])):empty('No active workers',data.run.state.includes('paused')?'The campaign is paused.':'No active worker records in the latest snapshot.')}</section>`;
