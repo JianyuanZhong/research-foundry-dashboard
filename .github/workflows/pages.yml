@@ -1,41 +1,65 @@
-name: Deploy public dashboard
-
+name: Publish live research dashboard
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
+  schedule:
+    - cron: '*/5 * * * *'
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
-
 concurrency:
   group: pages
-  cancel-in-progress: true
-
+  cancel-in-progress: false
 jobs:
-  validate:
+  publish:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Validate public deployment artifact
-        run: python3 scripts/check_public_v2.py
-      - name: Validate JavaScript syntax
-        run: |
-          node --check site/comparison.js
-          node --check site/demo/live.js
-          node --check site/demo/live-environments.js
-          node --check site/demo/rolling.js
-
-  deploy:
-    needs: validate
-    runs-on: ubuntu-latest
+    timeout-minutes: 8
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
+      - name: Fetch public-only snapshot from Phai
+        env:
+          SNAPSHOT_KEY: ${{ secrets.FOUNDRY_SNAPSHOT_SSH_KEY }}
+          SNAPSHOT_HOSTS: ${{ secrets.FOUNDRY_SNAPSHOT_KNOWN_HOSTS }}
+        shell: bash
+        run: |
+          set -eu
+          umask 077
+          printf '%s\n' "$SNAPSHOT_KEY" > "$RUNNER_TEMP/snapshot-key"
+          printf '%s\n' "$SNAPSHOT_HOSTS" > "$RUNNER_TEMP/snapshot-hosts"
+          trap 'rm -f "$RUNNER_TEMP/snapshot-key"' EXIT
+          if timeout 90 ssh -i "$RUNNER_TEMP/snapshot-key" -p 33388 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/snapshot-hosts" -o ConnectTimeout=15 root@115.190.98.251 snapshot > "$RUNNER_TEMP/snapshot.json"; then
+            python3 - "$RUNNER_TEMP/snapshot.json" <<'PY'
+          import json,sys
+          from pathlib import Path
+          x=json.loads(Path(sys.argv[1]).read_text())
+          assert set(x)=={'current','legacy'}
+          for key in x:Path('site/data/'+key+'.json').write_text(json.dumps(x[key],separators=(',',':')))
+          PY
+          else
+            echo '::warning::Snapshot unavailable; retaining last verified publication.'
+          fi
+      - name: Validate entire public artifact
+        run: |
+          python3 scripts/check_public_v2.py
+          node --check site/comparison.js
+          node --check site/demo/live.js
+          node --check site/demo/live-environments.js
+          node --check site/demo/rolling.js
+      - name: Persist verified snapshots
+        run: |
+          git config user.name 'Research Foundry Publisher'
+          git config user.email 'research-foundry-publisher@users.noreply.github.com'
+          git add site/data/current.json site/data/legacy.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh verified public campaign snapshots'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
