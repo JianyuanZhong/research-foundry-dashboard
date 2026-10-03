@@ -59,7 +59,7 @@ function render(){
  $('#run-id').textContent=data.run.label;
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
- $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
+ $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
  const islands=filtered(data.islands),candidates=filtered(data.candidates),jobs=filtered(data.jobs),workers=filtered(data.workers),episodes=filtered(data.episodes);
  const generated=candidates.filter(c=>!c.imported_seed),closed=islands.reduce((n,i)=>n+i.closed,0),target=islands.reduce((n,i)=>n+i.target,0);
  $('#summary').innerHTML=[[`${closed} / ${target}`,'Episodes closed'],[generated.length,'New versions'],[workers.length,'Active workers']].map(([v,l])=>`<div><strong>${esc(v)}</strong>${esc(l)}</div>`).join('');
@@ -117,6 +117,6 @@ async function refresh(){if(busy)return;busy=true;try{
 window.environmentQuery=dataset=>'?domain='+encodeURIComponent($('#run-mode').value==='legacy'?'clinical_population':dataset||selectedDomain)+'&run='+$('#run-mode').value;
 const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
 $('#run-mode').onchange=()=>{selectedNode=null;refresh()};
-$('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
+$('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
 
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&treeView.wide){treeView.wide=false;render()}});

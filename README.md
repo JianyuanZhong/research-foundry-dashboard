@@ -9,3 +9,5 @@ The user authorized publication of environment proposals and model instructions.
 `python3 scripts/check_public_v2.py` validates the deployment. The private source exporter is `scripts/export_campaigns.py`; it contains no credentials and is run on Phai, not in the browser.
 
 Live mode polls a dedicated public-only feed every10seconds; Phai exports it every120seconds. GitHub Actions remains the archival fallback and updates the feed address if the demo tunnel restarts. The temporary Cloudflare tunnel has no production SLA; the timestamp and backup indicator expose interruptions. Only four sanitized JSON documents and aggregate health are served, never a private API or directory listing.
+
+Publication now uses a dedicated Mac publisher every120seconds, fetching the restricted sanitized bundle from Phai and committing only site/data/*.json. GitHub Actions deploys on push; no five-minute cron gates live publication. Manual workflow dispatch can still fetch directly. The Mac must remain awake/online, as required by the model routes. Failed cycles retain the last snapshot and the UI exposes its age.

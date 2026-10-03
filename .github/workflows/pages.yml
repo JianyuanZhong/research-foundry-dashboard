@@ -3,8 +3,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'
 permissions:
   contents: write
   pages: write
@@ -22,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Fetch public-only snapshot from Phai
+        if: github.event_name == 'workflow_dispatch'
         env:
           SNAPSHOT_KEY: ${{ secrets.FOUNDRY_SNAPSHOT_SSH_KEY }}
           SNAPSHOT_HOSTS: ${{ secrets.FOUNDRY_SNAPSHOT_KNOWN_HOSTS }}
@@ -53,6 +52,7 @@ jobs:
           node --check site/demo/live-environments.js
           node --check site/demo/rolling.js
       - name: Persist verified snapshots
+        if: github.event_name == 'workflow_dispatch'
         run: |
           git config user.name 'Research Foundry Publisher'
           git config user.email 'research-foundry-publisher@users.noreply.github.com'

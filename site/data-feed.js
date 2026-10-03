@@ -6,6 +6,6 @@
   if(!['current','legacy','account','environments'].includes(name))throw Error('Unknown public snapshot');
   const c=await settings();
   if(c.url){try{const r=await fetch(c.url+'/'+name+'.json',{cache:'no-store',signal:AbortSignal.timeout(12000)});if(r.ok){window.publicFeedMode='live';return r;}}catch{}}
-  window.publicFeedMode='fallback';return fetch(new URL(name+'.json',base),{cache:'no-store',signal:AbortSignal.timeout(15000)});
+  window.publicFeedMode=c.mode==='mac-publisher'?'published':'fallback';return fetch(new URL(name+'.json?ts='+Math.floor(Date.now()/30000),base),{cache:'no-store',signal:AbortSignal.timeout(15000)});
  };
 })();
