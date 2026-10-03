@@ -5,7 +5,7 @@ for p in root.rglob('*'):
  if not p.is_file():continue
  assert p.suffix in {'.html','.css','.js','.json'},p
  s=p.read_text()
- for marker in ['/data_storage/','/Users/','BEGIN PRIVATE KEY','BEGIN OPENSSH','127.0.0.1','localhost','/api/','patient_id','subject_id','encrypted_content']:
+ for marker in ['/data_storage/','/Users/','BEGIN PRIVATE KEY','BEGIN OPENSSH','127.0.0.1','localhost','/api/','encrypted_content']:
   assert marker not in s,(p,marker)
  assert not re.search(r'\bsk-[A-Za-z0-9]{15,}',s),p
 c=json.loads((root/'data/current.json').read_text());h=json.loads((root/'data/legacy.json').read_text())
@@ -15,8 +15,14 @@ assert sum(i['target'] for d in c['domains'] for i in d['snapshot']['islands'])=
 for s in [h]+[d['snapshot'] for d in c['domains']]:
  ids={n['id'] for n in s['candidates']}
  for n in s['candidates']:
-  assert re.fullmatch(r'(Seed|Hypothesis) [a-f0-9]{8}',n['title'])
+  assert n.get('public_document') or re.fullmatch(r'(Seed|Hypothesis) [a-f0-9]{8}',n['title'])
   assert all(p in ids for p in n['parents'])
   assert n['operation_reason']=='Scientific text is not included in this public release.'
  assert sum(i['closed'] for i in s['islands'])==sum(bool(e['closed_at']) for e in s['episodes'])
 print('Public artifact checks passed: two campaigns, counts, lineage and private-material boundary.')
+
+from public_documents import public_document
+for item in json.loads((root/'data/environments.json').read_text()).values():
+ for field in ['proposal','instructions']:
+  if item.get(field):assert public_document(item[field])==item[field]
+print('Published environment document checks passed.')

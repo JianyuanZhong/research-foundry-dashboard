@@ -1,5 +1,5 @@
 """Allowlisted, text-free public projection of exactly two campaign snapshots."""
-import json,time,urllib.request,sys,re
+import json,time,urllib.request,urllib.error,sys,re
 from pathlib import Path
 CURRENT='novita-luna56-native36-20261003'
 LEGACY='ehr-luna56-high-20261002'
@@ -52,6 +52,27 @@ def export(out):
  for d in reg['domains']:
   i=DOMAINS.index(d['id']);s=project(d['snapshot'])
   new['domains'].append({'id':DOMAINS[i],'number':i+1,'name':NAMES[i],'target':20,'run':s['run'],'snapshot':s,**{k:number(d[k]) for k in ['closed','generated','workers']}})
- for name,obj in [('current.json',new),('legacy.json',old)]:
+ # User authorized publication of proposal and model-instruction panels.
+ from public_documents import detail
+ envpath=root/'environments.json'
+ previous=json.loads(envpath.read_text()) if envpath.exists() else {}
+ documents={}
+ for run,snapshots in [('current',[d['snapshot'] for d in new['domains']]),('legacy',[old])]:
+  for snapshot in snapshots:
+   for job in snapshot['jobs']:
+    if job['operation']!='compile':continue
+    key=run+':'+job['id'];cached=previous.get(key)
+    if cached and cached.get('state')=='succeeded':documents[key]=cached
+    else:
+     domain=snapshot['domain'] if run=='current' else 'clinical_population'
+     try:documents[key]=detail(get('/api/environment/'+job['id']+'?domain='+domain+'&run='+run))
+     except (ValueError,urllib.error.HTTPError):documents[key]={'id':job['id'],'candidate_id':job['candidate_id'],'dataset':job['dataset'],'state':job['state'],'proposal':None,'instructions':None,'document_status':'Document requires publication review'}
+    text=documents[key].get('proposal') or ''
+    if text:
+     title=next((line.strip().lstrip('#').strip() for line in text.splitlines() if line.strip()),'Scientific hypothesis')[:220]
+     for candidate in snapshot['candidates']:
+      if candidate['id']==job['candidate_id']:candidate['title']=title;candidate['public_document']=True
+ new['publication']['content_policy']='Public progress plus user-authorized scientific proposals and model instructions; source rows, credentials, raw traces and packages excluded'
+ for name,obj in [('environments.json',documents),('current.json',new),('legacy.json',old)]:
   p=root/name;tmp=p.with_suffix('.tmp');tmp.write_text(json.dumps(obj,separators=(',',':')));tmp.replace(p)
 if __name__=='__main__':export(sys.argv[1])

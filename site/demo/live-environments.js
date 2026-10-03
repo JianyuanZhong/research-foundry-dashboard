@@ -10,7 +10,7 @@ window.openEnvironmentModal=async function(id,opener){
  environmentDialog.querySelector('button').onclick=()=>environmentDialog.close();
  if(!environmentDialog.open)environmentDialog.showModal();
  let selected;
- try{const j=data.jobs.find(j=>j.id===id);if(!j)throw Error('Environment not found');selected={id:j.id,candidate_id:j.candidate_id,dataset:j.dataset,state:j.state,proposal:'Scientific proposal text has not been published. This public view exposes lineage and progress only.',instructions:'Model task instructions have not been published. Raw packages, data bindings and private validation files remain private.',document_status:'Public metadata only · detailed text pending publication review'};}
+ try{const r=await fetch('../data/environments.json',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Published environment documents unavailable');const docs=await r.json();selected=docs[$('#run-mode').value+':'+id];if(!selected)throw Error('This environment will appear in the next published snapshot.');}
  catch(error){environmentDialog.innerHTML=`<section class="environment-showcase"><button class="close-environment" aria-label="Close environment details">×</button><p>${esc(error.message)}</p></section>`;environmentDialog.querySelector('button').onclick=()=>environmentDialog.close();return;}
  if(!environmentDialog.open)return;
  selected.public_id=selected.id;selected.candidate_public_id=selected.candidate_id;selected.qa_status=selected.qa_status||'qa_pending';
