@@ -15,7 +15,7 @@ def state(v):return v if v in ['running','queued','prepared','settled','succeede
 def project(x,legacy=False):
  expected=LEGACY if legacy else CURRENT
  if not x['run']['label'].startswith(expected):raise ValueError('Unexpected campaign')
- out={'schema':'experiment-dashboard-v1','collected_at':number(x['collected_at']),'domain':'legacy' if legacy else x['domain'],'run':{'label':expected,'model':'pa/gpt-5.6-luna','state':'archived' if legacy else state(x['run']['state']),'target':200 if legacy else 20,'clock':{'start':number(x['run'].get('clock',{}).get('start'))}},'islands':[],'episodes':[],'candidates':[],'workers':[],'jobs':[]}
+ out={'schema':'experiment-dashboard-v1','collected_at':number(x['collected_at']),'domain':'legacy' if legacy else x['domain'],'run':{'label':expected,'model':x['run']['model'] if x['run']['model'] in ['pa/gpt-5.6-luna','gpt-5.6-luna'] else 'GPT-5.6 Luna','provider':'Polo (resumed)' if x['run']['model']=='gpt-5.6-luna' else 'Novita','state':'archived' if legacy else state(x['run']['state']),'target':200 if legacy else 20,'clock':{'start':number(x['run'].get('clock',{}).get('start'))}},'islands':[],'episodes':[],'candidates':[],'workers':[],'jobs':[]}
  def identity(row,keys):
   z={k:ident(row.get(k)) for k in keys}
   for k in ['dataset','source_dataset']:
