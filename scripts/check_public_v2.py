@@ -16,7 +16,10 @@ assert sum(i['target'] for d in c['domains'] for i in d['snapshot']['islands'])=
 a=json.loads((root/'data/account.json').read_text());assert a['trial_label']=='codex-account-gpt6-luna-20261003' and len(a['domains'])==4
 assert all(d['snapshot']['run']['model']=='gpt-6-luna' for d in a['domains'])
 assert sum(i['target'] for d in a['domains'] for i in d['snapshot']['islands'])==80
-for s in [h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['domains']]:
+q=json.loads((root/'data/qwen.json').read_text());assert q['trial_label']=='qwen38-27b-sft-four-domains-20261004' and len(q['domains'])==4
+assert all(d['snapshot']['run']['model']=='qwen38-27b-sft-256k' for d in q['domains'])
+assert sum(i['target'] for d in q['domains'] for i in d['snapshot']['islands'])==80
+for s in [d['snapshot'] for d in q['domains']]+[h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['domains']]:
  ids={n['id'] for n in s['candidates']}
  for n in s['candidates']:
   assert n.get('public_document') or re.fullmatch(r'(Seed|Hypothesis) [a-f0-9]{8}',n['title'])
@@ -26,7 +29,7 @@ for s in [h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['do
    assert public_document(n['public_proposal'])==n['public_proposal']
   else:assert n['operation_reason']=='Scientific text is not included in this public release.'
  assert sum(i['closed'] for i in s['islands'])==sum(bool(e['closed_at']) for e in s['episodes'])
-print('Public artifact checks passed: three campaigns, counts, lineage and private-material boundary.')
+print('Public artifact checks passed: four campaigns, counts, lineage and private-material boundary.')
 
 for item in json.loads((root/'data/environments.json').read_text()).values():
  for field in ['proposal','instructions']:

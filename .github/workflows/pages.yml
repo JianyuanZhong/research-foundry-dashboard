@@ -36,7 +36,7 @@ jobs:
           import json,sys
           from pathlib import Path
           x=json.loads(Path(sys.argv[1]).read_text())
-          assert set(x)=={'current','legacy','account','environments','feed'}
+          assert {'current','legacy','account','environments','feed'} <= set(x) <= {'current','legacy','account','qwen','environments','feed'}
           for key in x:Path('site/data/'+key+'.json').write_text(json.dumps(x[key],separators=(',',':')))
           PY
           else
@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name 'Research Foundry Publisher'
           git config user.email 'research-foundry-publisher@users.noreply.github.com'
-          git add site/data/current.json site/data/legacy.json site/data/account.json site/data/environments.json site/data/feed.json
+          git add site/data/current.json site/data/legacy.json site/data/account.json site/data/environments.json site/data/feed.json site/data/qwen.json
           if ! git diff --cached --quiet; then
             git commit -m 'Refresh verified public campaign snapshots'
             git pull --rebase origin main
