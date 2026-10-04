@@ -16,9 +16,12 @@ assert sum(i['target'] for d in c['domains'] for i in d['snapshot']['islands'])=
 a=json.loads((root/'data/account.json').read_text());assert a['trial_label']=='codex-account-gpt6-luna-20261003' and len(a['domains'])==4
 assert all(d['snapshot']['run']['model']=='gpt-6-luna' for d in a['domains'])
 assert sum(i['target'] for d in a['domains'] for i in d['snapshot']['islands'])==80
-q=json.loads((root/'data/qwen.json').read_text());assert q['trial_label']=='qwen38-27b-sft-four-domains-20261004' and len(q['domains'])==4
+q=json.loads((root/'data/qwen.json').read_text())
+qwen_targets={'qwen38-27b-sft-four-domains-20261004':80,'qwen38-27b-sft-draft-first-60-20261004':60}
+assert q['trial_label'] in qwen_targets and len(q['domains'])==4
+assert q['campaign']['target']==qwen_targets[q['trial_label']]
 assert all(d['snapshot']['run']['model']=='qwen38-27b-sft-256k' for d in q['domains'])
-assert sum(i['target'] for d in q['domains'] for i in d['snapshot']['islands'])==80
+assert sum(i['target'] for d in q['domains'] for i in d['snapshot']['islands'])==qwen_targets[q['trial_label']]
 for s in [d['snapshot'] for d in q['domains']]+[h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['domains']]:
  ids={n['id'] for n in s['candidates']}
  for n in s['candidates']:
