@@ -17,11 +17,24 @@ a=json.loads((root/'data/account.json').read_text());assert a['trial_label']=='c
 assert all(d['snapshot']['run']['model']=='gpt-6-luna' for d in a['domains'])
 assert sum(i['target'] for d in a['domains'] for i in d['snapshot']['islands'])==80
 q=json.loads((root/'data/qwen.json').read_text())
-qwen_targets={'qwen38-27b-sft-four-domains-20261004':80,'qwen38-27b-sft-draft-first-60-20261004':60}
-assert q['trial_label'] in qwen_targets and len(q['domains'])==4
-assert q['campaign']['target']==qwen_targets[q['trial_label']]
+assert re.fullmatch(r'[A-Za-z0-9_-]{1,120}',q['trial_label']) and len(q['domains'])==4
+assert {d['id'] for d in q['domains']}=={'clinical_population','therapeutic_targets','disease_mechanisms','population_multiomics'}
 assert all(d['snapshot']['run']['model']=='qwen38-27b-sft-256k' for d in q['domains'])
-assert sum(i['target'] for d in q['domains'] for i in d['snapshot']['islands'])==qwen_targets[q['trial_label']]
+assert type(q['campaign']['target']) is int and q['campaign']['target']>0
+assert sum(i['target'] for d in q['domains'] for i in d['snapshot']['islands'])==q['campaign']['target']
+replay=q.get('selection_replay')
+if replay:
+ assert replay['source_trial']==q['trial_label'] and replay['method']=='as_of_episode_end'
+ assert replay['model']=='qwen38-27b-sft-256k' and replay['new_research'] is False
+ original={e['id']:e for d in q['domains'] for e in d['snapshot']['episodes']}
+ candidates={c['id']:c for d in q['domains'] for c in d['snapshot']['candidates']}
+ assert len(replay['episodes'])==replay['total']
+ for e in replay['episodes']:
+  assert e['episode_id'] in original
+  assert e['original_outcome']==original[e['episode_id']]['outcome']
+  if e['selected_id']:assert e['selected_id'] in candidates and e['status']=='selected'
+ assert replay['selected_episodes']==sum(e['status']=='selected' for e in replay['episodes'])
+ assert replay['distinct_selected_hypotheses']==len({e['selected_id'] for e in replay['episodes'] if e['selected_id']})
 for s in [d['snapshot'] for d in q['domains']]+[h]+[d['snapshot'] for d in c['domains']]+[d['snapshot'] for d in a['domains']]:
  ids={n['id'] for n in s['candidates']}
  for n in s['candidates']:
