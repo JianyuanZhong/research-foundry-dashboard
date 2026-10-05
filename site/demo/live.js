@@ -85,8 +85,8 @@ function render(){
  $('#view-title').textContent=({live:'Live research',progress:'Research, across four domains',discovery:'From expert seeds to new hypotheses',environments:'From proposal to executable environment',benchmark:'Scientific quality, at every scale'})[view];
  const campaignClosed=data.islands.reduce((n,i)=>n+i.closed,0);
  $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${campaignClosed}/${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
- $('#run-id').textContent=data.run.label;
- if($('#run-mode').value==='qwen')$('#run-mode option[value="qwen"]').textContent='Qwen 27B SFT · '+(domainRegistry?.campaign.phase==='targeted_pilot'?'targeted pilot · ':'')+data.run.target+' episodes';
+ $('#run-id').textContent=data.run.label+(domainRegistry?.campaign.science_seconds?' · '+(domainRegistry.campaign.science_seconds/60)+' min / research episode':'');
+ if($('#run-mode').value==='qwen')$('#run-mode option[value="qwen"]').textContent='Qwen 27B SFT · '+(domainRegistry?.campaign.phase==='targeted_pilot'?(domainRegistry?.campaign.science_seconds===9000?'150-min pilot · ':'targeted pilot · '):'')+data.run.target+' episodes';
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
  $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
