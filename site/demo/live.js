@@ -87,6 +87,11 @@ function render(){
  $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${campaignClosed}/${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
  $('#run-id').textContent=data.run.label+(domainRegistry?.campaign.science_seconds?' · '+(domainRegistry.campaign.science_seconds/60)+' min / research episode':'');
  if($('#run-mode').value==='qwen')$('#run-mode option[value="qwen"]').textContent='Qwen 27B SFT · '+(domainRegistry?.campaign.phase==='targeted_pilot'?(domainRegistry?.campaign.science_seconds===9000?'150-min pilot · ':'targeted pilot · '):'')+data.run.target+' episodes';
+ let balancedPanel=document.getElementById('balanced-persistence-summary');
+ if(domainRegistry?.balanced_persistence){
+  if(!balancedPanel){balancedPanel=document.createElement('p');balancedPanel.id='balanced-persistence-summary';balancedPanel.setAttribute('aria-live','polite');document.querySelector('.dataset-picker').after(balancedPanel)}
+  balancedPanel.hidden=false;balancedPanel.textContent=`Balanced persistence · ${domainRegistry.campaign.checkpoint_records||0} saved working checkpoints (not hypotheses) · ${domainRegistry.campaign.registered_hypotheses||0} registered scientific hypotheses · ${domainRegistry.campaign.unique_selected_candidates||0} unique selections · 4 GPUs assigned to this model. Scientific quality is evaluated separately.`;
+ }else if(balancedPanel)balancedPanel.hidden=true;
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
  $('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${Math.round(age)}s ago`;
@@ -142,15 +147,15 @@ function render(){
  document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{$('#island').value=b.dataset.focus;location.hash='discovery';render()});
 }
 async function refresh(){if(busy)return;busy=true;try{
- const r=await publicSnapshot(['account','qwen'].includes($('#run-mode').value)?$('#run-mode').value:'current');if(!r.ok)throw Error('Live connection unavailable. Previous snapshot retained.');
- const registry=await r.json();if(registry.schema!=='four-domain-dashboard-v1')throw Error('Unexpected domain registry');domainRegistry=registry;
+ const mode=$('#run-mode').value;const balanced=mode.startsWith('balanced-');const r=await publicSnapshot(balanced?'qwen':['account','qwen'].includes(mode)?mode:'current');if(!r.ok)throw Error('Live connection unavailable. Previous snapshot retained.');
+ let registry=await r.json();if(balanced){registry=(registry.balanced_campaigns||[]).find(c=>c.dashboard_id===mode);if(!registry)throw Error('Balanced campaign snapshot is being prepared. Please retry shortly.')}if(registry.schema!=='four-domain-dashboard-v1')throw Error('Unexpected domain registry');domainRegistry=registry;
  if($('#run-mode').value==='legacy'){const response=await publicSnapshot('legacy');if(!response.ok)throw Error('Historical campaign unavailable');data=await response.json();}
  else {const snapshots=registry.domains.map(d=>d.snapshot);data={schema:'experiment-dashboard-v1',collected_at:Math.min(...snapshots.map(s=>s.collected_at)),run:{label:registry.trial_label||'life-science-four-domains-20261003',model:snapshots[0].run.model,provider:snapshots[0].run.provider,state:registry.campaign.state||'prepared',target:registry.campaign.target||registry.domains.reduce((n,d)=>n+(d.target||d.run.target||0),0)},islands:[],episodes:[],candidates:[],workers:[],jobs:[]};for(const s of snapshots){for(const k of ['islands','episodes','candidates','workers','jobs'])data[k].push(...(s[k]||[]).map(x=>k==='islands'?{...x,state:s.run.state}:x));}}
  const choices=$('#run-mode').value==='legacy'?['hcc','mimic','eicu','ukb']:lifeDomains.map(d=>d.id),previous=chosen();$('#island').innerHTML='<option value="all">All '+($('#run-mode').value==='legacy'?'historical islands':'four domains')+'</option>'+choices.map(id=>`<option value="${id}">${esc(names[id])}</option>`).join('');$('#island').value=choices.includes(previous)?previous:'all';
  connectionFailed=false;$('#connection-error').hidden=true;render();
  }catch(e){connectionFailed=true;$('#connection-error').hidden=false;$('#connection-error').textContent=e.message;render()}finally{busy=false}}
 window.environmentQuery=dataset=>'?domain='+encodeURIComponent($('#run-mode').value==='legacy'?'clinical_population':dataset||selectedDomain)+'&run='+$('#run-mode').value;
-const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account','qwen'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
+const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account','qwen','balanced-original','balanced-sft'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
 $('#run-mode').onchange=()=>{selectedNode=null;refresh()};
 $('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
 
