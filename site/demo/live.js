@@ -156,7 +156,7 @@ async function refresh(){if(busy)return;busy=true;try{
  }catch(e){connectionFailed=true;$('#connection-error').hidden=false;$('#connection-error').textContent=e.message;render()}finally{busy=false}}
 window.environmentQuery=dataset=>'?domain='+encodeURIComponent($('#run-mode').value==='legacy'?'clinical_population':dataset||selectedDomain)+'&run='+$('#run-mode').value;
 const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account','qwen','balanced-original','balanced-sft'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
-$('#run-mode').onchange=()=>{selectedNode=null;refresh()};
+$('#run-mode').onchange=()=>{selectedNode=null;const url=new URL(location.href);url.searchParams.set('campaign',$('#run-mode').value);history.replaceState(null,'',url);refresh()};
 $('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
 
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&treeView.wide){treeView.wide=false;render()}});
