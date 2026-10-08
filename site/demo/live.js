@@ -90,7 +90,7 @@ function render(){
  let balancedPanel=document.getElementById('balanced-persistence-summary');
  if(domainRegistry?.balanced_persistence){
   if(!balancedPanel){balancedPanel=document.createElement('p');balancedPanel.id='balanced-persistence-summary';balancedPanel.setAttribute('aria-live','polite');document.querySelector('.dataset-picker').after(balancedPanel)}
-  balancedPanel.hidden=false;balancedPanel.textContent=`Balanced persistence · ${domainRegistry.campaign.checkpoint_records||0} saved working checkpoints (not hypotheses) · ${domainRegistry.campaign.registered_hypotheses||0} registered scientific hypotheses · ${domainRegistry.campaign.unique_selected_candidates||0} unique selections · 4 GPUs assigned to this model. Scientific quality is evaluated separately.`;
+  balancedPanel.hidden=false;balancedPanel.textContent=`Balanced persistence · ${domainRegistry.campaign.checkpoint_records||0} saved working checkpoints (not hypotheses) · ${domainRegistry.campaign.registered_hypotheses||0} registered scientific hypotheses · ${domainRegistry.campaign.unique_selected_candidates||0} unique selections · ${domainRegistry.serving_gpu_count||4} GPUs assigned to this model${domainRegistry.serving_slots ? ` · ${domainRegistry.serving_slots} serving slots` : ""}. Scientific quality is evaluated separately.`;
  }else if(balancedPanel)balancedPanel.hidden=true;
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
@@ -155,7 +155,7 @@ async function refresh(){if(busy)return;busy=true;try{
  connectionFailed=false;$('#connection-error').hidden=true;render();
  }catch(e){connectionFailed=true;$('#connection-error').hidden=false;$('#connection-error').textContent=e.message;render()}finally{busy=false}}
 window.environmentQuery=dataset=>'?domain='+encodeURIComponent($('#run-mode').value==='legacy'?'clinical_population':dataset||selectedDomain)+'&run='+$('#run-mode').value;
-const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account','qwen','balanced-original','balanced-sft'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
+const initialCampaign=new URLSearchParams(location.search).get('campaign');if(['current','legacy','account','qwen','balanced-original','balanced-sft','balanced-raft'].includes(initialCampaign))$('#run-mode').value=initialCampaign;
 $('#run-mode').onchange=()=>{selectedNode=null;const url=new URL(location.href);url.searchParams.set('campaign',$('#run-mode').value);history.replaceState(null,'',url);refresh()};
 $('#refresh').onclick=refresh;$('#island').onchange=render;window.addEventListener('hashchange',render);setInterval(refresh,10000);setInterval(()=>{if(data){const age=Math.max(0,Math.round(Date.now()/1000-data.collected_at));$('#freshness').textContent=`${window.publicFeedMode==='fallback'?'Backup snapshot':window.publicFeedMode==='published'?'Published snapshot':'Live snapshot'} ${new Date(data.collected_at*1000).toLocaleTimeString()} · ${age}s ago`;if(age>300&&data.run.state!=='archived')$('#live-state').textContent='Connection stale'}},1000);refresh();
 

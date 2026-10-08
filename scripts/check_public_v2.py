@@ -54,9 +54,10 @@ print('Published environment document checks passed.')
 
 balanced=q.get('balanced_campaigns',[])
 if balanced:
- assert {c['dashboard_id'] for c in balanced}=={'balanced-original','balanced-sft'}
+ assert {'balanced-original','balanced-sft'} <= {c['dashboard_id'] for c in balanced} <= {'balanced-original','balanced-sft','balanced-raft'}
+ assert len({c['dashboard_id'] for c in balanced})==len(balanced)
  for campaign in balanced:
-  expected='qwen38-27b' if campaign['dashboard_id']=='balanced-original' else 'qwen38-27b-sft-256k'
+  expected={'balanced-original':'qwen38-27b','balanced-sft':'qwen38-27b-sft-256k','balanced-raft':'qwen38-27b-raft-r2-150'}[campaign['dashboard_id']]
   assert len(campaign['domains'])==4 and campaign.get('balanced_persistence') is True
   assert all(d['snapshot']['run']['model']==expected for d in campaign['domains'])
   assert sum(i['target'] for d in campaign['domains'] for i in d['snapshot']['islands'])==120
