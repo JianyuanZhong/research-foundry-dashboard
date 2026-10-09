@@ -54,13 +54,13 @@ print('Published environment document checks passed.')
 
 balanced=q.get('balanced_campaigns',[])
 if balanced:
- assert {'balanced-original','balanced-sft'} <= {c['dashboard_id'] for c in balanced} <= {'balanced-original','balanced-sft','balanced-raft'}
+ assert {'balanced-original','balanced-sft'} <= {c['dashboard_id'] for c in balanced} <= {'balanced-original','balanced-sft','balanced-raft','balanced-raft-adapted'}
  assert len({c['dashboard_id'] for c in balanced})==len(balanced)
  for campaign in balanced:
-  expected={'balanced-original':'qwen38-27b','balanced-sft':'qwen38-27b-sft-256k','balanced-raft':'qwen38-27b-raft-r2-150'}[campaign['dashboard_id']]
+  expected={'balanced-original':'qwen38-27b','balanced-sft':'qwen38-27b-sft-256k','balanced-raft':'qwen38-27b-raft-r2-150','balanced-raft-adapted':'qwen38-27b-raft-r2-150'}[campaign['dashboard_id']]
   assert len(campaign['domains'])==4 and campaign.get('balanced_persistence') is True
   assert all(d['snapshot']['run']['model']==expected for d in campaign['domains'])
-  assert sum(i['target'] for d in campaign['domains'] for i in d['snapshot']['islands'])==120
+  assert sum(i['target'] for d in campaign['domains'] for i in d['snapshot']['islands'])==(30 if campaign['dashboard_id']=='balanced-raft-adapted' else 120)
   for domain in campaign['domains']:
    snap=domain['snapshot'];ids={n['id'] for n in snap['candidates']}
    assert sum(i['closed'] for i in snap['islands'])==sum(bool(e['closed_at']) for e in snap['episodes'])
