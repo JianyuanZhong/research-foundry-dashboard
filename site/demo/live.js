@@ -96,7 +96,7 @@ function render(){
  if(domainRegistry?.harness_comparison){
   if(!comparisonPanel){comparisonPanel=document.createElement('p');comparisonPanel.id='harness-adaptation-comparison';comparisonPanel.setAttribute('aria-live','polite');document.querySelector('.dataset-picker').after(comparisonPanel)}
   const report=domainRegistry.harness_comparison,a=report.adapted,b=report.reference_matched;
-  comparisonPanel.hidden=false;comparisonPanel.textContent=`Harness adaptation comparison · ${a.closed}/30 episodes closed · adapted: ${a.selected_episodes} selected episodes, ${a.distinct_selected} distinct selections, ${a.incomplete} incomplete · stopped reference at the same island episode counts: ${b.selected_episodes} selected episodes, ${b.distinct_selected} distinct selections, ${b.incomplete} incomplete · ${report.state}. Scientific quality is evaluated separately.`;
+  comparisonPanel.hidden=false;comparisonPanel.textContent=`${report.scaled_to ? `First-five comparison (30-episode prefix; campaign scaled to ${report.scaled_to})` : "Harness adaptation comparison"} · ${a.closed}/30 episodes closed · adapted: ${a.selected_episodes} selected episodes, ${a.distinct_selected} distinct selections, ${a.incomplete} incomplete · stopped reference at the same island episode counts: ${b.selected_episodes} selected episodes, ${b.distinct_selected} distinct selections, ${b.incomplete} incomplete · ${report.state}. Scientific quality is evaluated separately.`;
  }else if(comparisonPanel)comparisonPanel.hidden=true;
  const age=Math.max(0,Date.now()/1000-data.collected_at),stale=age>300||connectionFailed;
  $('#live-state').textContent=data.run.state==='archived'?'Archived':stale?'Snapshot delayed':stateLabel(data.run.state);
