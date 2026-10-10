@@ -12,7 +12,7 @@
     const data = await response.json();
     const note = document.createElement('p');
     note.className = 'muted';
-    note.textContent = `${data.reviewer} · three-role hypothesis panel · human calibration pending. Original Qwen evaluation: ${data.qwen_state}.`;
+    note.textContent = `${data.reviewer} · three-role hypothesis panel · human calibration pending. Original Qwen evaluation: ${data.qwen_state}. Deduplicated RAFT: ${data.dedup_state ?? "not started"}.`;
     section.append(note);
     const wrap = document.createElement('div'); wrap.className = 'table-wrap';
     const table = document.createElement('table');
@@ -41,6 +41,18 @@
     const limits = document.createElement('p'); limits.className = 'muted';
     limits.textContent = `${data.limitations} — means no complete numeric score. Partial reviews retain missing panels; scored coverage is shown in brackets. Progress is substantive transitions / all reviewed transitions.`;
     section.append(limits);
+    if (data.dedup_state === 'complete') {
+      const comparisons = ['disease_mechanisms', 'therapeutic_targets'].map(domain => {
+        const before = data.rows.find(r => r.domain === domain && r.model === 'RAFT R2 · repaired harness');
+        const after = data.rows.find(r => r.domain === domain && r.model === 'RAFT R2 · deduplicated');
+        const reference = data.rows.find(r => r.domain === domain && r.model === 'GPT-6 Luna / Codex');
+        if (![before, after, reference].every(r => typeof r?.trajectory_mean === 'number')) return null;
+        return `${domains[domain]} T: ${score(before.trajectory_mean)} → ${score(after.trajectory_mean)}; remaining gap to GPT-6 Luna: ${score(reference.trajectory_mean - after.trajectory_mean)} points`;
+      }).filter(Boolean);
+      const impact = document.createElement('p');
+      impact.textContent = `${data.dedup_removed} proven duplicate nodes removed. ${comparisons.join('. ')}. These are observed comparisons across different historical harnesses, not a controlled model ranking.`;
+      section.append(impact);
+    }
   } catch (error) {
     const note = document.createElement('p'); note.textContent = 'Comparison scores are temporarily unavailable.'; section.append(note);
   }
