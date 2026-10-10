@@ -127,7 +127,7 @@ function render(){
    if(key==='transition')return Object.entries(layer.verdict_counts||{}).map(([k,v])=>`${k.replaceAll('_',' ')}: ${v}`).join(' · ')||'No transition judgments yet.';
    if(key==='trajectory')return layer.full_scope_mean==null?'No complete full-scope path score yet.':`${Number(layer.full_scope_mean).toFixed(1)} / 100 · ${layer.full_scope_scored} complete full-scope paths`;
    if(key==='campaign')return Object.entries(layer.scores||{}).map(([k,v])=>`${names[k]||k}: ${v==null?'unavailable':Number(v).toFixed(1)+' / 100'}`).join(' · ')||'No full campaign score yet.';
-   return `${layer.families||0} contribution families recorded; proposed families are not confirmed discoveries.`;
+   return layer.state==='pending'?'Family-ledger review pending.':`${layer.families||0} contribution families recorded; proposed families are not confirmed discoveries.`;
   }
   html=`<p class="live-note">Reviewer: ${esc(review.reviewer)} · newer reviewer version, reported separately from earlier V4 results · human calibration pending. Partial coverage is provisional; unavailable scores remain blank.</p><div class="phase-grid">${Object.entries(labels).map(([key,label])=>`<article class="live-card"><p class="eyebrow">FIVE-LAYER DFM REVIEW</p><h3>${label}</h3>${domains.map(([id,d])=>{const layer=d.layers[key]||{};return `<h4>${esc(names[id]||id)}</h4><span class="tag">${esc(layer.state||'pending')} · ${esc(layer.coverage||'0/0')}</span><p>${esc(detail(layer,key))}</p>`}).join('')}</article>`).join('')}</div>`;
  }else{
