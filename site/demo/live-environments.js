@@ -10,6 +10,11 @@ window.openEnvironmentModal=async function(id,opener){
  environmentDialog.querySelector('button').onclick=()=>environmentDialog.close();
  if(!environmentDialog.open)environmentDialog.showModal();
  let selected;
+ if(window.arkCampaignLabels?.[$('#run-mode').value]){
+  const job=data.jobs.find(j=>j.id===id);
+  environmentDialog.innerHTML=`<section class="environment-showcase"><button class="close-environment" aria-label="Close environment details">×</button><h3>Recorded environment delivery</h3><p>${esc(window.arkCampaignLabels[$('#run-mode').value])} · ${esc(job?.state||'Unavailable')}</p><p>Compilation and readiness status are available in this view. Scientific proposal text, model instructions, and execution packages are not included in this public snapshot.</p></section>`;
+  environmentDialog.querySelector('button').onclick=()=>environmentDialog.close();return;
+ }
  try{const r=await publicSnapshot('environments');if(!r.ok)throw Error('Published environment documents unavailable');const docs=await r.json();selected=docs[$('#run-mode').value+':'+id];if(!selected)throw Error('This environment will appear in the next published snapshot.');}
  catch(error){environmentDialog.innerHTML=`<section class="environment-showcase"><button class="close-environment" aria-label="Close environment details">×</button><p>${esc(error.message)}</p></section>`;environmentDialog.querySelector('button').onclick=()=>environmentDialog.close();return;}
  if(!environmentDialog.open)return;
