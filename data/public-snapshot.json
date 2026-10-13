@@ -552,7 +552,7 @@
       "qa_status": "readiness_passed"
     }
   ],
-  "generated_at": "2026-10-13T02:54:42.786441Z",
+  "generated_at": "2026-10-13T03:05:16.372461Z",
   "lineage": [
     {
       "change_note": "Initial full Oxford EIS path-dependence proposal: exact 11-cell BoL/MoL/SOC binding, duplicate-safe MATLAB audit, nominal-dose baseline versus history-sensitive functional model, specimen-level uncertainty and verifier-safe claim limits.",
@@ -7962,7 +7962,7 @@
   ],
   "public_environments": [],
   "public_hypotheses": [],
-  "registry_revision": "752fc5a6e0accf8efc49ec952258682a31e5978b",
+  "registry_revision": "6dc842d419bfc70bc3d62ee050842463c61b1258",
   "releases": [],
   "schema_version": "research-foundry-public-v1"
 }
