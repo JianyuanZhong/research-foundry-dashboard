@@ -1,14 +1,14 @@
 'use strict';
 (() => {
  const base=new URL('../data/ark300/',document.currentScript.src);
- window.arkCampaignLabels={'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3'};
+ window.arkCampaignLabels={'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3','ark-glm53-luna':'GLM 5.3 · Luna harness'};
  const groups=[['clinical_population',['hcc','mimic','eicu']],['therapeutic_targets',['therapeutic_targets']],['disease_mechanisms',['disease_mechanisms']],['population_multiomics',['population_multiomics']]];
  const get=async url=>{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Campaign snapshot unavailable');return r;};
  async function verified(path,hash){const bytes=await(await get(new URL(path,base))).arrayBuffer();const actual=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');if(actual!==hash)throw Error('Snapshot integrity mismatch');return JSON.parse(new TextDecoder().decode(bytes));}
  window.arkPublicSnapshot=async id=>{
   if(!Object.hasOwn(window.arkCampaignLabels,id))throw Error('Unknown campaign');
   const index=await(await get(new URL('index.json',base))).json();
-  if(index.schema!=='research-campaign-public-index-v1'||index.target!==900||!/^[a-f0-9]{32}$/.test(index.generation))throw Error('Invalid campaign index');
+  if(index.schema!=='research-campaign-public-index-v1'||index.target!==index.campaigns.filter(c=>!c.historical).reduce((n,c)=>n+c.target,0)||!/^[a-f0-9]{32}$/.test(index.generation))throw Error('Invalid campaign index');
   const entry=index.campaigns.find(c=>c.campaign_id===id);
   if(!entry||entry.snapshot!==`generations/${index.generation}/${id}.json`||entry.lineage!==`generations/${index.generation}/${id}-tree.json`)throw Error('Invalid campaign reference');
   const [s,tree]=await Promise.all([verified(entry.snapshot,entry.sha256),verified(entry.lineage,entry.lineage_sha256)]);

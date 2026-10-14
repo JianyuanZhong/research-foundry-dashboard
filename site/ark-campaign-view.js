@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const base = new URL('data/ark300/', document.currentScript.src);
-  const models = {'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3'};
+  const models = {'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3','ark-glm53-luna':'GLM 5.3 · Luna harness'};
   const groups = [
     {id:'clinical_population',name:'Clinical & Population Health Research',islands:['hcc','mimic','eicu']},
     {id:'therapeutic_targets',name:'Therapeutic Target Prioritization',islands:['therapeutic_targets']},
@@ -49,7 +49,7 @@
     if(busy)return;busy=true;
     try {
       const next=await(await get(new URL('index.json',base))).json();
-      if(next.schema!=='research-campaign-public-index-v1'||next.metadata_only!==true||next.target!==900||!/^[a-f0-9]{32}$/.test(next.generation)||next.campaigns.length!==3)throw Error('Invalid index');
+      if(next.schema!=='research-campaign-public-index-v1'||next.metadata_only!==true||next.target!==next.campaigns.filter(c=>!c.historical).reduce((n,c)=>n+c.target,0)||!/^[a-f0-9]{32}$/.test(next.generation)||next.campaigns.length<3)throw Error('Invalid index');
       const values=await Promise.all(next.campaigns.map(async e=>{
         if(!Object.hasOwn(models,e.campaign_id)||e.snapshot!==`generations/${next.generation}/${e.campaign_id}.json`)throw Error('Invalid campaign reference');
         const bytes=await(await get(new URL(e.snapshot,base))).arrayBuffer();
@@ -66,7 +66,7 @@
         if(tree.schema!=='research-campaign-public-lineage-v1'||tree.campaign_id!==e.campaign_id||tree.model_id!==e.model_id||tree.generation!==next.generation)throw Error('Lineage identity mismatch');
         return [e.campaign_id,s,tree];
       }));
-      if(new Set(values.map(v=>v[0])).size!==3)throw Error('Duplicate campaign');
+      if(new Set(values.map(v=>v[0])).size!==values.length)throw Error('Duplicate campaign');
       snapshots=new Map(values.map(v=>[v[0],v[1]]));trees=new Map(values.map(v=>[v[0],v[2]]));index=next;failed=false;
     } catch {failed=true;} finally {busy=false;render();}
   }
