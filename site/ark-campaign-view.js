@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const base = new URL('data/ark300/', document.currentScript.src);
-  const models = {"ark-deepseek41-luna-rerun": "DeepSeek V4.1 Flash", "ark-glm53-luna": "GLM 5.3 Flash", "moonshot-kimi3-luna": "Kimi K3"};
+  const models = {"ark-deepseek41-luna-rerun": "DeepSeek V4.1 Flash", "ark-glm53-luna": "GLM 5.3 Flash", "moonshot-kimi3-luna": "Kimi K3", "codex-gpt61-sol-luna": "GPT-6.1 Sol"};
   const groups = [
     {id:'clinical_population',name:'Clinical & Population Health Research',islands:['hcc','mimic','eicu']},
     {id:'therapeutic_targets',name:'Therapeutic Target Prioritization',islands:['therapeutic_targets']},

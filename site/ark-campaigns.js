@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const base = new URL('data/ark300/', document.currentScript.src);
-  const models = new Map([['glm-5.3', 'GLM 5.3 Flash'], ['deepseek-v4.1-flash', 'DeepSeek V4.1 Flash'], ['kimi-k3', 'Kimi K3']]);
+  const models = new Map([['glm-5.3', 'GLM 5.3 Flash'], ['deepseek-v4.1-flash', 'DeepSeek V4.1 Flash'], ['kimi-k3', 'Kimi K3'], ['gpt-6.1-sol', 'GPT-6.1 Sol']]);
   const campaignLabel = s => models.get(s.model_id);
   const names = {hcc:'HCC', mimic:'MIMIC', eicu:'eICU', therapeutic_targets:'Therapeutic targets', disease_mechanisms:'Disease mechanisms', population_multiomics:'Population multi-omics'};
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

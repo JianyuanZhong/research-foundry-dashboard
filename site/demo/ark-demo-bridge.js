@@ -1,7 +1,7 @@
 'use strict';
 (() => {
  const base=new URL('../data/ark300/',document.currentScript.src);
- window.arkCampaignLabels={"ark-deepseek41-luna-rerun": "DeepSeek V4.1 Flash", "ark-glm53-luna": "GLM 5.3 Flash", "moonshot-kimi3-luna": "Kimi K3"};
+ window.arkCampaignLabels={"ark-deepseek41-luna-rerun": "DeepSeek V4.1 Flash", "ark-glm53-luna": "GLM 5.3 Flash", "moonshot-kimi3-luna": "Kimi K3", "codex-gpt61-sol-luna": "GPT-6.1 Sol"};
  window.arkCampaignAliases={"ark-deepseek41": "ark-deepseek41-luna-rerun", "ark-deepseek41-luna": "ark-deepseek41-luna-rerun", "ark-glm53": "ark-glm53-luna", "ark-kimi3": "moonshot-kimi3-luna"};
  const pageUrl=new URL(location.href),oldCampaign=pageUrl.searchParams.get('campaign');
  if(Object.hasOwn(window.arkCampaignAliases,oldCampaign||'')){
@@ -29,7 +29,7 @@
    const workers=tree.workers.filter(w=>datasets.includes(w.dataset)).map(projected);
    const target=rows.reduce((a,r)=>a+r.target,0),closed=total('attempted_closed');
    const island={id:domain,target,closed,generated_versions:total('generated_candidates'),distinct_selected:total('selected_candidates'),source_islands:rows.map(r=>({id:r.id,target:r.target,closed:r.attempted_closed,generated_versions:r.generated_candidates,distinct_selected:r.selected_candidates}))};
-   const snapshot={schema:'experiment-dashboard-v1',domain,collected_at:index.source_collected_at,run:{label:window.arkCampaignLabels[id],model:s.model_id,provider:id.startsWith('moonshot-')?'Moonshot':'Ark',state:s.status,target,clock:{start:Math.min(index.source_collected_at,...candidates.map(c=>c.created_at))}},islands:[island],episodes,candidates,jobs,workers};
+   const snapshot={schema:'experiment-dashboard-v1',domain,collected_at:index.source_collected_at,run:{label:window.arkCampaignLabels[id],model:s.model_id,provider:id.startsWith('codex-')?'Codex account':id.startsWith('moonshot-')?'Moonshot':'Ark',state:s.status,target,clock:{start:Math.min(index.source_collected_at,...candidates.map(c=>c.created_at))}},islands:[island],episodes,candidates,jobs,workers};
    return {id:domain,number:i+1,target,closed,generated:total('generated_candidates'),workers:total('active_workers'),run:snapshot.run,snapshot};
   });
   window.publicFeedMode='published';
