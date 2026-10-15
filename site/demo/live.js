@@ -84,7 +84,7 @@ function render(){
  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.hash==='#'+view));
  $('#view-title').textContent=({live:'Live research',progress:'Research, across four domains',discovery:'From expert seeds to new hypotheses',environments:'From proposal to executable environment',benchmark:'Scientific quality, at every scale'})[view];
  const campaignClosed=data.islands.reduce((n,i)=>n+i.closed,0);
- $('#campaign-name').textContent=`${data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${campaignClosed}/${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
+ $('#campaign-name').textContent=`${window.arkCampaignLabels?.[$('#run-mode').value]||data.run.model}${data.run.provider?' · '+data.run.provider:''} · ${campaignClosed}/${data.run.target} episodes · ${$('#run-mode').value==='legacy'?'EHR campaign · 2026-10-02':'Four-domain test campaign'}`;
  $('#run-id').textContent=data.run.label+(domainRegistry?.campaign.science_seconds?' · '+(domainRegistry.campaign.science_seconds/60)+' min / research episode':'');
  if($('#run-mode').value==='qwen')$('#run-mode option[value="qwen"]').textContent='Qwen 27B SFT · '+(domainRegistry?.campaign.phase==='targeted_pilot'?(domainRegistry?.campaign.science_seconds===9000?'150-min pilot · ':'targeted pilot · '):'')+data.run.target+' episodes';
  let balancedPanel=document.getElementById('balanced-persistence-summary');

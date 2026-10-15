@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const base = new URL('data/ark300/', document.currentScript.src);
-  const models = {'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3','ark-glm53-luna':'GLM 5.3 · Luna harness','ark-deepseek41-luna':'DeepSeek V4.1 Flash · Luna harness','ark-deepseek41-luna-rerun':'DeepSeek V4.1 Flash · Luna harness · rerun','moonshot-kimi3-luna':'Kimi K3 · Luna harness · Official API'};
+  const models = {"ark-deepseek41-luna-rerun": "DeepSeek V4.1 Flash", "ark-glm53-luna": "GLM 5.3 Flash", "moonshot-kimi3-luna": "Kimi K3"};
   const groups = [
     {id:'clinical_population',name:'Clinical & Population Health Research',islands:['hcc','mimic','eicu']},
     {id:'therapeutic_targets',name:'Therapeutic Target Prioritization',islands:['therapeutic_targets']},
@@ -16,12 +16,16 @@
   const sum = (rows,key) => rows.some(r=>!Number.isInteger(r[key]))?null:rows.reduce((v,r)=>v+r[key],0);
   const table = (headers,rows) => `<table><thead><tr>${headers.map(h=>`<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   const state = s => ({running:'Running',provider_paused:'Provider paused',operator_paused:'Operator paused',prepared:'Prepared',prepared_access_pending:'Access checks pending',pilot_blocked:'Pilot requires attention',coordinator_failed:'Coordinator requires attention',execution_complete:'Execution complete',settled:'Execution settled',source_error:'Source unavailable',missing_source:'Source unavailable'})[s]||String(s).replaceAll('_',' ');
-  const requested = new URL(location.href).searchParams.get('campaign');
+  const aliases = {"ark-deepseek41": "ark-deepseek41-luna-rerun", "ark-deepseek41-luna": "ark-deepseek41-luna-rerun", "ark-glm53": "ark-glm53-luna", "ark-kimi3": "moonshot-kimi3-luna"};
+  const pageUrl = new URL(location.href);
+  const original = pageUrl.searchParams.get('campaign');
+  const requested = aliases[original] || original;
+  if(requested !== original){pageUrl.searchParams.set('campaign',requested);history.replaceState(null,'',pageUrl);}
   if(requested && !Object.hasOwn(models,requested)) {
     $('campaign-title').textContent='Campaign not found';$('freshness').textContent='Choose a registered campaign to continue.';
     return;
   }
-  $('campaign-picker').value=requested||'ark-deepseek41';
+  $('campaign-picker').value=requested||'ark-deepseek41-luna-rerun';
   let snapshots=new Map(),trees=new Map(),index=null,failed=false,busy=false;
   async function get(url) {
     const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(15000)});
