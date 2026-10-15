@@ -1,7 +1,7 @@
 'use strict';
 (() => {
  const base=new URL('../data/ark300/',document.currentScript.src);
- window.arkCampaignLabels={'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3','ark-glm53-luna':'GLM 5.3 · Luna harness'};
+ window.arkCampaignLabels={'ark-deepseek41':'DeepSeek V4.1 Flash','ark-glm53':'GLM 5.3','ark-kimi3':'Kimi K3','ark-glm53-luna':'GLM 5.3 · Luna harness','ark-deepseek41-luna':'DeepSeek V4.1 Flash · Luna harness'};
  const groups=[['clinical_population',['hcc','mimic','eicu']],['therapeutic_targets',['therapeutic_targets']],['disease_mechanisms',['disease_mechanisms']],['population_multiomics',['population_multiomics']]];
  const get=async url=>{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Campaign snapshot unavailable');return r;};
  async function verified(path,hash){const bytes=await(await get(new URL(path,base))).arrayBuffer();const actual=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');if(actual!==hash)throw Error('Snapshot integrity mismatch');return JSON.parse(new TextDecoder().decode(bytes));}

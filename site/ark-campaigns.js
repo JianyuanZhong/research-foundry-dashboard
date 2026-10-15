@@ -2,7 +2,7 @@
 (() => {
   const base = new URL('data/ark300/', document.currentScript.src);
   const models = new Map([['glm-5.3', 'GLM 5.3'], ['deepseek-v4.1-flash', 'DeepSeek V4.1 Flash'], ['kimi-k3', 'Kimi K3']]);
-  const campaignLabel = s => s.campaign_id === 'ark-glm53-luna' ? 'GLM 5.3 · Luna harness' : models.get(s.model_id);
+  const campaignLabel = s => s.campaign_id === 'ark-deepseek41-luna' ? 'DeepSeek V4.1 Flash · Luna harness' : s.campaign_id === 'ark-glm53-luna' ? 'GLM 5.3 · Luna harness' : models.get(s.model_id);
   const names = {hcc:'HCC', mimic:'MIMIC', eicu:'eICU', therapeutic_targets:'Therapeutic targets', disease_mechanisms:'Disease mechanisms', population_multiomics:'Population multi-omics'};
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const n = v => Number.isInteger(v) && v >= 0 ? String(v) : '—';
