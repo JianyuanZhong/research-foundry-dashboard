@@ -21,20 +21,26 @@
   if(s.source.error||s.source.missing)throw Error('Campaign source unavailable; last verified snapshot retained');
   const domains=groups.map(([domain,datasets],i)=>{
    const rows=s.islands.filter(r=>datasets.includes(r.id));
+   const resolvedRows=s.closure?.islands.filter(r=>datasets.includes(r.id));
+   const accounted=resolvedRows?.reduce((a,r)=>a+r.accounted_total,0);
    const total=k=>rows.some(r=>r[k]===null)?null:rows.reduce((a,r)=>a+r[k],0);
    const projected=row=>({...row,source_dataset:row.dataset,dataset:domain});
    const candidates=tree.nodes.filter(n=>datasets.includes(n.dataset)).map(n=>projected({...n,title:n.label,operation:n.imported_seed?'seed':'unrecorded',operation_reason:'Scientific text is not included in this public release.',operation_goal:''}));
    const episodes=tree.episodes.filter(e=>datasets.includes(e.dataset)).map(projected);
    const jobs=tree.jobs.filter(j=>datasets.includes(j.dataset)).map(projected);
    const workers=tree.workers.filter(w=>datasets.includes(w.dataset)).map(projected);
-   const target=rows.reduce((a,r)=>a+r.target,0),closed=total('attempted_closed');
-   const island={id:domain,target,closed,generated_versions:total('generated_candidates'),distinct_selected:total('selected_candidates'),source_islands:rows.map(r=>({id:r.id,target:r.target,closed:r.attempted_closed,generated_versions:r.generated_candidates,distinct_selected:r.selected_candidates}))};
+   const target=rows.reduce((a,r)=>a+r.target,0),closed=accounted??total('attempted_closed');
+   const island={id:domain,target,closed,generated_versions:total('generated_candidates'),distinct_selected:total('selected_candidates'),source_islands:rows.map(r=>({id:r.id,target:r.target,closed:s.closure?.islands.find(i=>i.id===r.id)?.accounted_total??r.attempted_closed,generated_versions:r.generated_candidates,distinct_selected:r.selected_candidates}))};
    const snapshot={schema:'experiment-dashboard-v1',domain,collected_at:index.source_collected_at,run:{label:window.arkCampaignLabels[id],model:s.model_id,provider:id.startsWith('codex-')?'Codex account':id.startsWith('moonshot-')?'Moonshot':'Ark',state:s.status,target,clock:{start:Math.min(index.source_collected_at,...candidates.map(c=>c.created_at))}},islands:[island],episodes,candidates,jobs,workers};
    return {id:domain,number:i+1,target,closed,generated:total('generated_candidates'),workers:total('active_workers'),run:snapshot.run,snapshot};
   });
+  let note=document.getElementById('ark-closure-note');
+  if(!note){note=document.createElement('p');note.id='ark-closure-note';note.setAttribute('role','status');document.querySelector('.snapshot')?.append(note);}
+  note.hidden=!s.closure;
+  if(s.closure){const c=s.closure;note.textContent=`已完成（用户终止） · ${c.accounted_total}/300 轮已结算 · ${c.successful} strict 成功 · ${c.failed_total} 失败（${c.failed_executed} 实际运行失败 + ${c.failed_unattempted} 未运行、按用户要求计失败）。实际 attempt/closed ${c.attempted}/${c.attempted_closed}；排队任务已放弃，原始记录保留。候选与 strict 不代表科学结论已验证。`;}
   window.publicFeedMode='published';
   return {ok:true,json:async()=>({schema:'four-domain-dashboard-v1',trial_label:window.arkCampaignLabels[id],campaign:{state:s.status,target:300},domains,publication:{generated_at:index.published_at},budget:null,ark:true})};
  };
  const publication=document.querySelector('.snapshot p');const oldNote=publication?.textContent;
- window.setArkPublicationNote=mode=>{if(publication)publication.textContent=Object.hasOwn(window.arkCampaignLabels,mode)?'Automatic public snapshots every five minutes; deployment may add delay. The view refreshes every ten seconds.':oldNote;};
+ window.setArkPublicationNote=mode=>{if(!Object.hasOwn(window.arkCampaignLabels,mode)){const note=document.getElementById('ark-closure-note');if(note)note.hidden=true;}if(publication)publication.textContent=Object.hasOwn(window.arkCampaignLabels,mode)?'Automatic public snapshots every five minutes; deployment may add delay. The view refreshes every ten seconds.':oldNote;};
 })();
